@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice to Minister | மக்கள் குறை தீர்ப்பு மேடை - A.M. Shahjahan - Papanasam</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <span class="logo-icon"><img src="../assets/logo.svg" alt="Logo" style="width:28px;height:28px;vertical-align:middle;"></span>
+                <span class="logo-text">Voice to Minister</span>
+                <span class="demo-badge">DEMO</span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#" class="nav-link active" data-page="home">முகப்பு</a></li>
+                <li><a href="#" class="nav-link" data-page="complaint">புகார் செய்</a></li>
+                <li><a href="#" class="nav-link" data-page="mycomplaints">என் புகார்கள்</a></li>
+                <li><a href="#" class="nav-link" data-page="updates">Updates</a></li>
+                <li><a href="#" class="nav-link" data-page="dashboard">Minister Dashboard</a></li>
+            </ul>
+            <div class="nav-right">
+                <button class="btn-login" id="loginBtn">
+                    <i class="fas fa-user-circle"></i>
+                    <span>Login</span>
+                </button>
+            </div>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        
+        <!-- HOME PAGE -->
+        <div class="page active" id="page-home">
+            <!-- Hero -->
+            <section class="demo-hero">
+                <div class="container">
+                    <div class="demo-hero-content">
+                        <div class="demo-hero-text">
+                            <h1>உங்கள் குரல்,<br>நேரடியாக அமைச்சருக்கு</h1>
+                            <p>பாபநாசம் தொகுதியின் பிரச்சனைகளை நேரடியாக தெரிவியுங்கள். 
+                            புகார் செய்யுங்கள், நிலையை track செய்யுங்கள்.</p>
+                            <div class="hero-actions">
+                                <button class="btn btn-primary btn-lg" onclick="navigateTo('complaint')">
+                                    <i class="fas fa-plus-circle"></i> புகார் செய்
+                                </button>
+                                <button class="btn btn-outline-white btn-lg" onclick="navigateTo('mycomplaints')">
+                                    <i class="fas fa-search"></i> நிலை காண
+                                </button>
+                            </div>
+                        </div>
+                        <div class="demo-hero-stats">
+                            <div class="hero-stat-card">
+                                <div class="stat-icon"><i class="fas fa-clipboard-list"></i></div>
+                                <div class="stat-info">
+                                    <span class="stat-num">892</span>
+                                    <span class="stat-text">மொத்த புகார்கள்</span>
+                                </div>
+                            </div>
+                            <div class="hero-stat-card resolved">
+                                <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                                <div class="stat-info">
+                                    <span class="stat-num">756</span>
+                                    <span class="stat-text">தீர்க்கப்பட்டவை</span>
+                                </div>
+                            </div>
+                            <div class="hero-stat-card pending">
+                                <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                                <div class="stat-info">
+                                    <span class="stat-num">98</span>
+                                    <span class="stat-text">நிலுவையில்</span>
+                                </div>
+                            </div>
+                            <div class="hero-stat-card time">
+                                <div class="stat-icon"><i class="fas fa-bolt"></i></div>
+                                <div class="stat-info">
+                                    <span class="stat-num">1.8 நாள்</span>
+                                    <span class="stat-text">சராசரி தீர்வு நேரம்</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Complaints -->
+            <section class="recent-section">
+                <div class="container">
+                    <div class="section-title">
+                        <h2><i class="fas fa-list-alt"></i> சமீபத்திய புகார்கள்</h2>
+                        <a href="#" onclick="navigateTo('mycomplaints')" class="view-all">அனைத்தும் காண →</a>
+                    </div>
+                    <div class="complaints-list">
+                        <div class="complaint-card">
+                            <div class="complaint-status status-resolved"><i class="fas fa-check"></i></div>
+                            <div class="complaint-info">
+                                <h4>சாலையில் பள்ளம் - Papanasam Main Road</h4>
+                                <p><i class="fas fa-map-marker-alt"></i> Papanasam Town | <i class="fas fa-tag"></i> சாலைகள் | <i class="fas fa-calendar"></i> 2 நாட்கள் முன்</p>
+                            </div>
+                            <span class="status-badge badge-resolved">தீர்வு ✓</span>
+                        </div>
+                        <div class="complaint-card">
+                            <div class="complaint-status status-progress"><i class="fas fa-wrench"></i></div>
+                            <div class="complaint-info">
+                                <h4>Street Light வேலை செய்யல - Kabistalam 2nd Street</h4>
+                                <p><i class="fas fa-map-marker-alt"></i> Kabistalam | <i class="fas fa-tag"></i> மின்சாரம் | <i class="fas fa-calendar"></i> 1 நாள் முன்</p>
+                            </div>
+                            <span class="status-badge badge-progress">பணியில்</span>
+                        </div>
+                        <div class="complaint-card">
+                            <div class="complaint-status status-assigned"><i class="fas fa-user-check"></i></div>
+                            <div class="complaint-info">
+                                <h4>Drainage overflow - Thiruvaigavur Bus Stand அருகில்</h4>
+                                <p><i class="fas fa-map-marker-alt"></i> Thiruvaigavur | <i class="fas fa-tag"></i> வடிகால் | <i class="fas fa-calendar"></i> 5 மணி நேரம் முன்</p>
+                            </div>
+                            <span class="status-badge badge-assigned">ஒதுக்கப்பட்டது</span>
+                        </div>
+                        <div class="complaint-card">
+                            <div class="complaint-status status-new"><i class="fas fa-plus"></i></div>
+                            <div class="complaint-info">
+                                <h4>குடிநீர் வரவில்லை - Adhanur 3 நாட்கள்</h4>
+                                <p><i class="fas fa-map-marker-alt"></i> Adhanur | <i class="fas fa-tag"></i> குடிநீர் | <i class="fas fa-calendar"></i> 2 மணி நேரம் முன்</p>
+                            </div>
+                            <span class="status-badge badge-new">புதியது</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Minister Section -->
+            <section class="mla-section">
+                <div class="container">
+                    <div class="mla-banner">
+                        <div class="mla-banner-photo">
+                            <img src="../assets/minister-photo.jpg" alt="A.M. Shahjahan - Minister" class="mla-photo-img" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 120 120%22><rect fill=%22%230d6b3a%22 width=%22120%22 height=%22120%22/><text x=%2260%22 y=%2265%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2240%22>AMS</text></svg>'">
+                        </div>
+                        <div class="mla-banner-info">
+                            <h3>A.M. Shahjahan</h3>
+                            <p class="mla-title">🏛️ Minister of Minority Welfare</p>
+                            <p class="mla-party">Government of Tamil Nadu | MLA - பாபநாசம் தொகுதி</p>
+                            <p style="font-size: 0.8rem; color: #666; margin-top: 4px;">Indian Union Muslim League (IUML) | CM: C. Joseph Vijay</p>
+                            <p class="mla-quote">"மக்கள் சேவையே மகேசன் சேவை. சிறுபான்மையினர் நலன் மட்டுமல்ல, அனைவரின் குறைகளும் தீர்க்கப்படும்."</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- COMPLAINT PAGE - Multi-Step Wizard -->
+        <div class="page" id="page-complaint">
+            <section class="complaint-form-section">
+                <div class="container">
+                    <div class="form-header">
+                        <h2><i class="fas fa-edit"></i> புகார் பதிவு செய்யுங்கள்</h2>
+                        <p>உங்கள் பகுதி பிரச்சனையை 3 எளிய படிகளில் பதிவு செய்யுங்கள்</p>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="wizard-progress">
+                        <div class="progress-step active" data-step="1">
+                            <div class="progress-circle">1</div>
+                            <span>யார்?</span>
+                        </div>
+                        <div class="progress-line active-line"></div>
+                        <div class="progress-step" data-step="2">
+                            <div class="progress-circle">2</div>
+                            <span>என்ன?</span>
+                        </div>
+                        <div class="progress-line"></div>
+                        <div class="progress-step" data-step="3">
+                            <div class="progress-circle">3</div>
+                            <span>எங்கே?</span>
+                        </div>
+                    </div>
+
+                    <div class="complaint-form-wrapper">
+                        <form id="complaintForm" class="complaint-form">
+                            
+                            <!-- STEP 1: Who -->
+                            <div class="wizard-step active" id="step1">
+                                <div class="step-title">
+                                    <h3>👤 உங்கள் தகவல்கள்</h3>
+                                    <p>புகார் செய்பவரின் விவரங்கள்</p>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="citizenName">பெயர் (Name) <span class="required">*</span></label>
+                                    <div class="input-icon-wrap">
+                                        <i class="fas fa-user"></i>
+                                        <input type="text" id="citizenName" placeholder="உங்கள் முழு பெயர்" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="mobileNumber">தொலைபேசி எண் (Mobile) <span class="required">*</span></label>
+                                    <div class="input-icon-wrap">
+                                        <i class="fas fa-phone"></i>
+                                        <div class="phone-input-group">
+                                            <span class="country-code-badge">+91</span>
+                                            <input type="tel" id="mobileNumber" placeholder="98765 43210" maxlength="10" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="area">பகுதி / Village / Ward <span class="required">*</span></label>
+                                    <div class="input-icon-wrap">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <select id="area" required>
+                                            <option value="">-- பகுதியை தேர்வு செய்யுங்கள் --</option>
+                                            <optgroup label="📍 Papanasam Town Panchayat (15 Wards)">
+                                                <option value="ward-1">Ward 1 - Pasupathikoil Rastha, Vellala Street</option>
+                                                <option value="ward-2">Ward 2 - MGR Nagar, Agraharam, Main Road</option>
+                                                <option value="ward-3">Ward 3 - Chekkadi Theru, Palakkarai</option>
+                                                <option value="ward-4">Ward 4 - Mission Street, Pallar Street</option>
+                                                <option value="ward-5">Ward 5 - Bazaar Street, Temple Road</option>
+                                                <option value="ward-6">Ward 6 - North Street, Pillaiyar Koil</option>
+                                                <option value="ward-7">Ward 7 - South Street, School Road</option>
+                                                <option value="ward-8">Ward 8 - Bus Stand Area</option>
+                                                <option value="ward-9">Ward 9 - Hospital Road</option>
+                                                <option value="ward-10">Ward 10 - New Colony</option>
+                                                <option value="ward-11">Ward 11 - East Extension</option>
+                                                <option value="ward-12">Ward 12 - West Colony</option>
+                                                <option value="ward-13">Ward 13 - Railway Area</option>
+                                                <option value="ward-14">Ward 14 - River Side</option>
+                                                <option value="ward-15">Ward 15 - Industrial Area</option>
+                                            </optgroup>
+                                            <optgroup label="🏘️ Villages / Panchayats">
+                                                <option value="adhanur">Adhanur</option>
+                                                <option value="alavandipuram">Alavandipuram</option>
+                                                <option value="chakkarapalli">Chakkarapalli</option>
+                                                <option value="eachankudi">Eachankudi</option>
+                                                <option value="ganapathi-agraharam">Ganapathi Agraharam</option>
+                                                <option value="gopurajapuram">Gopurajapuram</option>
+                                                <option value="govindanattucheri">Govindanattucheri</option>
+                                                <option value="illuppakkorai">Illuppakkorai</option>
+                                                <option value="kabistalam">Kabistalam</option>
+                                                <option value="konthagai">Konthagai</option>
+                                                <option value="koonancheri">Koonancheri</option>
+                                                <option value="manalur">Manalur</option>
+                                                <option value="melakabisthalam">Melakabisthalam</option>
+                                                <option value="olaipadi">Olaipadi</option>
+                                                <option value="pandaravadai">Pandaravadai</option>
+                                                <option value="pasupathikoil">Pasupathikoil</option>
+                                                <option value="perumalkoil">Perumalkoil</option>
+                                                <option value="rajagiri">Rajagiri</option>
+                                                <option value="ramanujapuram">Ramanujapuram</option>
+                                                <option value="ragunathapuram">Ragunathapuram</option>
+                                                <option value="sarabhojirajapuram">Sarabhojirajapuram</option>
+                                                <option value="sarukkai">Sarukkai</option>
+                                                <option value="sathiyamangalam">Sathiyamangalam</option>
+                                                <option value="someswarapuram">Someswarapuram</option>
+                                                <option value="soolamangalam">Soolamangalam</option>
+                                                <option value="thirumandangudi">Thirumandangudi</option>
+                                                <option value="thiruvaigavur">Thiruvaigavur</option>
+                                                <option value="thiyagasamudram">Thiyagasamudram</option>
+                                                <option value="thurumbur">Thurumbur</option>
+                                                <option value="ullikkadai">Ullikkadai</option>
+                                                <option value="umayalpuram">Umayalpuram</option>
+                                                <option value="umbalapadi">Umbalapadi</option>
+                                                <option value="valuthoor">Valuthoor</option>
+                                                <option value="veeramangudi">Veeramangudi</option>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="wizard-actions">
+                                    <div></div>
+                                    <button type="button" class="btn btn-primary btn-next" onclick="nextStep(2)">
+                                        அடுத்து <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- STEP 2: What -->
+                            <div class="wizard-step" id="step2">
+                                <div class="step-title">
+                                    <h3>📋 புகார் விவரங்கள்</h3>
+                                    <p>பிரச்சனை என்ன என்பதை தெரிவிக்கவும்</p>
+                                </div>
+
+                                <!-- Category Large Cards -->
+                                <div class="form-group">
+                                    <label>புகார் வகை <span class="required">*</span></label>
+                                    <div class="category-grid-new">
+                                        <div class="cat-card-new" data-value="roads">
+                                            <div class="cat-card-icon"><i class="fas fa-road"></i></div>
+                                            <span>சாலை பிரச்சனை</span>
+                                        </div>
+                                        <div class="cat-card-new" data-value="water">
+                                            <div class="cat-card-icon"><i class="fas fa-tint"></i></div>
+                                            <span>குடிநீர்</span>
+                                        </div>
+                                        <div class="cat-card-new" data-value="drainage">
+                                            <div class="cat-card-icon"><i class="fas fa-water"></i></div>
+                                            <span>வடிகால்</span>
+                                        </div>
+                                        <div class="cat-card-new" data-value="electricity">
+                                            <div class="cat-card-icon"><i class="fas fa-bolt"></i></div>
+                                            <span>மின்சாரம்</span>
+                                        </div>
+                                        <div class="cat-card-new" data-value="garbage">
+                                            <div class="cat-card-icon"><i class="fas fa-trash"></i></div>
+                                            <span>கழிவு மேலாண்மை</span>
+                                        </div>
+                                        <div class="cat-card-new" data-value="traffic">
+                                            <div class="cat-card-icon"><i class="fas fa-traffic-light"></i></div>
+                                            <span>போக்குவரத்து</span>
+                                        </div>
+                                        <div class="cat-card-new" data-value="streetlight">
+                                            <div class="cat-card-icon"><i class="fas fa-lightbulb"></i></div>
+                                            <span>தெரு விளக்கு</span>
+                                        </div>
+                                        <div class="cat-card-new" data-value="scheme">
+                                            <div class="cat-card-icon"><i class="fas fa-hands-helping"></i></div>
+                                            <span>அரசு திட்டம்</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="title">புகார் தலைப்பு <span class="required">*</span></label>
+                                    <div class="input-icon-wrap">
+                                        <i class="fas fa-heading"></i>
+                                        <input type="text" id="title" placeholder="உதா: சாலையில் பள்ளம், Street light வேலை செய்யல" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="description">விரிவான விளக்கம்</label>
+                                    <div class="voice-input-wrapper">
+                                        <textarea id="description" rows="4" placeholder="பிரச்சனையை விரிவாக எழுதுங்கள்... அல்லது 🎤 பொத்தானை அழுத்தி தமிழில் பேசுங்கள்"></textarea>
+                                        <button type="button" class="btn-voice" id="voiceBtn" onclick="startVoiceInput()">
+                                            <i class="fas fa-microphone"></i>
+                                        </button>
+                                    </div>
+                                    <div class="voice-status" id="voiceStatus" style="display:none;">
+                                        <div class="voice-wave">
+                                            <span></span><span></span><span></span><span></span><span></span>
+                                        </div>
+                                        <p>🎤 கேட்கிறேன்... தமிழில் பேசுங்கள்</p>
+                                        <button type="button" class="btn-voice-stop" onclick="stopVoiceInput()">நிறுத்து</button>
+                                    </div>
+                                </div>
+
+                                <!-- Photo Upload -->
+                                <div class="form-group">
+                                    <label>புகைப்படம் / வீடியோ இணைக்க</label>
+                                    <div class="upload-area" id="uploadArea">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                        <p>Click to upload or drag & drop</p>
+                                        <span>JPG, PNG, MP4 (Max 10MB)</span>
+                                        <input type="file" id="fileInput" accept="image/*,video/*" hidden>
+                                    </div>
+                                    <div class="upload-preview" id="uploadPreview"></div>
+                                </div>
+
+                                <div class="wizard-actions">
+                                    <button type="button" class="btn btn-outline-back" onclick="prevStep(1)">
+                                        <i class="fas fa-arrow-left"></i> முந்தைய
+                                    </button>
+                                    <button type="button" class="btn btn-primary btn-next" onclick="nextStep(3)">
+                                        அடுத்து <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- STEP 3: Where -->
+                            <div class="wizard-step" id="step3">
+                                <div class="step-title">
+                                    <h3>📍 இடம் & சமர்ப்பிப்பு</h3>
+                                    <p>சரியான இடத்தை குறிப்பிடவும்</p>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>GPS இடம் (Location)</label>
+                                    <div class="location-input">
+                                        <button type="button" class="btn-location" id="getLocation">
+                                            <i class="fas fa-crosshairs"></i> 📍 என் இடத்தை பெற
+                                        </button>
+                                        <span class="location-text" id="locationText">இடம் குறிப்பிடப்படவில்லை</span>
+                                    </div>
+                                    <div class="map-placeholder" id="mapPlaceholder">
+                                        <i class="fas fa-map-marked-alt"></i>
+                                        <p>Location பெற்ற பின் Map இங்கே தெரியும்</p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="manualAddress">முகவரி (விருப்பம்)</label>
+                                    <div class="input-icon-wrap">
+                                        <i class="fas fa-home"></i>
+                                        <input type="text" id="manualAddress" placeholder="சாலை பெயர், அடையாளம் (Landmark)">
+                                    </div>
+                                </div>
+
+                                <!-- Review Summary -->
+                                <div class="review-summary">
+                                    <h4><i class="fas fa-clipboard-check"></i> உங்கள் புகார் சுருக்கம்</h4>
+                                    <div class="review-items">
+                                        <div class="review-item"><span>பெயர்:</span> <strong id="reviewName">-</strong></div>
+                                        <div class="review-item"><span>தொலைபேசி:</span> <strong id="reviewPhone">-</strong></div>
+                                        <div class="review-item"><span>பகுதி:</span> <strong id="reviewArea">-</strong></div>
+                                        <div class="review-item"><span>வகை:</span> <strong id="reviewCategory">-</strong></div>
+                                        <div class="review-item"><span>தலைப்பு:</span> <strong id="reviewTitle">-</strong></div>
+                                    </div>
+                                </div>
+
+                                <div class="wizard-actions">
+                                    <button type="button" class="btn btn-outline-back" onclick="prevStep(2)">
+                                        <i class="fas fa-arrow-left"></i> முந்தைய
+                                    </button>
+                                    <button type="submit" class="btn btn-primary btn-lg btn-submit">
+                                        <i class="fas fa-paper-plane"></i> புகார் சமர்ப்பி
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TRACK PAGE -->
+        <div class="page" id="page-track">
+            <section class="track-section">
+                <div class="container">
+                    <div class="form-header">
+                        <h2><i class="fas fa-search"></i> புகார் நிலை காண</h2>
+                        <p>உங்கள் புகார் எந்த நிலையில் உள்ளது என பாருங்கள்</p>
+                    </div>
+
+                    <!-- Search -->
+                    <div class="track-search">
+                        <input type="text" placeholder="IUML/PPN/2026/00101 அல்லது Mobile Number" id="trackInput">
+                        <button class="btn btn-primary" onclick="searchComplaint()">
+                            <i class="fas fa-search"></i> தேடு
+                        </button>
+                    </div>
+
+                    <!-- Track Result -->
+                    <div class="track-result" id="trackResult">
+                        <div class="track-card">
+                            <div class="track-header">
+                                <div>
+                                    <h3>Complaint IUML/PPN/2026/00101</h3>
+                                    <p>சாலையில் பள்ளம் - Papanasam Main Road</p>
+                                </div>
+                                <span class="status-badge badge-progress">பணியில்</span>
+                            </div>
+                            <div class="track-details">
+                                <div class="track-detail">
+                                    <span class="label">வகை:</span>
+                                    <span class="value">சாலைகள்</span>
+                                </div>
+                                <div class="track-detail">
+                                    <span class="label">பகுதி:</span>
+                                    <span class="value">Papanasam Town</span>
+                                </div>
+                                <div class="track-detail">
+                                    <span class="label">ஒதுக்கப்பட்டவர்:</span>
+                                    <span class="value">Highway Department - Mr. Karthik</span>
+                                </div>
+                                <div class="track-detail">
+                                    <span class="label">பதிவு நாள்:</span>
+                                    <span class="value">May 20, 2026</span>
+                                </div>
+                            </div>
+
+                            <!-- Timeline -->
+                            <div class="track-timeline">
+                                <div class="tl-item completed">
+                                    <div class="tl-dot"></div>
+                                    <div class="tl-content">
+                                        <h4>புகார் பதிவு செய்யப்பட்டது</h4>
+                                        <p>May 20, 2026 - 10:30 AM</p>
+                                    </div>
+                                </div>
+                                <div class="tl-item completed">
+                                    <div class="tl-dot"></div>
+                                    <div class="tl-content">
+                                        <h4>ஆய்வு செய்யப்படுகிறது</h4>
+                                        <p>May 20, 2026 - 11:15 AM</p>
+                                    </div>
+                                </div>
+                                <div class="tl-item completed">
+                                    <div class="tl-dot"></div>
+                                    <div class="tl-content">
+                                        <h4>Highway Department-க்கு ஒதுக்கப்பட்டது</h4>
+                                        <p>May 20, 2026 - 02:00 PM</p>
+                                    </div>
+                                </div>
+                                <div class="tl-item active">
+                                    <div class="tl-dot"></div>
+                                    <div class="tl-content">
+                                        <h4>பணி தொடங்கப்பட்டது</h4>
+                                        <p>May 21, 2026 - 09:00 AM</p>
+                                    </div>
+                                </div>
+                                <div class="tl-item">
+                                    <div class="tl-dot"></div>
+                                    <div class="tl-content">
+                                        <h4>தீர்வு & உறுதிப்படுத்தல்</h4>
+                                        <p>நிலுவையில்...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- MY COMPLAINTS - CITIZEN DASHBOARD -->
+        <div class="page" id="page-mycomplaints">
+            <section class="track-section">
+                <div class="container">
+                    <div class="form-header">
+                        <h2><i class="fas fa-user-shield"></i> என் புகார்கள்</h2>
+                        <p>உங்கள் அனைத்து புகார்களின் நிலையை இங்கே பாருங்கள்</p>
+                    </div>
+
+                    <!-- Citizen Login / Search -->
+                    <div class="citizen-dash-login" id="citizenLoginSection">
+                        <div class="track-search">
+                            <input type="text" placeholder="உங்கள் Mobile Number அல்லது Complaint ID" id="citizenSearchInput">
+                            <button class="btn btn-primary" onclick="loadCitizenComplaints()">
+                                <i class="fas fa-search"></i> தேடு
+                            </button>
+                        </div>
+                        <p style="text-align:center; font-size:0.8rem; color:var(--gray); margin-top:10px;">Mobile Number enter செய்தால் உங்கள் அனைத்து புகார்களும் தெரியும்</p>
+                    </div>
+
+                    <!-- Citizen Stats -->
+                    <div class="citizen-stats" id="citizenStats" style="display:none;">
+                        <div class="dash-stats" style="grid-template-columns: repeat(3, 1fr); margin-bottom:20px;">
+                            <div class="dash-stat-card">
+                                <div class="dash-stat-icon total"><i class="fas fa-clipboard-list"></i></div>
+                                <div class="dash-stat-info">
+                                    <span class="dash-stat-num" id="citizenTotal">0</span>
+                                    <span class="dash-stat-label">மொத்த புகார்கள்</span>
+                                </div>
+                            </div>
+                            <div class="dash-stat-card">
+                                <div class="dash-stat-icon pending"><i class="fas fa-clock"></i></div>
+                                <div class="dash-stat-info">
+                                    <span class="dash-stat-num" id="citizenPending">0</span>
+                                    <span class="dash-stat-label">நிலுவையில்</span>
+                                </div>
+                            </div>
+                            <div class="dash-stat-card">
+                                <div class="dash-stat-icon resolved"><i class="fas fa-check-circle"></i></div>
+                                <div class="dash-stat-info">
+                                    <span class="dash-stat-num" id="citizenResolved">0</span>
+                                    <span class="dash-stat-label">தீர்வு</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Citizen Complaints List -->
+                    <div class="citizen-complaints-list" id="citizenComplaintsList"></div>
+                </div>
+            </section>
+        </div>
+
+        <!-- UPDATES PAGE -->
+        <div class="page" id="page-updates">
+            <section class="updates-section">
+                <div class="container">
+                    <div class="form-header">
+                        <h2><i class="fas fa-newspaper"></i> Minister Updates & அறிவிப்புகள்</h2>
+                        <p>A.M. Shahjahan - Minister of Minority Welfare | பாபநாசம் தொகுதி</p>
+                    </div>
+                    <div class="updates-grid">
+                        <div class="update-card">
+                            <div class="update-date">
+                                <span class="day">24</span>
+                                <span class="month">May</span>
+                            </div>
+                            <div class="update-content">
+                                <span class="update-tag">அறிவிப்பு</span>
+                                <h4>Papanasam Town - சாலை மேம்பாட்டு பணி தொடக்கம்</h4>
+                                <p>Papanasam Main Road-ல 3 கி.மீ சாலை மேம்பாட்டு பணி இன்று தொடங்கப்பட்டது. 20 நாட்களில் முடிக்கப்படும்.</p>
+                            </div>
+                        </div>
+                        <div class="update-card">
+                            <div class="update-date">
+                                <span class="day">22</span>
+                                <span class="month">May</span>
+                            </div>
+                            <div class="update-content">
+                                <span class="update-tag success">நிறைவு</span>
+                                <h4>Kabistalam - 30 புதிய Street Lights நிறுவப்பட்டன</h4>
+                                <p>மக்கள் புகாரின் அடிப்படையில் Kabistalam பகுதியில் 30 புதிய LED Street Lights நிறுவப்பட்டுள்ளன.</p>
+                            </div>
+                        </div>
+                        <div class="update-card">
+                            <div class="update-date">
+                                <span class="day">20</span>
+                                <span class="month">May</span>
+                            </div>
+                            <div class="update-content">
+                                <span class="update-tag info">நிகழ்வு</span>
+                                <h4>மக்கள் சந்திப்பு - ஒவ்வொரு சனிக்கிழமையும்</h4>
+                                <p>ஒவ்வொரு சனிக்கிழமையும் காலை 10 - 1 வரை MLA அலுவலகத்தில் மக்கள் சந்திப்பு நடைபெறும். அனைவரும் வரவேற்கப்படுகிறார்கள்.</p>
+                            </div>
+                        </div>
+                        <div class="update-card">
+                            <div class="update-date">
+                                <span class="day">18</span>
+                                <span class="month">May</span>
+                            </div>
+                            <div class="update-content">
+                                <span class="update-tag">அறிவிப்பு</span>
+                                <h4>Thiruvaigavur Drainage System Upgrade Project</h4>
+                                <p>Thiruvaigavur பகுதியில் Drainage system upgrade project-க்கு அரசு ஒப்புதல் கிடைத்துள்ளது. விரைவில் பணி தொடங்கும்.</p>
+                            </div>
+                        </div>
+                        <div class="update-card">
+                            <div class="update-date">
+                                <span class="day">15</span>
+                                <span class="month">May</span>
+                            </div>
+                            <div class="update-content">
+                                <span class="update-tag success">நிறைவு</span>
+                                <h4>Adhanur குடிநீர் பிரச்சனை தீர்வு</h4>
+                                <p>Adhanur கிராமத்தில் 3 வாரங்களாக இருந்த குடிநீர் பிரச்சனை முழுமையாக தீர்க்கப்பட்டது. புதிய குழாய் இணைப்பு வழங்கப்பட்டது.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- DASHBOARD PAGE -->
+        <div class="page" id="page-dashboard">
+            <section class="dashboard-section">
+                <div class="container">
+                    <div class="dashboard-header">
+                        <div>
+                            <h2><i class="fas fa-tachometer-alt"></i> Minister Dashboard</h2>
+                            <p>A.M. Shahjahan | Minister of Minority Welfare | பாபநாசம் தொகுதி</p>
+                        </div>
+                        <div class="dashboard-actions">
+                            <span class="admin-badge"><i class="fas fa-crown"></i> Admin View</span>
+                        </div>
+                    </div>
+
+                    <!-- Trust Score Section -->
+                    <div class="trust-score-section">
+                        <div class="trust-card">
+                            <div class="trust-score-circle">
+                                <svg viewBox="0 0 100 100">
+                                    <circle cx="50" cy="50" r="45" class="trust-bg"/>
+                                    <circle cx="50" cy="50" r="45" class="trust-fill" style="stroke-dasharray: 254; stroke-dashoffset: 30;"/>
+                                </svg>
+                                <div class="trust-score-value">
+                                    <span class="score-num">85%</span>
+                                    <span class="score-label">நம்பிக்கை</span>
+                                </div>
+                            </div>
+                            <div class="trust-info">
+                                <h3>🏆 மக்கள் நம்பிக்கை Index</h3>
+                                <p>People's Trust Score</p>
+                                <div class="trust-metrics">
+                                    <div class="trust-metric">
+                                        <span class="metric-label">Resolution Rate</span>
+                                        <span class="metric-value good">84.7%</span>
+                                    </div>
+                                    <div class="trust-metric">
+                                        <span class="metric-label">Avg Response Time</span>
+                                        <span class="metric-value good">1.8 Days</span>
+                                    </div>
+                                    <div class="trust-metric">
+                                        <span class="metric-label">Satisfaction Rating</span>
+                                        <span class="metric-value good">4.5/5 ⭐</span>
+                                    </div>
+                                    <div class="trust-metric">
+                                        <span class="metric-label">Active Volunteers</span>
+                                        <span class="metric-value">32</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Constituency Heatmap -->
+                    <div class="dash-card full-width map-card">
+                        <h3><i class="fas fa-map-marked-alt"></i> Constituency Heatmap - பாபநாசம் தொகுதி</h3>
+                        <div class="live-map" id="liveMap">
+                            <div class="map-container">
+                                <div class="map-bg">
+                                    <svg viewBox="0 0 800 450" class="constituency-map" style="border-radius:12px;">
+                                        <rect width="800" height="450" fill="#f0fdf9" rx="12"/>
+                                        
+                                        <!-- Area Zones -->
+                                        <!-- Papanasam Town - HIGH -->
+                                        <path d="M 300 50 L 500 50 L 520 150 L 480 220 L 320 220 L 280 150 Z" 
+                                              fill="rgba(239,68,68,0.35)" stroke="rgba(239,68,68,0.6)" stroke-width="2"/>
+                                        <text x="400" y="130" font-size="12" font-weight="700" fill="#dc2626" text-anchor="middle">Papanasam Town</text>
+                                        <text x="400" y="148" font-size="9" fill="#991b1b" text-anchor="middle">198 புகார்கள்</text>
+                                        
+                                        <!-- Kabistalam - MEDIUM -->
+                                        <path d="M 50 50 L 250 50 L 270 140 L 220 200 L 80 200 L 30 140 Z" 
+                                              fill="rgba(249,115,22,0.3)" stroke="rgba(249,115,22,0.6)" stroke-width="2"/>
+                                        <text x="150" y="120" font-size="12" font-weight="700" fill="#ea580c" text-anchor="middle">Kabistalam</text>
+                                        <text x="150" y="138" font-size="9" fill="#9a3412" text-anchor="middle">145 புகார்கள்</text>
+                                        
+                                        <!-- Thiruvaigavur - MEDIUM -->
+                                        <path d="M 550 50 L 750 50 L 770 150 L 720 210 L 570 210 L 530 150 Z" 
+                                              fill="rgba(245,158,11,0.25)" stroke="rgba(245,158,11,0.5)" stroke-width="2"/>
+                                        <text x="650" y="125" font-size="12" font-weight="700" fill="#d97706" text-anchor="middle">Thiruvaigavur</text>
+                                        <text x="650" y="143" font-size="9" fill="#92400e" text-anchor="middle">132 புகார்கள்</text>
+                                        
+                                        <!-- Adhanur - LOW -->
+                                        <path d="M 50 240 L 250 230 L 280 340 L 230 410 L 80 420 L 30 340 Z" 
+                                              fill="rgba(16,185,129,0.2)" stroke="rgba(16,185,129,0.5)" stroke-width="2"/>
+                                        <text x="155" y="325" font-size="12" font-weight="700" fill="#059669" text-anchor="middle">Adhanur</text>
+                                        <text x="155" y="343" font-size="9" fill="#065f46" text-anchor="middle">89 புகார்கள்</text>
+                                        
+                                        <!-- Valuthoor - LOW -->
+                                        <path d="M 300 250 L 500 240 L 520 350 L 470 420 L 330 420 L 280 350 Z" 
+                                              fill="rgba(16,185,129,0.2)" stroke="rgba(16,185,129,0.5)" stroke-width="2"/>
+                                        <text x="400" y="330" font-size="12" font-weight="700" fill="#059669" text-anchor="middle">Valuthoor</text>
+                                        <text x="400" y="348" font-size="9" fill="#065f46" text-anchor="middle">76 புகார்கள்</text>
+                                        
+                                        <!-- Thurumbur - LOW -->
+                                        <path d="M 550 240 L 750 230 L 770 330 L 720 400 L 580 410 L 530 330 Z" 
+                                              fill="rgba(16,185,129,0.15)" stroke="rgba(16,185,129,0.4)" stroke-width="2"/>
+                                        <text x="650" y="315" font-size="12" font-weight="700" fill="#059669" text-anchor="middle">Thurumbur</text>
+                                        <text x="650" y="333" font-size="9" fill="#065f46" text-anchor="middle">62 புகார்கள்</text>
+                                        
+                                        <!-- Heatmap Legend -->
+                                        <rect x="30" y="425" width="120" height="18" rx="4" fill="url(#heatGradientPPN)" stroke="#ccc" stroke-width="0.5"/>
+                                        <defs>
+                                            <linearGradient id="heatGradientPPN">
+                                                <stop offset="0%" stop-color="#10b981"/>
+                                                <stop offset="50%" stop-color="#f59e0b"/>
+                                                <stop offset="100%" stop-color="#ef4444"/>
+                                            </linearGradient>
+                                        </defs>
+                                        <text x="30" y="420" font-size="8" fill="#666">Low</text>
+                                        <text x="78" y="420" font-size="8" fill="#666">Med</text>
+                                        <text x="130" y="420" font-size="8" fill="#666">High</text>
+                                    </svg>
+                                </div>
+                                <div class="map-legend" id="mapLegend">
+                                    <div class="legend-item"><span class="legend-dot" style="background:rgba(239,68,68,0.5);"></span> High Risk (62 pending)</div>
+                                    <div class="legend-item"><span class="legend-dot" style="background:rgba(245,158,11,0.5);"></span> Medium (36 in progress)</div>
+                                    <div class="legend-item"><span class="legend-dot" style="background:rgba(16,185,129,0.5);"></span> Resolved (756)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stats Cards -->
+                    <div class="dash-stats" style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));">
+                        <div class="dash-stat-card">
+                            <div class="dash-stat-icon total"><i class="fas fa-clipboard-list"></i></div>
+                            <div class="dash-stat-info">
+                                <span class="dash-stat-num">892</span>
+                                <span class="dash-stat-label">மொத்தம்</span>
+                            </div>
+                        </div>
+                        <div class="dash-stat-card">
+                            <div class="dash-stat-icon" style="background:#fef3c7; color:#d97706;"><i class="fas fa-calendar-day"></i></div>
+                            <div class="dash-stat-info">
+                                <span class="dash-stat-num">8</span>
+                                <span class="dash-stat-label">இன்று புதிய</span>
+                            </div>
+                        </div>
+                        <div class="dash-stat-card">
+                            <div class="dash-stat-icon resolved"><i class="fas fa-check-circle"></i></div>
+                            <div class="dash-stat-info">
+                                <span class="dash-stat-num">756</span>
+                                <span class="dash-stat-label">மொத்த தீர்வு</span>
+                            </div>
+                        </div>
+                        <div class="dash-stat-card">
+                            <div class="dash-stat-icon" style="background:#d1fae5; color:#059669;"><i class="fas fa-check-double"></i></div>
+                            <div class="dash-stat-info">
+                                <span class="dash-stat-num">4</span>
+                                <span class="dash-stat-label">இன்று தீர்வு</span>
+                            </div>
+                        </div>
+                        <div class="dash-stat-card">
+                            <div class="dash-stat-icon pending"><i class="fas fa-clock"></i></div>
+                            <div class="dash-stat-info">
+                                <span class="dash-stat-num">98</span>
+                                <span class="dash-stat-label">நிலுவை</span>
+                            </div>
+                        </div>
+                        <div class="dash-stat-card">
+                            <div class="dash-stat-icon" style="background:#ede9fe; color:#7c3aed;"><i class="fas fa-users"></i></div>
+                            <div class="dash-stat-info">
+                                <span class="dash-stat-num">32</span>
+                                <span class="dash-stat-label">Active Volunteers</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Section -->
+                    <div class="dash-grid">
+                        <!-- Area-wise Chart -->
+                        <div class="dash-card">
+                            <h3><i class="fas fa-chart-bar"></i> Area-wise புகார்கள்</h3>
+                            <div class="chart-bars">
+                                <div class="chart-bar-item">
+                                    <span class="bar-label">Papanasam Town</span>
+                                    <div class="bar-track">
+                                        <div class="bar-fill" style="width: 85%;">198</div>
+                                    </div>
+                                </div>
+                                <div class="chart-bar-item">
+                                    <span class="bar-label">Kabistalam</span>
+                                    <div class="bar-track">
+                                        <div class="bar-fill" style="width: 65%;">145</div>
+                                    </div>
+                                </div>
+                                <div class="chart-bar-item">
+                                    <span class="bar-label">Thiruvaigavur</span>
+                                    <div class="bar-track">
+                                        <div class="bar-fill" style="width: 58%;">132</div>
+                                    </div>
+                                </div>
+                                <div class="chart-bar-item">
+                                    <span class="bar-label">Adhanur</span>
+                                    <div class="bar-track">
+                                        <div class="bar-fill" style="width: 40%;">89</div>
+                                    </div>
+                                </div>
+                                <div class="chart-bar-item">
+                                    <span class="bar-label">Valuthoor</span>
+                                    <div class="bar-track">
+                                        <div class="bar-fill" style="width: 35%;">76</div>
+                                    </div>
+                                </div>
+                                <div class="chart-bar-item">
+                                    <span class="bar-label">Thurumbur</span>
+                                    <div class="bar-track">
+                                        <div class="bar-fill" style="width: 28%;">62</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Category-wise -->
+                        <div class="dash-card">
+                            <h3><i class="fas fa-chart-pie"></i> Category-wise பிரிவு</h3>
+                            <div class="category-stats">
+                                <div class="cat-stat-item">
+                                    <div class="cat-stat-icon"><i class="fas fa-road"></i></div>
+                                    <div class="cat-stat-info">
+                                        <span>சாலைகள்</span>
+                                        <strong>234</strong>
+                                    </div>
+                                    <div class="cat-stat-bar"><div style="width:78%"></div></div>
+                                </div>
+                                <div class="cat-stat-item">
+                                    <div class="cat-stat-icon"><i class="fas fa-tint"></i></div>
+                                    <div class="cat-stat-info">
+                                        <span>குடிநீர்</span>
+                                        <strong>189</strong>
+                                    </div>
+                                    <div class="cat-stat-bar"><div style="width:63%"></div></div>
+                                </div>
+                                <div class="cat-stat-item">
+                                    <div class="cat-stat-icon"><i class="fas fa-water"></i></div>
+                                    <div class="cat-stat-info">
+                                        <span>வடிகால்</span>
+                                        <strong>156</strong>
+                                    </div>
+                                    <div class="cat-stat-bar"><div style="width:52%"></div></div>
+                                </div>
+                                <div class="cat-stat-item">
+                                    <div class="cat-stat-icon"><i class="fas fa-bolt"></i></div>
+                                    <div class="cat-stat-info">
+                                        <span>மின்சாரம்</span>
+                                        <strong>134</strong>
+                                    </div>
+                                    <div class="cat-stat-bar"><div style="width:45%"></div></div>
+                                </div>
+                                <div class="cat-stat-item">
+                                    <div class="cat-stat-icon"><i class="fas fa-lightbulb"></i></div>
+                                    <div class="cat-stat-info">
+                                        <span>தெரு விளக்கு</span>
+                                        <strong>98</strong>
+                                    </div>
+                                    <div class="cat-stat-bar"><div style="width:33%"></div></div>
+                                </div>
+                                <div class="cat-stat-item">
+                                    <div class="cat-stat-icon"><i class="fas fa-trash"></i></div>
+                                    <div class="cat-stat-info">
+                                        <span>கழிவு</span>
+                                        <strong>81</strong>
+                                    </div>
+                                    <div class="cat-stat-bar"><div style="width:27%"></div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Weekly Resolution Graph -->
+                    <div class="dash-card full-width">
+                        <h3><i class="fas fa-chart-line"></i> Weekly Resolution Graph - வாரவாரி தீர்வு</h3>
+                        <div class="weekly-graph" style="padding:15px;">
+                            <div style="display:flex; align-items:flex-end; gap:12px; height:200px; padding:25px 10px 0; border-bottom:2px solid #f0f0f0;">
+                                <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%;">
+                                    <span style="font-size:0.75rem; font-weight:700; color:var(--primary); margin-bottom:5px;">12</span>
+                                    <div style="background:linear-gradient(180deg, #0d6b3a, #10b981); width:60%; height:50%; border-radius:6px 6px 0 0; min-height:20px;"></div>
+                                </div>
+                                <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%;">
+                                    <span style="font-size:0.75rem; font-weight:700; color:var(--primary); margin-bottom:5px;">18</span>
+                                    <div style="background:linear-gradient(180deg, #0d6b3a, #10b981); width:60%; height:75%; border-radius:6px 6px 0 0; min-height:20px;"></div>
+                                </div>
+                                <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%;">
+                                    <span style="font-size:0.75rem; font-weight:700; color:var(--primary); margin-bottom:5px;">10</span>
+                                    <div style="background:linear-gradient(180deg, #0d6b3a, #10b981); width:60%; height:42%; border-radius:6px 6px 0 0; min-height:20px;"></div>
+                                </div>
+                                <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%;">
+                                    <span style="font-size:0.75rem; font-weight:700; color:var(--primary); margin-bottom:5px;">22</span>
+                                    <div style="background:linear-gradient(180deg, #0d6b3a, #10b981); width:60%; height:92%; border-radius:6px 6px 0 0; min-height:20px;"></div>
+                                </div>
+                                <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%;">
+                                    <span style="font-size:0.75rem; font-weight:700; color:var(--primary); margin-bottom:5px;">15</span>
+                                    <div style="background:linear-gradient(180deg, #0d6b3a, #10b981); width:60%; height:63%; border-radius:6px 6px 0 0; min-height:20px;"></div>
+                                </div>
+                                <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%;">
+                                    <span style="font-size:0.75rem; font-weight:700; color:#059669; margin-bottom:5px;">24</span>
+                                    <div style="background:linear-gradient(180deg, #059669, #4ade80); width:60%; height:100%; border-radius:6px 6px 0 0; min-height:20px;"></div>
+                                </div>
+                                <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%;">
+                                    <span style="font-size:0.75rem; font-weight:700; color:#d97706; margin-bottom:5px;">4</span>
+                                    <div style="background:linear-gradient(180deg, #d97706, #f59e0b); width:60%; height:17%; border-radius:6px 6px 0 0; min-height:20px;"></div>
+                                </div>
+                            </div>
+                            <div style="display:flex; gap:12px; padding:8px 10px 0;">
+                                <span style="flex:1; text-align:center; font-size:0.7rem; color:var(--gray); font-weight:500;">திங்</span>
+                                <span style="flex:1; text-align:center; font-size:0.7rem; color:var(--gray); font-weight:500;">செவ்</span>
+                                <span style="flex:1; text-align:center; font-size:0.7rem; color:var(--gray); font-weight:500;">புத</span>
+                                <span style="flex:1; text-align:center; font-size:0.7rem; color:var(--gray); font-weight:500;">வியா</span>
+                                <span style="flex:1; text-align:center; font-size:0.7rem; color:var(--gray); font-weight:500;">வெள்</span>
+                                <span style="flex:1; text-align:center; font-size:0.7rem; color:var(--gray); font-weight:500;">சனி</span>
+                                <span style="flex:1; text-align:center; font-size:0.7rem; color:var(--gray); font-weight:500;">ஞாயி</span>
+                            </div>
+                            <div style="text-align:center; margin-top:12px; padding-top:10px; border-top:1px solid #f0f0f0;">
+                                <span style="font-size:0.8rem; color:var(--gray);">📊 இந்த வாரம்: <strong style="color:#10b981;">105 தீர்வு</strong> | சராசரி: <strong>15/நாள்</strong></span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

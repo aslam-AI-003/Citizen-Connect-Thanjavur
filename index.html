@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice to Minister - Papanasam | A.M. Shahjahan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Tamil:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0a1f0f 0%, #0d3d1f 50%, #0a1f0f 100%);
+            color: white;
+            padding: 20px;
+        }
+        .hub {
+            text-align: center;
+            max-width: 800px;
+        }
+        .hub-logo {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        .hub h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+            background: linear-gradient(135deg, #4ade80, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hub h2 {
+            font-size: 1.1rem;
+            font-weight: 400;
+            opacity: 0.7;
+            margin-bottom: 10px;
+            font-family: 'Noto Sans Tamil', sans-serif;
+        }
+        .hub-info {
+            font-size: 0.9rem;
+            opacity: 0.5;
+            margin-bottom: 40px;
+        }
+        .cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+        .card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 40px 30px;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        .card:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border-color: rgba(13, 107, 58, 0.8);
+        }
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        .card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .card p {
+            font-size: 0.85rem;
+            opacity: 0.7;
+            line-height: 1.6;
+        }
+        .card-badge {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 5px 15px;
+            background: rgba(13, 107, 58, 0.3);
+            border: 1px solid rgba(13, 107, 58, 0.6);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #4ade80;
+        }
+        .footer-text {
+            margin-top: 40px;
+            font-size: 0.75rem;
+            opacity: 0.3;
+        }
+        .party-badge {
+            display: inline-block;
+            margin-top: 5px;
+            padding: 3px 12px;
+            background: rgba(13, 107, 58, 0.3);
+            border: 1px solid rgba(13, 107, 58, 0.5);
+            border-radius: 12px;
+            font-size: 0.7rem;
+            color: #4ade80;
+            margin-bottom: 30px;
+        }
+        @media (max-width: 600px) {
+            .cards { grid-template-columns: 1fr; }
+            .hub h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hub">
+        <div class="hub-logo"><img src="assets/logo.svg" alt="Voice to Minister - Papanasam" style="width:80px;height:80px;"></div>
+        <h1>Voice to Minister</h1>
+        <h2>மக்கள் குரல் - பாபநாசம் தொகுதி</h2>
+        <p class="hub-info">A.M. Shahjahan | Minister of Minority Welfare | பாபநாசம் | Indian Union Muslim League (IUML)</p>
+        <span class="party-badge">☪ IUML - Indian Union Muslim League</span>
+        
+        <div class="cards">
+            <a href="demo/index.html" class="card">
+                <div class="card-icon">💻</div>
+                <h3>Working Demo</h3>
+                <p>Grievance Management Platform-ன் interactive demo. Login, Complaint Submit, Track Status, Minister Dashboard எல்லாம் demo செய்யலாம்.</p>
+                <span class="card-badge">→ View Demo</span>
+            </a>
+            <a href="demo/index.html#dashboard" class="card">
+                <div class="card-icon">📊</div>
+                <h3>Minister Dashboard</h3>
+                <p>பாபநாசம் தொகுதியின் புகார்கள் நிலை, Area-wise stats, Trust Score, Heatmap எல்லாம் பாருங்கள்.</p>
+                <span class="card-badge">→ View Dashboard</span>
+            </a>
+        </div>
+        
+        <p class="footer-text">© 2026 Voice to Minister Project | Built for IUML - Papanasam Constituency</p>
+    </div>
+</body>
+</html>
