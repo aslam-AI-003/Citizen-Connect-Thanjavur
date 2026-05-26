@@ -970,6 +970,163 @@
 
     </main>
 
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <div class="login-form">
+                <div class="login-header">
+                    <h3><img src="../assets/logo.svg" style="width:22px;height:22px;vertical-align:middle;"> Voice to Minister</h3>
+                    <p>Mobile OTP Login</p>
+                </div>
+                <div class="login-body">
+                    <div class="form-group">
+                        <label>Mobile Number</label>
+                        <div class="phone-input">
+                            <span class="country-code">+91</span>
+                            <input type="tel" placeholder="Enter mobile number" maxlength="10">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-full" onclick="sendOTP()">OTP அனுப்பு</button>
+                    <div class="otp-section" id="otpSection" style="display:none;">
+                        <div class="form-group">
+                            <label>OTP Enter செய்யுங்கள்</label>
+                            <div class="otp-inputs">
+                                <input type="text" maxlength="1" class="otp-input">
+                                <input type="text" maxlength="1" class="otp-input">
+                                <input type="text" maxlength="1" class="otp-input">
+                                <input type="text" maxlength="1" class="otp-input">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-full" onclick="verifyOTP()">Login</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assignment Modal -->
+    <div class="modal" id="assignModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content" style="max-width: 500px;">
+            <button class="modal-close" onclick="closeAssignModal()">&times;</button>
+            <div class="assign-modal-content">
+                <div class="login-header">
+                    <h3>👤 Volunteer ஒதுக்கு</h3>
+                    <p id="assignComplaintInfo">Complaint IUML/PPN/2026/00101</p>
+                </div>
+                <div class="form-group">
+                    <label>பகுதி (Area)</label>
+                    <input type="text" id="assignArea" readonly style="background: #f3f4f6;">
+                </div>
+                <div class="form-group">
+                    <label>Ward Volunteer/Coordinator தேர்வு செய்யுங்கள் <span class="required">*</span></label>
+                    <select id="volunteerSelect">
+                        <option value="">-- Volunteer தேர்வு செய்யுங்கள் --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Priority Level</label>
+                    <select id="prioritySelect">
+                        <option value="normal">🟢 Normal (48 hrs)</option>
+                        <option value="high">🟡 High (24 hrs)</option>
+                        <option value="urgent">🔴 Urgent (12 hrs)</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary btn-full" onclick="confirmAssignment()">
+                    <i class="fas fa-user-check"></i> Assign & Notify
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Update Modal -->
+    <div class="modal" id="updateModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content" style="max-width: 500px;">
+            <button class="modal-close" onclick="closeUpdateModal()">&times;</button>
+            <div class="login-header">
+                <h3>📢 புதிய Update Post செய்</h3>
+                <p>Minister அறிவிப்பு / நிகழ்வு / நிறைவு Update</p>
+            </div>
+            <div class="form-group">
+                <label>Update வகை <span class="required">*</span></label>
+                <select id="updateTag">
+                    <option value="அறிவிப்பு">📋 அறிவிப்பு (Announcement)</option>
+                    <option value="நிறைவு">✅ நிறைவு (Completed)</option>
+                    <option value="நிகழ்வு">📅 நிகழ்வு (Event)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>தலைப்பு (Title) <span class="required">*</span></label>
+                <input type="text" id="updateTitle" placeholder="உதா: Papanasam சாலை பணி நிறைவு">
+            </div>
+            <div class="form-group">
+                <label>விளக்கம் (Content) <span class="required">*</span></label>
+                <textarea id="updateContent" rows="4" placeholder="Update பற்றிய விரிவான தகவல் எழுதுங்கள்..."></textarea>
+            </div>
+            <button class="btn btn-primary btn-full" onclick="postUpdate()">
+                <i class="fas fa-bullhorn"></i> Post Update
+            </button>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content success-modal">
+            <div class="success-content">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3>✅ புகார் வெற்றிகரமாக பதிவு செய்யப்பட்டது!</h3>
+                <div class="complaint-id-display">
+                    <code id="generatedComplaintId">IUML/PPN/2026/00101</code>
+                </div>
+                <div class="status-pending">⏳ நிலை: நிலுவையில் (Pending)</div>
+                <p class="success-info">உங்கள் புகார் அமைச்சர் அலுவலகத்திற்கு அனுப்பப்பட்டது. விரைவில் அதிகாரிக்கு ஒதுக்கப்படும்.</p>
+                <div class="success-actions">
+                    <button class="btn btn-primary" onclick="trackNewComplaint()">
+                        <i class="fas fa-search"></i> நிலை காண
+                    </button>
+                    <button class="btn btn-outline-back" onclick="closeSuccessModalEnhanced()">
+                        <i class="fas fa-home"></i> முகப்பு
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="demo-footer" style="background:linear-gradient(135deg,#0a1f0f,#0d3d1f);padding:30px 0;color:white;margin-top:40px;">
+        <div class="container">
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:30px;">
+                <div>
+                    <h4 style="margin-bottom:8px;"><img src="../assets/logo.svg" style="width:18px;height:18px;vertical-align:middle;"> Voice to Minister</h4>
+                    <p style="font-size:0.8rem;opacity:0.7;">மக்கள் குரல் - பாபநாசம் தொகுதி</p>
+                    <p style="font-size:0.75rem;opacity:0.5;margin-top:4px;">Indian Union Muslim League (IUML) | CM: C. Joseph Vijay</p>
+                </div>
+                <div>
+                    <h4 style="margin-bottom:8px;">Links</h4>
+                    <a href="#" onclick="navigateTo('home')" style="display:block;color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.8rem;margin-bottom:4px;">முகப்பு</a>
+                    <a href="#" onclick="navigateTo('complaint')" style="display:block;color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.8rem;margin-bottom:4px;">புகார் செய்</a>
+                    <a href="#" onclick="navigateTo('mycomplaints')" style="display:block;color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.8rem;margin-bottom:4px;">நிலை காண</a>
+                    <a href="#" onclick="navigateTo('updates')" style="display:block;color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.8rem;">Updates</a>
+                </div>
+                <div>
+                    <h4 style="margin-bottom:8px;">தொடர்பு</h4>
+                    <p style="font-size:0.8rem;opacity:0.7;"><i class="fas fa-phone"></i> +91 XXXXX XXXXX</p>
+                    <p style="font-size:0.8rem;opacity:0.7;"><i class="fas fa-envelope"></i> minister.papanasam@tn.gov.in</p>
+                    <p style="font-size:0.8rem;opacity:0.7;"><i class="fas fa-map-marker-alt"></i> Papanasam, Thanjavur District</p>
+                </div>
+            </div>
+            <div style="text-align:center;margin-top:20px;padding-top:15px;border-top:1px solid rgba(255,255,255,0.1);font-size:0.7rem;opacity:0.4;">
+                <p>© 2026 Voice to Minister | A.M. Shahjahan - Minister of Minority Welfare, Govt of TN | MLA Papanasam | IUML</p>
+            </div>
+        </div>
+    </footer>
+
     <script src="script.js"></script>
 </body>
 </html>
