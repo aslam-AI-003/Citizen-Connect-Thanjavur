@@ -1,4 +1,4 @@
-// ===== VOICE TO MINISTER - PAPANASAM - FULL SCRIPT (Matching Voice-to-MLA) =====
+// ===== VOICE TO MINISTER - PAPANASAM - FULL SCRIPT =====
 
 // ===== PAGE NAVIGATION =====
 function navigateTo(page) {
