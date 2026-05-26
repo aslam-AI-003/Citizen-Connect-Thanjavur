@@ -1467,10 +1467,19 @@ body {
 
 
 /* ===== RESPONSIVE ===== */
+/* ===== RESPONSIVE - TABLET (769px - 1024px) ===== */
+@media (max-width: 1024px) {
+    .container { padding: 0 15px; }
+    .demo-hero { padding: 40px 0 35px; }
+    .demo-hero-text h1 { font-size: 1.7rem; }
+    .dash-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* ===== RESPONSIVE - MOBILE (max-width: 768px) ===== */
 @media (max-width: 768px) {
+    /* Navbar */
     .nav-links { display: none; }
     .hamburger { display: flex; }
-    
     .nav-links.active {
         display: flex;
         flex-direction: column;
@@ -1479,43 +1488,202 @@ body {
         left: 0;
         width: 100%;
         background: var(--bg-dark);
-        padding: 10px;
+        padding: 15px;
         border-top: 1px solid rgba(255,255,255,0.1);
+        gap: 5px;
+        z-index: 999;
     }
-    
-    .demo-hero-content {
-        grid-template-columns: 1fr;
-    }
-    
-    .demo-hero-stats {
-        grid-template-columns: 1fr 1fr;
-    }
-    
-    .category-grid-new {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .dash-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .trust-card {
-        flex-direction: column;
-        text-align: center;
-    }
-    
-    .mla-banner {
-        flex-direction: column;
-        text-align: center;
-    }
-    
-    .map-container {
-        flex-direction: column;
-    }
-    
-    .track-details {
-        grid-template-columns: 1fr;
-    }
+    .nav-links.active .nav-link { padding: 12px 16px; font-size: 0.9rem; border-radius: 8px; }
+    .logo-text { font-size: 0.95rem; }
+    .demo-badge { font-size: 0.55rem; padding: 1px 5px; }
+
+    /* Hero */
+    .demo-hero { padding: 30px 0 25px; }
+    .demo-hero-content { grid-template-columns: 1fr; gap: 25px; text-align: center; }
+    .demo-hero-text h1 { font-size: 1.5rem; line-height: 1.4; }
+    .demo-hero-text p { font-size: 0.85rem; }
+    .hero-actions { justify-content: center; }
+    .demo-hero-stats { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .hero-stat-card { padding: 12px; gap: 10px; }
+    .hero-stat-card .stat-icon { width: 35px; height: 35px; font-size: 0.9rem; }
+    .stat-num { font-size: 1rem; }
+    .stat-text { font-size: 0.65rem; }
+
+    /* Sections */
+    .recent-section { padding: 25px 0; }
+    .section-title { flex-direction: column; gap: 8px; align-items: flex-start; }
+    .section-title h2 { font-size: 1rem; }
+
+    /* Complaint Cards */
+    .complaint-card { padding: 12px 14px; gap: 10px; flex-wrap: wrap; }
+    .complaint-info h4 { font-size: 0.8rem; }
+    .complaint-info p { font-size: 0.7rem; }
+    .complaint-status { width: 32px; height: 32px; font-size: 0.75rem; }
+    .status-badge { font-size: 0.65rem; padding: 3px 8px; }
+
+    /* Minister Banner */
+    .mla-banner { flex-direction: column; text-align: center; padding: 20px; gap: 15px; }
+    .mla-banner-photo { width: 90px; height: 90px; }
+
+    /* Category Grid */
+    .category-grid-new { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .cat-card-new { padding: 12px 8px; }
+    .cat-card-new .cat-icon { font-size: 1.3rem; }
+    .cat-card-new span { font-size: 0.7rem; }
+
+    /* Wizard / Form */
+    .wizard-progress { gap: 0; margin-bottom: 20px; padding: 0 5px; }
+    .progress-step { font-size: 0.65rem; }
+    .progress-step .step-num { width: 28px; height: 28px; font-size: 0.75rem; }
+    .progress-line { min-width: 20px; }
+    .form-group label { font-size: 0.8rem; }
+    .form-group input, .form-group select, .form-group textarea { font-size: 0.85rem; padding: 10px 12px; }
+    .btn-submit { padding: 12px 20px; font-size: 0.85rem; width: 100%; }
+    .wizard-actions { flex-direction: column; gap: 8px; }
+    .wizard-actions .btn { width: 100%; justify-content: center; }
+
+    /* Track */
+    .track-section { padding: 30px 0; }
+    .track-header { flex-direction: column; gap: 10px; align-items: flex-start; }
+    .track-header h3 { font-size: 0.95rem; }
+    .track-details { grid-template-columns: 1fr; gap: 8px; }
+    .track-detail { font-size: 0.8rem; }
+    .track-card { padding: 16px; }
+
+    /* Timeline */
+    .track-timeline { padding-left: 15px; }
+    .tl-item { padding-left: 20px; }
+    .tl-content h4 { font-size: 0.8rem; }
+    .tl-content p { font-size: 0.7rem; }
+
+    /* Dashboard */
+    .dash-grid { grid-template-columns: 1fr; gap: 15px; }
+    .dash-card { padding: 16px; }
+
+    /* Updates */
+    .updates-grid { gap: 12px; }
+    .update-card { padding: 14px; }
+
+    /* Trust Card */
+    .trust-card { flex-direction: column; text-align: center; padding: 20px; }
+
+    /* Map */
+    .map-container { flex-direction: column; }
+
+    /* Buttons */
+    .btn { padding: 9px 16px; font-size: 0.8rem; }
+    .btn-lg { padding: 12px 22px; font-size: 0.85rem; }
+
+    /* Search bar */
+    .track-search { flex-direction: column; gap: 10px; }
+    .track-search input { width: 100%; }
+    .track-search .btn { width: 100%; justify-content: center; }
+
+    /* Citizen Dashboard */
+    .citizen-stats { flex-direction: column; gap: 10px; }
+
+    /* File upload */
+    .upload-area { padding: 15px; }
+
+    /* Footer */
+    .footer-grid { grid-template-columns: 1fr; gap: 20px; }
+}
+
+/* ===== RESPONSIVE - SMALL MOBILE (max-width: 480px) ===== */
+@media (max-width: 480px) {
+    .container { padding: 0 12px; }
+
+    /* Navbar */
+    .navbar { padding: 10px 0; }
+    .nav-brand { gap: 6px; }
+    .logo-icon img { width: 24px; height: 24px; }
+    .logo-text { font-size: 0.85rem; }
+    .btn-login { padding: 6px 10px; font-size: 0.7rem; }
+    .btn-login span { display: none; }
+
+    /* Hero */
+    .demo-hero { padding: 20px 0; }
+    .demo-hero-text h1 { font-size: 1.25rem; }
+    .demo-hero-text p { font-size: 0.8rem; margin-bottom: 15px; }
+    .hero-actions { flex-direction: column; align-items: stretch; }
+    .hero-actions .btn { width: 100%; justify-content: center; padding: 12px; }
+    .demo-hero-stats { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .hero-stat-card { padding: 10px; gap: 8px; }
+    .hero-stat-card .stat-icon { width: 30px; height: 30px; font-size: 0.8rem; }
+    .stat-num { font-size: 0.9rem; }
+
+    /* Category */
+    .category-grid-new { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .cat-card-new { padding: 10px 6px; min-height: 70px; }
+    .cat-card-new .cat-icon { font-size: 1.1rem; }
+    .cat-card-new span { font-size: 0.65rem; }
+
+    /* Wizard */
+    .wizard-progress { overflow-x: auto; padding-bottom: 8px; }
+    .progress-step .step-num { width: 24px; height: 24px; font-size: 0.7rem; }
+    .progress-step .step-label { font-size: 0.55rem; display: none; }
+    .progress-line { min-width: 15px; }
+
+    /* Form */
+    .form-group input, .form-group select, .form-group textarea { font-size: 0.8rem; padding: 9px 10px; }
+    .form-group label { font-size: 0.75rem; }
+
+    /* Complaint Card */
+    .complaint-card { padding: 10px 12px; gap: 8px; }
+    .complaint-status { width: 28px; height: 28px; font-size: 0.7rem; border-radius: 8px; }
+    .complaint-info h4 { font-size: 0.75rem; }
+    .complaint-info p { font-size: 0.65rem; }
+    .status-badge { font-size: 0.6rem; padding: 2px 6px; }
+
+    /* Track */
+    .track-card { padding: 12px; border-radius: 10px; }
+    .track-header h3 { font-size: 0.85rem; }
+    .track-detail .label { font-size: 0.7rem; }
+    .track-detail .value { font-size: 0.75rem; }
+
+    /* Timeline */
+    .tl-content h4 { font-size: 0.75rem; }
+    .tl-content p { font-size: 0.65rem; }
+
+    /* Modals */
+    .modal-content { padding: 20px 16px; margin: 10px; border-radius: 12px; }
+    .login-header h3 { font-size: 1rem; }
+    .otp-input { width: 38px; height: 42px; font-size: 1.1rem; }
+    .otp-inputs { gap: 6px; }
+
+    /* Success Modal */
+    .success-modal { max-width: 320px; }
+    .success-content h3 { font-size: 1rem; }
+    .success-actions { flex-direction: column; }
+    .success-actions .btn { width: 100%; }
+
+    /* Minister Banner */
+    .mla-banner { padding: 16px; }
+    .mla-banner-photo { width: 70px; height: 70px; }
+
+    /* Dashboard */
+    .dash-card { padding: 14px; }
+    .dash-card h3 { font-size: 0.85rem; }
+
+    /* Voice button */
+    .voice-btn { width: 40px; height: 40px; font-size: 0.9rem; }
+
+    /* Upload */
+    .upload-area { padding: 12px; }
+    .upload-area p { font-size: 0.7rem; }
+}
+
+/* ===== RESPONSIVE - VERY SMALL (max-width: 360px) ===== */
+@media (max-width: 360px) {
+    .demo-hero-text h1 { font-size: 1.1rem; }
+    .hero-stat-card { padding: 8px; }
+    .stat-num { font-size: 0.8rem; }
+    .category-grid-new { grid-template-columns: 1fr 1fr; gap: 6px; }
+    .cat-card-new { padding: 8px 4px; }
+    .wizard-progress { flex-wrap: nowrap; overflow-x: auto; }
+    .form-group input, .form-group select, .form-group textarea { font-size: 0.78rem; }
+    .complaint-card { flex-wrap: wrap; }
+    .btn { padding: 8px 14px; font-size: 0.75rem; }
 }
 
 /* ===== MODALS ===== */
