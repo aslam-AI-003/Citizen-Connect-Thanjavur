@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minister Admin Dashboard | Staff Portal - A.M. Shahjahan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        :root { --sidebar-w: 260px; --admin-primary: #0d6b3a; --admin-dark: #094d2a; }
+        body { background: #f5f5f5; margin: 0; }
+        .admin-layout { display: flex; min-height: 100vh; }
+        /* Sidebar */
+        .admin-sidebar { width: var(--sidebar-w); background: linear-gradient(180deg, #0a1f0f 0%, #0d3d1f 100%); color: white; position: fixed; height: 100vh; overflow-y: auto; z-index: 100; transition: transform 0.3s; }
+        .sidebar-brand { padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: center; }
+        .sidebar-brand h3 { font-size: 0.95rem; margin: 8px 0 4px; }
+        .sidebar-brand p { font-size: 0.7rem; color: rgba(255,255,255,0.6); }
+        .sidebar-brand img { width: 50px; height: 50px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.3); }
+        .sidebar-nav { padding: 15px 0; }
+        .sidebar-nav a { display: flex; align-items: center; gap: 12px; padding: 12px 20px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.85rem; transition: all 0.2s; border-left: 3px solid transparent; }
+        .sidebar-nav a:hover, .sidebar-nav a.active { background: rgba(255,255,255,0.08); color: white; border-left-color: #10b981; }
+        .sidebar-nav a i { width: 20px; text-align: center; }
+        .sidebar-section { padding: 10px 20px 5px; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.4); }
+        /* Main Content */
+        .admin-main { margin-left: var(--sidebar-w); flex: 1; padding: 0; }
+        .admin-topbar { background: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 50; }
+        .admin-topbar h2 { font-size: 1.1rem; display: flex; align-items: center; gap: 10px; }
+        .admin-topbar .topbar-right { display: flex; align-items: center; gap: 15px; }
+        .notif-bell { position: relative; cursor: pointer; font-size: 1.2rem; color: #666; }
+        .notif-bell .badge { position: absolute; top: -5px; right: -5px; width: 16px; height: 16px; background: #0d6b3a; color: white; border-radius: 50%; font-size: 0.6rem; display: flex; align-items: center; justify-content: center; }
+        .admin-content { padding: 25px 30px; }
+        /* Stat Cards */
+        .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 18px; margin-bottom: 25px; }
+        .stat-card { background: white; border-radius: 12px; padding: 20px; display: flex; align-items: center; gap: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); transition: transform 0.2s; }
+        .stat-card:hover { transform: translateY(-2px); }
+        .stat-card .stat-icon { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
+        .stat-card .stat-icon.total { background: #d1fae5; color: #0d6b3a; }
+        .stat-card .stat-icon.pending { background: #fef3c7; color: #d97706; }
+        .stat-card .stat-icon.resolved { background: #d1fae5; color: #059669; }
+        .stat-card .stat-icon.today { background: #dbeafe; color: #2563eb; }
+        .stat-card .stat-icon.volunteer { background: #fce7f3; color: #db2777; }
+        .stat-card .stat-icon.escalated { background: #fee2e2; color: #dc2626; }
+        .stat-card .stat-info h4 { font-size: 1.5rem; margin: 0; }
+        .stat-card .stat-info p { font-size: 0.75rem; color: #666; margin: 3px 0 0; }
+        /* Grid sections */
+        .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px; }
+        .admin-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); }
+        .admin-card h3 { font-size: 0.95rem; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        .admin-card.full-width { grid-column: 1 / -1; }
+        /* Table */
+        .admin-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+        .admin-table th { background: #f0fdf4; padding: 10px 12px; text-align: left; font-weight: 600; color: #0d6b3a; border-bottom: 2px solid #d1fae5; }
+        .admin-table td { padding: 10px 12px; border-bottom: 1px solid #f3f4f6; }
+        .admin-table tr:hover { background: #f9fafb; }
+        .admin-table .badge { padding: 3px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 600; }
+        .badge-new { background: #fee2e2; color: #dc2626; }
+        .badge-assigned { background: #dbeafe; color: #2563eb; }
+        .badge-progress { background: #fef3c7; color: #d97706; }
+        .badge-resolved { background: #d1fae5; color: #059669; }
+        /* Chart bars */
+        .chart-item { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+        .chart-item .label { font-size: 0.75rem; width: 100px; color: #374151; }
+        .chart-item .bar { flex: 1; height: 24px; background: #f3f4f6; border-radius: 6px; overflow: hidden; }
+        .chart-item .bar-fill { height: 100%; border-radius: 6px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; font-size: 0.7rem; color: white; font-weight: 600; }
+        /* Volunteer cards */
+        .vol-card { display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid #f3f4f6; border-radius: 10px; margin-bottom: 10px; }
+        .vol-card:hover { border-color: #10b981; background: #f0fdf4; }
+        .vol-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #0d6b3a, #094d2a); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 0.9rem; }
+        .vol-info { flex: 1; }
+        .vol-info h4 { font-size: 0.85rem; margin: 0 0 3px; }
+        .vol-info p { font-size: 0.7rem; color: #666; margin: 0; }
+        .vol-stats { text-align: right; }
+        .vol-stats .num { font-size: 1.1rem; font-weight: 700; color: #0d6b3a; }
+        .vol-stats .lbl { font-size: 0.65rem; color: #666; }
+        /* Login overlay */
+        .admin-login-overlay { position: fixed; inset: 0; background: linear-gradient(135deg, #0a1f0f, #0d3d1f); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+        .admin-login-box { background: white; border-radius: 16px; padding: 40px; max-width: 400px; width: 90%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+        .admin-login-box .shield { width: 70px; height: 70px; background: linear-gradient(135deg, #0d6b3a, #094d2a); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+        .admin-login-box .shield i { color: white; font-size: 2rem; }
+        .admin-login-box h2 { font-size: 1.2rem; margin-bottom: 5px; }
+        .admin-login-box p { font-size: 0.8rem; color: #666; margin-bottom: 25px; }
+        .admin-login-box input { width: 100%; padding: 12px 16px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 0.9rem; margin-bottom: 12px; outline: none; box-sizing: border-box; }
+        .admin-login-box input:focus { border-color: #0d6b3a; }
+        .admin-login-box .btn-login { width: 100%; padding: 14px; background: linear-gradient(135deg, #0d6b3a, #094d2a); color: white; border: none; border-radius: 10px; font-size: 0.9rem; font-weight: 600; cursor: pointer; }
+        .admin-login-box .btn-login:hover { opacity: 0.9; }
+        .admin-login-box .otp-row { display: flex; gap: 10px; justify-content: center; margin-bottom: 15px; }
+        .admin-login-box .otp-row input { width: 50px; height: 55px; text-align: center; font-size: 1.4rem; font-weight: 700; padding: 0; }
+        .hidden { display: none !important; }
+        /* Responsive */
+        @media (max-width: 768px) {
+            .admin-sidebar { transform: translateX(-100%); }
+            .admin-main { margin-left: 0; }
+            .stats-row { grid-template-columns: 1fr 1fr; }
+            .admin-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- LOGIN OVERLAY -->
+    <div class="admin-login-overlay" id="loginOverlay">
+        <div class="admin-login-box">
+            <div class="shield"><i class="fas fa-shield-alt"></i></div>
+            <h2>🔒 Staff Portal Login</h2>
+            <p>Minister Office Staff Only - A.M. Shahjahan | Papanasam</p>
+            
+            <!-- Step 1: Mobile -->
+            <div id="loginStep1">
+                <input type="tel" id="staffMobile" placeholder="Staff Mobile Number" maxlength="10">
+                <button class="btn-login" onclick="sendStaffOTP()">
+                    <i class="fas fa-paper-plane"></i> Send OTP
+                </button>
+            </div>
+            
+            <!-- Step 2: OTP -->
+            <div id="loginStep2" class="hidden">
+                <p style="font-size:0.85rem; margin-bottom:15px;">OTP sent to <strong id="mobileDisplay">+91 XXXXX</strong></p>
+                <div class="otp-row">
+                    <input type="text" maxlength="1" class="staff-otp">
+                    <input type="text" maxlength="1" class="staff-otp">
+                    <input type="text" maxlength="1" class="staff-otp">
+                    <input type="text" maxlength="1" class="staff-otp">
+                </div>
+                <button class="btn-login" onclick="verifyStaffOTP()">
+                    <i class="fas fa-lock-open"></i> Verify & Login
+                </button>
+                <p style="font-size:0.7rem; color:#666; margin-top:10px;">Demo OTP: <strong>1234</strong></p>
+            </div>
+            
+            <p style="font-size:0.65rem; color:#999; margin-top:20px;">🔐 Secured | Only registered staff can login</p>
+        </div>
+    </div>
+
+    <!-- ADMIN LAYOUT -->
+    <div class="admin-layout" id="adminLayout" style="display:none;">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-brand">
+                <img src="../assets/logo.svg" alt="Logo">
+                <h3>Voice to Minister</h3>
+                <p>Admin Dashboard - Papanasam</p>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="sidebar-section">Main</div>
+                <a href="#" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="#"><i class="fas fa-clipboard-list"></i> All Complaints</a>
+                <a href="#"><i class="fas fa-user-plus"></i> Assign</a>
+                <div class="sidebar-section">Management</div>
+                <a href="#"><i class="fas fa-users"></i> Volunteers</a>
+                <a href="#"><i class="fas fa-bullhorn"></i> Post Update</a>
+                <a href="#"><i class="fas fa-chart-bar"></i> Analytics</a>
+                <div class="sidebar-section">Settings</div>
+                <a href="#"><i class="fas fa-cog"></i> Settings</a>
+                <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Demo</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="admin-main">
+            <!-- Top Bar -->
+            <div class="admin-topbar">
+                <h2><i class="fas fa-tachometer-alt" style="color:#0d6b3a;"></i> Minister Admin Dashboard</h2>
+                <div class="topbar-right">
+                    <div class="notif-bell">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                    <span style="font-size:0.8rem; color:#666;">👤 Staff Admin</span>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="admin-content">
+                <!-- Stats Row -->
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <div class="stat-icon total"><i class="fas fa-clipboard-list"></i></div>
+                        <div class="stat-info"><h4>892</h4><p>மொத்த புகார்கள்</p></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon pending"><i class="fas fa-clock"></i></div>
+                        <div class="stat-info"><h4>98</h4><p>நிலுவையில்</p></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon resolved"><i class="fas fa-check-circle"></i></div>
+                        <div class="stat-info"><h4>756</h4><p>தீர்வு</p></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon today"><i class="fas fa-calendar-day"></i></div>
+                        <div class="stat-info"><h4>8</h4><p>இன்று புதிய</p></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon volunteer"><i class="fas fa-users"></i></div>
+                        <div class="stat-info"><h4>32</h4><p>Active Volunteers</p></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon escalated"><i class="fas fa-exclamation-triangle"></i></div>
+                        <div class="stat-info"><h4>3</h4><p>Escalated</p></div>
+                    </div>
+                </div>
+
+                <!-- Grid: Charts + Volunteers -->
+                <div class="admin-grid">
+                    <!-- Area-wise -->
+                    <div class="admin-card">
+                        <h3><i class="fas fa-chart-bar" style="color:#0d6b3a;"></i> Area-wise புகார்கள்</h3>
+                        <div class="chart-item"><span class="label">Papanasam Town</span><div class="bar"><div class="bar-fill" style="width:85%;background:linear-gradient(90deg,#0d6b3a,#10b981);">198</div></div></div>
+                        <div class="chart-item"><span class="label">Kabistalam</span><div class="bar"><div class="bar-fill" style="width:65%;background:linear-gradient(90deg,#0d6b3a,#10b981);">145</div></div></div>
+                        <div class="chart-item"><span class="label">Thiruvaigavur</span><div class="bar"><div class="bar-fill" style="width:58%;background:linear-gradient(90deg,#0d6b3a,#10b981);">132</div></div></div>
+                        <div class="chart-item"><span class="label">Adhanur</span><div class="bar"><div class="bar-fill" style="width:40%;background:linear-gradient(90deg,#0d6b3a,#10b981);">89</div></div></div>
+                        <div class="chart-item"><span class="label">Valuthoor</span><div class="bar"><div class="bar-fill" style="width:35%;background:linear-gradient(90deg,#0d6b3a,#10b981);">76</div></div></div>
+                        <div class="chart-item"><span class="label">Thurumbur</span><div class="bar"><div class="bar-fill" style="width:28%;background:linear-gradient(90deg,#0d6b3a,#10b981);">62</div></div></div>
+                    </div>
+
+                    <!-- Volunteers -->
+                    <div class="admin-card">
+                        <h3><i class="fas fa-users" style="color:#0d6b3a;"></i> Active Ward Volunteers</h3>
+                        <div class="vol-card">
+                            <div class="vol-avatar">AN</div>
+                            <div class="vol-info"><h4>Mr. Anwar</h4><p>Coordinator | Ward 2 - Papanasam Town</p></div>
+                            <div class="vol-stats"><div class="num">12</div><div class="lbl">Active</div></div>
+                        </div>
+                        <div class="vol-card">
+                            <div class="vol-avatar">IB</div>
+                            <div class="vol-info"><h4>Mr. Ibrahim</h4><p>Coordinator | Kabistalam</p></div>
+                            <div class="vol-stats"><div class="num">8</div><div class="lbl">Active</div></div>
+                        </div>
+                        <div class="vol-card">
+                            <div class="vol-avatar">MG</div>
+                            <div class="vol-info"><h4>Mr. Murugan</h4><p>Coordinator | Thiruvaigavur</p></div>
+                            <div class="vol-stats"><div class="num">6</div><div class="lbl">Active</div></div>
+                        </div>
+                        <div class="vol-card">
+                            <div class="vol-avatar">SV</div>
+                            <div class="vol-info"><h4>Mr. Selvam</h4><p>Coordinator | Adhanur</p></div>
+                            <div class="vol-stats"><div class="num">4</div><div class="lbl">Active</div></div>
+                        </div>
+                        <div class="vol-card">
+                            <div class="vol-avatar">KV</div>
+                            <div class="vol-info"><h4>Mrs. Kavitha</h4><p>Volunteer | Valuthoor</p></div>
+                            <div class="vol-stats"><div class="num">3</div><div class="lbl">Active</div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Complaints Table -->
+                <div class="admin-card full-width">
+                    <h3><i class="fas fa-list" style="color:#0d6b3a;"></i> Recent Complaints - Action Required</h3>
+                    <div style="overflow-x:auto;">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Citizen</th>
+                                    <th>Mobile</th>
+                                    <th>புகார்</th>
+                                    <th>Area</th>
+                                    <th>Category</th>
+                                    <th>Status</th>
+                                    <th>Assigned</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>IUML/PPN/2026/00101</code></td>
+                                    <td>ராஜா</td>
+                                    <td>98765xxxxx</td>
+                                    <td>சாலையில் பள்ளம் - Papanasam Main Road</td>
+                                    <td>Papanasam Town</td>
+                                    <td><span class="badge badge-progress">சாலைகள்</span></td>
+                                    <td><span class="badge badge-progress">பணியில்</span></td>
+                                    <td>Highway Dept - Mr. Karthik</td>
+                                    <td><button class="btn-action" style="background:#d1fae5;border:1px solid #10b981;color:#0d6b3a;width:28px;height:28px;border-radius:6px;cursor:pointer;"><i class="fas fa-eye"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td><code>IUML/PPN/2026/00102</code></td>
+                                    <td>முருகன்</td>
+                                    <td>98765xxxxx</td>
+                                    <td>Street Light வேலை செய்யல - Kabistalam</td>
+                                    <td>Kabistalam</td>
+                                    <td><span class="badge badge-assigned">மின்சாரம்</span></td>
+                                    <td><span class="badge badge-assigned">ஒதுக்கப்பட்டது</span></td>
+                                    <td>EB Team - Mr. Rajan</td>
+                                    <td><button class="btn-action" style="background:#d1fae5;border:1px solid #10b981;color:#0d6b3a;width:28px;height:28px;border-radius:6px;cursor:pointer;"><i class="fas fa-eye"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td><code>IUML/PPN/2026/00099</code></td>
+                                    <td>கமலா</td>
+                                    <td>98765xxxxx</td>
+                                    <td>குடிநீர் வரவில்லை - Adhanur</td>
+                                    <td>Adhanur</td>
+                                    <td><span class="badge badge-new">குடிநீர்</span></td>
+                                    <td><span class="badge badge-new">புதியது</span></td>
+                                    <td>-</td>
+                                    <td><button class="btn-action" style="background:#fef3c7;border:1px solid #f59e0b;color:#d97706;width:28px;height:28px;border-radius:6px;cursor:pointer;"><i class="fas fa-user-plus"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td><code>IUML/PPN/2026/00100</code></td>
+                                    <td>செல்வம்</td>
+                                    <td>98765xxxxx</td>
+                                    <td>Drainage overflow - Thiruvaigavur</td>
+                                    <td>Thiruvaigavur</td>
+                                    <td><span class="badge badge-resolved">வடிகால்</span></td>
+                                    <td><span class="badge badge-resolved">தீர்வு ✓</span></td>
+                                    <td>Corporation Team</td>
+                                    <td><button class="btn-action" style="background:#d1fae5;border:1px solid #10b981;color:#0d6b3a;width:28px;height:28px;border-radius:6px;cursor:pointer;"><i class="fas fa-eye"></i></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== ADMIN LOGIN =====
+        function sendStaffOTP() {
+            const mobile = document.getElementById('staffMobile').value;
+            if (!mobile || mobile.length < 10) { alert('சரியான mobile number உள்ளிடுங்கள்!'); return; }
+            document.getElementById('loginStep1').classList.add('hidden');
+            document.getElementById('loginStep2').classList.remove('hidden');
+            document.getElementById('mobileDisplay').textContent = '+91 ' + mobile.substring(0,5) + 'xxxxx';
+            // Auto-focus first OTP
+            setTimeout(() => {
+                const firstOtp = document.querySelector('.staff-otp');
+                if (firstOtp) firstOtp.focus();
+                document.querySelectorAll('.staff-otp').forEach((inp, idx, arr) => {
+                    inp.addEventListener('input', (e) => { if (e.target.value.length === 1 && idx < arr.length - 1) arr[idx + 1].focus(); });
+                    inp.addEventListener('keydown', (e) => { if (e.key === 'Backspace' && !e.target.value && idx > 0) arr[idx - 1].focus(); });
+                });
+            }, 200);
+        }
+
+        function verifyStaffOTP() {
+            const inputs = document.querySelectorAll('.staff-otp');
+            const otp = Array.from(inputs).map(i => i.value).join('');
+            if (otp === '1234') {
+                document.getElementById('loginOverlay').style.display = 'none';
+                document.getElementById('adminLayout').style.display = 'flex';
+            } else {
+                alert('❌ Invalid OTP! Demo OTP: 1234');
+                inputs.forEach(i => { i.value = ''; i.style.borderColor = '#ef4444'; });
+                inputs[0].focus();
+            }
+        }
+
+        // Allow Enter key on mobile input
+        document.getElementById('staffMobile').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') sendStaffOTP();
+        });
+    </script>
+</body>
+</html>
