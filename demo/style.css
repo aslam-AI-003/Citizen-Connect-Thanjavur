@@ -1061,12 +1061,26 @@ body {
 }
 
 .admin-badge {
-    background: #fef3c7;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
     color: #d97706;
-    padding: 4px 10px;
-    border-radius: 6px;
-    font-size: 0.7rem;
-    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid #fbbf24;
+    text-decoration: none;
+}
+
+.admin-badge:hover {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: #92400e;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
 }
 
 /* Trust Score */

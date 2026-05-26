@@ -216,9 +216,9 @@ document.head.appendChild(notifStyle);
 
 // ===== COMPLAINTS DATABASE =====
 const categoryNames = { 'roads': 'சாலைகள்', 'drainage': 'வடிகால்', 'water': 'குடிநீர்', 'electricity': 'மின்சாரம்', 'garbage': 'கழிவு', 'traffic': 'போக்குவரத்து', 'streetlight': 'தெரு விளக்கு', 'scheme': 'அரசு திட்டம்' };
-const areaNames = { 'ward-1': 'Ward 1 - Pasupathikoil', 'ward-2': 'Ward 2 - MGR Nagar', 'ward-3': 'Ward 3 - Chekkadi', 'ward-4': 'Ward 4 - Mission Street', 'ward-5': 'Ward 5 - Bazaar', 'ward-8': 'Ward 8 - Bus Stand', 'adhanur': 'Adhanur', 'kabistalam': 'Kabistalam', 'thiruvaigavur': 'Thiruvaigavur', 'valuthoor': 'Valuthoor', 'thurumbur': 'Thurumbur', 'soolamangalam': 'Soolamangalam', 'rajagiri': 'Rajagiri', 'manalur': 'Manalur' };
+const areaNames = { 'ward-1': 'Ward 1 - Pasupathikoil', 'ward-2': 'Ward 2 - MGR Nagar', 'ward-3': 'Ward 3 - Chekkadi', 'ward-4': 'Ward 4 - Mission Street', 'ward-5': 'Ward 5 - Bazaar', 'ward-6': 'Ward 6 - North Street', 'ward-7': 'Ward 7 - South Street', 'ward-8': 'Ward 8 - Bus Stand', 'ward-9': 'Ward 9 - Hospital Road', 'ward-10': 'Ward 10 - New Colony', 'ward-11': 'Ward 11 - East Extension', 'ward-12': 'Ward 12 - West Colony', 'ward-13': 'Ward 13 - Railway Area', 'ward-14': 'Ward 14 - River Side', 'ward-15': 'Ward 15 - Industrial Area', 'adhanur': 'Adhanur', 'alavandipuram': 'Alavandipuram', 'chakkarapalli': 'Chakkarapalli', 'eachankudi': 'Eachankudi', 'ganapathi-agraharam': 'Ganapathi Agraharam', 'gopurajapuram': 'Gopurajapuram', 'govindanattucheri': 'Govindanattucheri', 'illuppakkorai': 'Illuppakkorai', 'kabistalam': 'Kabistalam', 'konthagai': 'Konthagai', 'koonancheri': 'Koonancheri', 'manalur': 'Manalur', 'melakabisthalam': 'Melakabisthalam', 'olaipadi': 'Olaipadi', 'pandaravadai': 'Pandaravadai', 'pasupathikoil': 'Pasupathikoil', 'perumalkoil': 'Perumalkoil', 'rajagiri': 'Rajagiri', 'ramanujapuram': 'Ramanujapuram', 'ragunathapuram': 'Ragunathapuram', 'sarabhojirajapuram': 'Sarabhojirajapuram', 'sarukkai': 'Sarukkai', 'sathiyamangalam': 'Sathiyamangalam', 'someswarapuram': 'Someswarapuram', 'soolamangalam': 'Soolamangalam', 'thirumandangudi': 'Thirumandangudi', 'thiruvaigavur': 'Thiruvaigavur', 'thiyagasamudram': 'Thiyagasamudram', 'thurumbur': 'Thurumbur', 'ullikkadai': 'Ullikkadai', 'umayalpuram': 'Umayalpuram', 'umbalapadi': 'Umbalapadi', 'valuthoor': 'Valuthoor', 'veeramangudi': 'Veeramangudi' };
 
-const complaintsDB = {
+let complaintsDB = {
     'IUML-2026-00101': { id: 'IUML-2026-00101', govId: 'IUML/PPN/2026/00101', title: 'சாலையில் பள்ளம் - Papanasam Main Road', category: 'சாலைகள்', area: 'Papanasam Town', assigned: 'Highway Department - Mr. Karthik', date: 'May 20, 2026', status: 'பணியில்', statusClass: 'badge-progress', citizenName: 'ராஜா', mobileNumber: '9876543210', timeline: [{ text: 'புகார் பதிவு', time: 'May 20, 2026 - 10:30 AM', state: 'completed' }, { text: 'ஆய்வு', time: 'May 20, 2026 - 11:15 AM', state: 'completed' }, { text: 'Highway Dept ஒதுக்கப்பட்டது', time: 'May 20, 2026 - 02:00 PM', state: 'completed' }, { text: 'பணி தொடங்கப்பட்டது', time: 'May 21, 2026 - 09:00 AM', state: 'active' }, { text: 'தீர்வு & உறுதிப்படுத்தல்', time: 'நிலுவையில்...', state: '' }] },
     'IUML-2026-00102': { id: 'IUML-2026-00102', govId: 'IUML/PPN/2026/00102', title: 'Street Light வேலை செய்யல - Kabistalam 2nd Street', category: 'மின்சாரம்', area: 'Kabistalam', assigned: 'EB Team - Mr. Rajan', date: 'May 21, 2026', status: 'ஒதுக்கப்பட்டது', statusClass: 'badge-assigned', citizenName: 'முருகன்', mobileNumber: '9876543211', timeline: [{ text: 'புகார் பதிவு', time: 'May 21, 2026 - 08:45 AM', state: 'completed' }, { text: 'EB Team ஒதுக்கப்பட்டது', time: 'May 21, 2026 - 11:30 AM', state: 'active' }, { text: 'பணி தொடங்கப்படும்', time: 'நிலுவையில்...', state: '' }, { text: 'தீர்வு', time: 'நிலுவையில்...', state: '' }] },
     'IUML-2026-00100': { id: 'IUML-2026-00100', govId: 'IUML/PPN/2026/00100', title: 'Drainage overflow - Thiruvaigavur Bus Stand', category: 'வடிகால்', area: 'Thiruvaigavur', assigned: 'Corporation Team', date: 'May 19, 2026', status: 'தீர்வு ✓', statusClass: 'badge-resolved', citizenName: 'செல்வம்', mobileNumber: '9876543210', timeline: [{ text: 'புகார் பதிவு', time: 'May 19, 2026', state: 'completed' }, { text: 'Corporation Team ஒதுக்கப்பட்டது', time: 'May 19, 2026', state: 'completed' }, { text: 'பணி தொடங்கப்பட்டது', time: 'May 20, 2026', state: 'completed' }, { text: 'தீர்வு ✓', time: 'May 21, 2026', state: 'completed' }] },
@@ -231,7 +231,7 @@ let lastComplaintId = 'IUML-2026-00102';
 let complaintCounter = 103;
 
 if (complaintForm) {
-    complaintForm.addEventListener('submit', (e) => {
+    complaintForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const selectedCat = document.querySelector('.cat-card-new.selected');
         if (!selectedCat) { showNotification('புகார் வகையை தேர்வு செய்யுங்கள்!', 'error'); return; }
@@ -247,16 +247,22 @@ if (complaintForm) {
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> சமர்ப்பிக்கிறது...';
         submitBtn.disabled = true;
 
-        setTimeout(() => {
-            const paddedNum = String(complaintCounter).padStart(5, '0');
+        try {
+            // Get next complaint number from Firebase
+            let nextNum = complaintCounter;
+            if (window.VoiceToMinister_DB) {
+                nextNum = await VoiceToMinister_DB.getNextComplaintNumber();
+            }
+            
+            const paddedNum = String(nextNum).padStart(5, '0');
             const govStyleId = `IUML/PPN/2026/${paddedNum}`;
             lastComplaintId = `IUML-2026-${paddedNum}`;
-            complaintCounter++;
+            complaintCounter = nextNum + 1;
             const now = new Date();
             const dateStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
             const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
 
-            complaintsDB[lastComplaintId] = {
+            const newComplaint = {
                 id: lastComplaintId, govId: govStyleId,
                 title: title + (areaNames[area] ? ' - ' + areaNames[area] : ''),
                 description: description || '', category: categoryNames[categoryValue] || categoryValue,
@@ -273,6 +279,15 @@ if (complaintForm) {
                 ]
             };
 
+            // Save to local DB
+            complaintsDB[lastComplaintId] = newComplaint;
+
+            // Save to Firebase
+            if (window.VoiceToMinister_DB) {
+                await VoiceToMinister_DB.saveComplaint(newComplaint);
+                console.log('✅ Complaint saved to Firebase:', lastComplaintId);
+            }
+
             const generatedIdEl = document.getElementById('generatedComplaintId');
             if (generatedIdEl) generatedIdEl.textContent = govStyleId;
             if (loggedInUser && loggedInUser.name === 'User' && citizenName) {
@@ -286,7 +301,12 @@ if (complaintForm) {
             complaintForm.reset();
             document.querySelectorAll('.cat-card-new').forEach(c => c.classList.remove('selected'));
             currentStep = 1; updateWizardUI();
-        }, 2000);
+        } catch (error) {
+            console.error('Error submitting complaint:', error);
+            showNotification('புகார் சமர்ப்பிப்பதில் பிழை!', 'error');
+            submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> புகார் சமர்ப்பி';
+            submitBtn.disabled = false;
+        }
     });
 }
 
@@ -471,9 +491,51 @@ if (window.location.hash === '#dashboard') { navigateTo('dashboard'); }
 // ===== KEYBOARD SHORTCUTS =====
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { document.querySelectorAll('.modal').forEach(m => m.classList.remove('active')); if (isRecording) stopVoiceInput(); } });
 
+// ===== FIREBASE INTEGRATION - LOAD & SYNC =====
+async function initFirebaseData() {
+    if (!window.VoiceToMinister_DB) {
+        console.warn('⚠️ Firebase not available, using local data only');
+        return;
+    }
+    
+    try {
+        // Initialize default data if empty
+        await VoiceToMinister_DB.initializeDefaultComplaints();
+        
+        // Load all complaints from Firebase into local DB
+        const firebaseComplaints = await VoiceToMinister_DB.getAllComplaints();
+        if (Object.keys(firebaseComplaints).length > 0) {
+            // Merge Firebase data with local (Firebase takes priority)
+            complaintsDB = { ...complaintsDB, ...firebaseComplaints };
+            console.log(`✅ Loaded ${Object.keys(firebaseComplaints).length} complaints from Firebase`);
+            
+            // Update complaint counter based on Firebase data
+            let maxNum = 102;
+            Object.keys(complaintsDB).forEach(id => {
+                const num = parseInt(id.split('-').pop());
+                if (!isNaN(num) && num > maxNum) maxNum = num;
+            });
+            complaintCounter = maxNum + 1;
+        }
+        
+        // Set up real-time listener for live updates
+        VoiceToMinister_DB.onComplaintsChange((updatedComplaints) => {
+            complaintsDB = { ...complaintsDB, ...updatedComplaints };
+            console.log('🔄 Real-time update received:', Object.keys(updatedComplaints).length, 'complaints');
+        });
+        
+        console.log('🔥 Firebase sync active - complaints will persist!');
+    } catch (error) {
+        console.error('❌ Firebase initialization error:', error);
+    }
+}
+
 // ===== PAGE LOAD =====
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.hero-stat-card').forEach((card, i) => { card.style.opacity = '0'; card.style.transform = 'translateY(20px)'; setTimeout(() => { card.style.transition = 'all 0.5s ease'; card.style.opacity = '1'; card.style.transform = 'translateY(0)'; }, 200 + (i * 150)); });
+    
+    // Initialize Firebase data
+    setTimeout(() => { initFirebaseData(); }, 500);
 });
 
 console.log('🟢 Voice to Minister - Papanasam | IUML | A.M. Shahjahan');
