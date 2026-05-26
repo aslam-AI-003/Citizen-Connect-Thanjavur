@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <style>
-        :root { --sidebar-w: 260px; --admin-primary: #0d6b3a; --admin-dark: #094d2a; }
+        :root { --sidebar-w: 260px; --admin-primary: #0d6b3a; --admin-primary-dark: #094d2a; --admin-accent: #10b981; }
         body { background: #f5f5f5; margin: 0; }
         .admin-layout { display: flex; min-height: 100vh; }
         /* Sidebar */
@@ -20,7 +20,7 @@
         .sidebar-brand img { width: 50px; height: 50px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.3); }
         .sidebar-nav { padding: 15px 0; }
         .sidebar-nav a { display: flex; align-items: center; gap: 12px; padding: 12px 20px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.85rem; transition: all 0.2s; border-left: 3px solid transparent; }
-        .sidebar-nav a:hover, .sidebar-nav a.active { background: rgba(255,255,255,0.08); color: white; border-left-color: #10b981; }
+        .sidebar-nav a:hover, .sidebar-nav a.active { background: rgba(255,255,255,0.08); color: white; border-left-color: var(--admin-accent); }
         .sidebar-nav a i { width: 20px; text-align: center; }
         .sidebar-section { padding: 10px 20px 5px; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.4); }
         /* Main Content */
@@ -29,14 +29,14 @@
         .admin-topbar h2 { font-size: 1.1rem; display: flex; align-items: center; gap: 10px; }
         .admin-topbar .topbar-right { display: flex; align-items: center; gap: 15px; }
         .notif-bell { position: relative; cursor: pointer; font-size: 1.2rem; color: #666; }
-        .notif-bell .badge { position: absolute; top: -5px; right: -5px; width: 16px; height: 16px; background: #0d6b3a; color: white; border-radius: 50%; font-size: 0.6rem; display: flex; align-items: center; justify-content: center; }
+        .notif-bell .badge { position: absolute; top: -5px; right: -5px; width: 16px; height: 16px; background: var(--admin-primary); color: white; border-radius: 50%; font-size: 0.6rem; display: flex; align-items: center; justify-content: center; }
         .admin-content { padding: 25px 30px; }
         /* Stat Cards */
         .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 18px; margin-bottom: 25px; }
         .stat-card { background: white; border-radius: 12px; padding: 20px; display: flex; align-items: center; gap: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); transition: transform 0.2s; }
         .stat-card:hover { transform: translateY(-2px); }
         .stat-card .stat-icon { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
-        .stat-card .stat-icon.total { background: #d1fae5; color: #0d6b3a; }
+        .stat-card .stat-icon.total { background: #d1fae5; color: #059669; }
         .stat-card .stat-icon.pending { background: #fef3c7; color: #d97706; }
         .stat-card .stat-icon.resolved { background: #d1fae5; color: #059669; }
         .stat-card .stat-icon.today { background: #dbeafe; color: #2563eb; }
@@ -51,7 +51,7 @@
         .admin-card.full-width { grid-column: 1 / -1; }
         /* Table */
         .admin-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
-        .admin-table th { background: #f0fdf4; padding: 10px 12px; text-align: left; font-weight: 600; color: #0d6b3a; border-bottom: 2px solid #d1fae5; }
+        .admin-table th { background: #f0fdf4; padding: 10px 12px; text-align: left; font-weight: 600; color: #374151; border-bottom: 2px solid #e5e7eb; }
         .admin-table td { padding: 10px 12px; border-bottom: 1px solid #f3f4f6; }
         .admin-table tr:hover { background: #f9fafb; }
         .admin-table .badge { padding: 3px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 600; }
@@ -59,298 +59,1002 @@
         .badge-assigned { background: #dbeafe; color: #2563eb; }
         .badge-progress { background: #fef3c7; color: #d97706; }
         .badge-resolved { background: #d1fae5; color: #059669; }
+        .badge-escalated { background: #fef3c7; color: #dc2626; border: 1px solid #fca5a5; }
         /* Chart bars */
         .chart-item { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
         .chart-item .label { font-size: 0.75rem; width: 100px; color: #374151; }
         .chart-item .bar { flex: 1; height: 24px; background: #f3f4f6; border-radius: 6px; overflow: hidden; }
-        .chart-item .bar-fill { height: 100%; border-radius: 6px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; font-size: 0.7rem; color: white; font-weight: 600; }
+        .chart-item .bar-fill { height: 100%; border-radius: 6px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; font-size: 0.7rem; color: white; font-weight: 600; transition: width 1s ease; }
         /* Volunteer cards */
         .vol-card { display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid #f3f4f6; border-radius: 10px; margin-bottom: 10px; }
-        .vol-card:hover { border-color: #10b981; background: #f0fdf4; }
-        .vol-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #0d6b3a, #094d2a); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 0.9rem; }
+        .vol-card:hover { border-color: var(--admin-primary); background: #f0fdf4; }
+        .vol-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--admin-primary), var(--admin-primary-dark)); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 0.9rem; }
         .vol-info { flex: 1; }
         .vol-info h4 { font-size: 0.85rem; margin: 0 0 3px; }
         .vol-info p { font-size: 0.7rem; color: #666; margin: 0; }
         .vol-stats { text-align: right; }
-        .vol-stats .num { font-size: 1.1rem; font-weight: 700; color: #0d6b3a; }
+        .vol-stats .num { font-size: 1.1rem; font-weight: 700; color: var(--admin-primary); }
         .vol-stats .lbl { font-size: 0.65rem; color: #666; }
         /* Login overlay */
         .admin-login-overlay { position: fixed; inset: 0; background: linear-gradient(135deg, #0a1f0f, #0d3d1f); display: flex; align-items: center; justify-content: center; z-index: 9999; }
         .admin-login-box { background: white; border-radius: 16px; padding: 40px; max-width: 400px; width: 90%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
-        .admin-login-box .shield { width: 70px; height: 70px; background: linear-gradient(135deg, #0d6b3a, #094d2a); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+        .admin-login-box .shield { width: 70px; height: 70px; background: linear-gradient(135deg, var(--admin-primary), var(--admin-primary-dark)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
         .admin-login-box .shield i { color: white; font-size: 2rem; }
         .admin-login-box h2 { font-size: 1.2rem; margin-bottom: 5px; }
         .admin-login-box p { font-size: 0.8rem; color: #666; margin-bottom: 25px; }
         .admin-login-box input { width: 100%; padding: 12px 16px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 0.9rem; margin-bottom: 12px; outline: none; box-sizing: border-box; }
-        .admin-login-box input:focus { border-color: #0d6b3a; }
-        .admin-login-box .btn-login { width: 100%; padding: 14px; background: linear-gradient(135deg, #0d6b3a, #094d2a); color: white; border: none; border-radius: 10px; font-size: 0.9rem; font-weight: 600; cursor: pointer; }
+        .admin-login-box input:focus { border-color: var(--admin-primary); }
+        .admin-login-box .btn-login { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--admin-primary), var(--admin-primary-dark)); color: white; border: none; border-radius: 10px; font-size: 0.9rem; font-weight: 600; cursor: pointer; }
         .admin-login-box .btn-login:hover { opacity: 0.9; }
         .admin-login-box .otp-row { display: flex; gap: 10px; justify-content: center; margin-bottom: 15px; }
         .admin-login-box .otp-row input { width: 50px; height: 55px; text-align: center; font-size: 1.4rem; font-weight: 700; padding: 0; }
         .hidden { display: none !important; }
+        /* Detail Modal */
+        .detail-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+        .detail-modal-box { background: white; border-radius: 16px; padding: 25px; max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+        .detail-modal-box h3 { font-size: 1rem; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        .detail-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f3f4f6; font-size: 0.8rem; }
+        .detail-row .dlabel { color: #666; font-weight: 500; }
+        .detail-row .dvalue { font-weight: 600; color: #1f2937; text-align: right; max-width: 60%; }
         /* Responsive */
         @media (max-width: 768px) {
             .admin-sidebar { transform: translateX(-100%); }
+            .admin-sidebar.open { transform: translateX(0); }
             .admin-main { margin-left: 0; }
-            .stats-row { grid-template-columns: 1fr 1fr; }
             .admin-grid { grid-template-columns: 1fr; }
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+            .admin-content { padding: 15px; }
+            .admin-topbar { padding: 12px 15px; }
         }
     </style>
 </head>
 <body>
     <!-- LOGIN OVERLAY -->
-    <div class="admin-login-overlay" id="loginOverlay">
+    <div class="admin-login-overlay" id="adminLoginOverlay">
         <div class="admin-login-box">
             <div class="shield"><i class="fas fa-shield-alt"></i></div>
-            <h2>🔒 Staff Portal Login</h2>
-            <p>Minister Office Staff Only - A.M. Shahjahan | Papanasam</p>
+            <h2>🔒 Minister Staff Portal</h2>
+            <p>Authorized office staff only - Papanasam Constituency</p>
             
-            <!-- Step 1: Mobile -->
-            <div id="loginStep1">
-                <input type="tel" id="staffMobile" placeholder="Staff Mobile Number" maxlength="10">
-                <button class="btn-login" onclick="sendStaffOTP()">
-                    <i class="fas fa-paper-plane"></i> Send OTP
-                </button>
-            </div>
-            
-            <!-- Step 2: OTP -->
-            <div id="loginStep2" class="hidden">
-                <p style="font-size:0.85rem; margin-bottom:15px;">OTP sent to <strong id="mobileDisplay">+91 XXXXX</strong></p>
-                <div class="otp-row">
-                    <input type="text" maxlength="1" class="staff-otp">
-                    <input type="text" maxlength="1" class="staff-otp">
-                    <input type="text" maxlength="1" class="staff-otp">
-                    <input type="text" maxlength="1" class="staff-otp">
+            <!-- LOGIN FORM -->
+            <div id="loginFormView">
+                <input type="text" id="loginUsername" placeholder="👤 Username" autocomplete="username">
+                <input type="password" id="loginPassword" placeholder="🔑 Password" autocomplete="current-password">
+                <button class="btn-login" onclick="staffLogin()"><i class="fas fa-lock-open"></i> Login</button>
+                <p style="font-size:0.7rem;color:#999;margin-top:15px;">Demo: <code>admin</code> / <code>admin123</code></p>
+                <div style="margin-top:18px;padding-top:15px;border-top:1px solid #e5e7eb;">
+                    <p style="font-size:0.8rem;color:#374151;margin-bottom:8px;">New staff member?</p>
+                    <button onclick="showRegisterView()" style="background:none;border:2px solid var(--admin-primary);color:var(--admin-primary);width:100%;padding:10px;border-radius:10px;font-size:0.85rem;font-weight:600;cursor:pointer;"><i class="fas fa-user-plus"></i> Register Here</button>
                 </div>
-                <button class="btn-login" onclick="verifyStaffOTP()">
-                    <i class="fas fa-lock-open"></i> Verify & Login
-                </button>
-                <p style="font-size:0.7rem; color:#666; margin-top:10px;">Demo OTP: <strong>1234</strong></p>
             </div>
-            
-            <p style="font-size:0.65rem; color:#999; margin-top:20px;">🔐 Secured | Only registered staff can login</p>
+
+            <!-- REGISTRATION FORM -->
+            <div id="registerFormView" class="hidden">
+                <h3 style="font-size:1rem;margin-bottom:15px;color:#374151;">📋 New Staff Registration</h3>
+                <input type="text" id="regName" placeholder="👤 Full Name" style="margin-bottom:10px;">
+                <input type="tel" id="regMobile" placeholder="📱 Mobile Number" maxlength="10" style="margin-bottom:10px;">
+                <select id="regRole" style="width:100%;padding:12px 16px;border:2px solid #e5e7eb;border-radius:10px;font-size:0.9rem;margin-bottom:10px;outline:none;appearance:auto;">
+                    <option value="">-- Select Role --</option>
+                    <option value="Office Manager">🏢 Office Manager</option>
+                    <option value="Field Coordinator">📋 Field Coordinator</option>
+                    <option value="Data Entry Staff">💻 Data Entry Staff</option>
+                    <option value="Area Supervisor">📍 Area Supervisor</option>
+                </select>
+                <select id="regArea" style="width:100%;padding:12px 16px;border:2px solid #e5e7eb;border-radius:10px;font-size:0.9rem;margin-bottom:10px;outline:none;appearance:auto;">
+                    <option value="">-- Assigned Area --</option>
+                    <option value="All Areas">🌐 All Areas (Office)</option>
+                    <option value="Papanasam Town">Papanasam Town</option>
+                    <option value="Kabistalam">Kabistalam</option>
+                    <option value="Thiruvaigavur">Thiruvaigavur</option>
+                    <option value="Adhanur">Adhanur</option>
+                    <option value="Swamimalai">Swamimalai</option>
+                    <option value="Ammapettai">Ammapettai</option>
+                    <option value="Valangaiman">Valangaiman</option>
+                </select>
+                <div style="border-top:1px solid #e5e7eb;padding-top:12px;margin-top:5px;">
+                    <p style="font-size:0.75rem;color:#666;margin-bottom:10px;">🔑 Create Login Credentials</p>
+                    <input type="text" id="regUsername" placeholder="Username (e.g., staff_aslam)" style="margin-bottom:10px;" autocomplete="off">
+                    <input type="password" id="regPassword" placeholder="Password (min 4 chars)" style="margin-bottom:10px;">
+                    <input type="password" id="regConfirmPassword" placeholder="Confirm Password" style="margin-bottom:12px;">
+                </div>
+                <button class="btn-login" onclick="staffRegister()"><i class="fas fa-user-plus"></i> Register & Create Account</button>
+                <p style="font-size:0.75rem;color:#666;margin-top:12px;cursor:pointer;" onclick="showLoginView()">← Back to Login</p>
+            </div>
+
+            <p style="font-size:0.65rem;color:#999;margin-top:20px;">🔐 Secured | Unauthorized access is logged</p>
         </div>
     </div>
 
     <!-- ADMIN LAYOUT -->
     <div class="admin-layout" id="adminLayout" style="display:none;">
-        <!-- Sidebar -->
+        <!-- SIDEBAR -->
         <aside class="admin-sidebar">
             <div class="sidebar-brand">
-                <img src="../assets/logo.svg" alt="Logo">
-                <h3>Voice to Minister</h3>
-                <p>Admin Dashboard - Papanasam</p>
+                <img src="../assets/minister-photo.jpg" alt="Minister" onerror="this.src='https://ui-avatars.com/api/?name=AM+Shahjahan&background=0d6b3a&color=fff&size=50'">
+                <h3>A.M. Shahjahan</h3>
+                <p>Minister of Minority Welfare | பாபநாசம்</p>
             </div>
             <nav class="sidebar-nav">
                 <div class="sidebar-section">Main</div>
-                <a href="#" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-                <a href="#"><i class="fas fa-clipboard-list"></i> All Complaints</a>
-                <a href="#"><i class="fas fa-user-plus"></i> Assign</a>
+                <a href="#" class="active" data-section="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="#" data-section="complaints"><i class="fas fa-clipboard-list"></i> Complaints</a>
+                <a href="#" data-section="volunteers"><i class="fas fa-users"></i> Volunteers</a>
                 <div class="sidebar-section">Management</div>
-                <a href="#"><i class="fas fa-users"></i> Volunteers</a>
-                <a href="#"><i class="fas fa-bullhorn"></i> Post Update</a>
-                <a href="#"><i class="fas fa-chart-bar"></i> Analytics</a>
+                <a href="#" data-section="analytics"><i class="fas fa-chart-line"></i> Analytics</a>
+                <a href="#" data-section="updates"><i class="fas fa-bullhorn"></i> Post Updates</a>
+                <a href="#" data-section="notifications"><i class="fas fa-bell"></i> Notifications</a>
                 <div class="sidebar-section">Settings</div>
-                <a href="#"><i class="fas fa-cog"></i> Settings</a>
-                <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Demo</a>
+                <a href="#" onclick="window.location.href='index.html'"><i class="fas fa-globe"></i> Public Site</a>
+                <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </nav>
         </aside>
 
-        <!-- Main Content -->
-        <div class="admin-main">
-            <!-- Top Bar -->
+        <!-- MAIN CONTENT -->
+        <main class="admin-main">
             <div class="admin-topbar">
-                <h2><i class="fas fa-tachometer-alt" style="color:#0d6b3a;"></i> Minister Admin Dashboard</h2>
+                <h2><i class="fas fa-tachometer-alt"></i> Minister Dashboard</h2>
                 <div class="topbar-right">
-                    <div class="notif-bell">
-                        <i class="fas fa-bell"></i>
-                        <span class="badge">3</span>
-                    </div>
-                    <span style="font-size:0.8rem; color:#666;">👤 Staff Admin</span>
+                    <div class="notif-bell" onclick="alert('3 new notifications')"><i class="fas fa-bell"></i><span class="badge">3</span></div>
+                    <span id="staffUserDisplay" style="font-size:0.8rem;color:#666;">👤 Staff User</span>
                 </div>
             </div>
 
-            <!-- Content -->
             <div class="admin-content">
-                <!-- Stats Row -->
-                <div class="stats-row">
-                    <div class="stat-card">
-                        <div class="stat-icon total"><i class="fas fa-clipboard-list"></i></div>
-                        <div class="stat-info"><h4>892</h4><p>மொத்த புகார்கள்</p></div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon pending"><i class="fas fa-clock"></i></div>
-                        <div class="stat-info"><h4>98</h4><p>நிலுவையில்</p></div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon resolved"><i class="fas fa-check-circle"></i></div>
-                        <div class="stat-info"><h4>756</h4><p>தீர்வு</p></div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon today"><i class="fas fa-calendar-day"></i></div>
-                        <div class="stat-info"><h4>8</h4><p>இன்று புதிய</p></div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon volunteer"><i class="fas fa-users"></i></div>
-                        <div class="stat-info"><h4>32</h4><p>Active Volunteers</p></div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon escalated"><i class="fas fa-exclamation-triangle"></i></div>
-                        <div class="stat-info"><h4>3</h4><p>Escalated</p></div>
-                    </div>
-                </div>
-
-                <!-- Grid: Charts + Volunteers -->
-                <div class="admin-grid">
-                    <!-- Area-wise -->
-                    <div class="admin-card">
-                        <h3><i class="fas fa-chart-bar" style="color:#0d6b3a;"></i> Area-wise புகார்கள்</h3>
-                        <div class="chart-item"><span class="label">Papanasam Town</span><div class="bar"><div class="bar-fill" style="width:85%;background:linear-gradient(90deg,#0d6b3a,#10b981);">198</div></div></div>
-                        <div class="chart-item"><span class="label">Kabistalam</span><div class="bar"><div class="bar-fill" style="width:65%;background:linear-gradient(90deg,#0d6b3a,#10b981);">145</div></div></div>
-                        <div class="chart-item"><span class="label">Thiruvaigavur</span><div class="bar"><div class="bar-fill" style="width:58%;background:linear-gradient(90deg,#0d6b3a,#10b981);">132</div></div></div>
-                        <div class="chart-item"><span class="label">Adhanur</span><div class="bar"><div class="bar-fill" style="width:40%;background:linear-gradient(90deg,#0d6b3a,#10b981);">89</div></div></div>
-                        <div class="chart-item"><span class="label">Valuthoor</span><div class="bar"><div class="bar-fill" style="width:35%;background:linear-gradient(90deg,#0d6b3a,#10b981);">76</div></div></div>
-                        <div class="chart-item"><span class="label">Thurumbur</span><div class="bar"><div class="bar-fill" style="width:28%;background:linear-gradient(90deg,#0d6b3a,#10b981);">62</div></div></div>
+                <!-- SECTION: Dashboard -->
+                <div class="admin-section active" id="sec-dashboard">
+                    <!-- Stats Row (Live from Firebase) -->
+                    <div class="stats-row">
+                        <div class="stat-card"><div class="stat-icon total"><i class="fas fa-clipboard-list"></i></div><div class="stat-info"><h4 id="dashTotal">-</h4><p>Total Complaints</p></div></div>
+                        <div class="stat-card"><div class="stat-icon pending"><i class="fas fa-clock"></i></div><div class="stat-info"><h4 id="dashPending">-</h4><p>Pending</p></div></div>
+                        <div class="stat-card"><div class="stat-icon resolved"><i class="fas fa-check-circle"></i></div><div class="stat-info"><h4 id="dashResolved">-</h4><p>Resolved</p></div></div>
+                        <div class="stat-card"><div class="stat-icon today"><i class="fas fa-calendar-day"></i></div><div class="stat-info"><h4 id="dashToday">-</h4><p>Today's Complaints</p></div></div>
+                        <div class="stat-card"><div class="stat-icon volunteer"><i class="fas fa-users"></i></div><div class="stat-info"><h4 id="dashVolunteers">36</h4><p>Active Volunteers</p></div></div>
+                        <div class="stat-card"><div class="stat-icon escalated"><i class="fas fa-exclamation-triangle"></i></div><div class="stat-info"><h4 id="dashEscalated">-</h4><p>Escalated</p></div></div>
                     </div>
 
-                    <!-- Volunteers -->
-                    <div class="admin-card">
-                        <h3><i class="fas fa-users" style="color:#0d6b3a;"></i> Active Ward Volunteers</h3>
-                        <div class="vol-card">
-                            <div class="vol-avatar">AN</div>
-                            <div class="vol-info"><h4>Mr. Anwar</h4><p>Coordinator | Ward 2 - Papanasam Town</p></div>
-                            <div class="vol-stats"><div class="num">12</div><div class="lbl">Active</div></div>
+                    <!-- Resolution Rate -->
+                    <div class="admin-card full-width" style="margin-bottom:20px;background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1px solid #bbf7d0;">
+                        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;">
+                            <div><h3 style="margin:0;color:#059669;"><i class="fas fa-percentage"></i> Resolution Rate</h3><p style="font-size:0.75rem;color:#666;margin:5px 0 0;">Live from Firebase data</p></div>
+                            <div style="text-align:center;"><span id="dashResRate" style="font-size:2.5rem;font-weight:800;color:#059669;">--%</span><p style="font-size:0.7rem;color:#666;">Resolved / Total</p></div>
+                            <div style="text-align:center;"><span id="dashAvgTime" style="font-size:1.5rem;font-weight:700;color:#d97706;">1.8 Days</span><p style="font-size:0.7rem;color:#666;">Avg Resolution Time</p></div>
                         </div>
-                        <div class="vol-card">
-                            <div class="vol-avatar">IB</div>
-                            <div class="vol-info"><h4>Mr. Ibrahim</h4><p>Coordinator | Kabistalam</p></div>
-                            <div class="vol-stats"><div class="num">8</div><div class="lbl">Active</div></div>
+                    </div>
+
+                    <!-- Charts Grid (Live) -->
+                    <div class="admin-grid">
+                        <!-- Area-wise (Live) -->
+                        <div class="admin-card">
+                            <h3><i class="fas fa-map-marker-alt"></i> Area-wise Complaints</h3>
+                            <div id="areaChartContainer"></div>
                         </div>
-                        <div class="vol-card">
-                            <div class="vol-avatar">MG</div>
-                            <div class="vol-info"><h4>Mr. Murugan</h4><p>Coordinator | Thiruvaigavur</p></div>
-                            <div class="vol-stats"><div class="num">6</div><div class="lbl">Active</div></div>
+                        <!-- Category-wise (Live) -->
+                        <div class="admin-card">
+                            <h3><i class="fas fa-tags"></i> Category-wise Complaints</h3>
+                            <div id="categoryChartContainer"></div>
                         </div>
-                        <div class="vol-card">
-                            <div class="vol-avatar">SV</div>
-                            <div class="vol-info"><h4>Mr. Selvam</h4><p>Coordinator | Adhanur</p></div>
-                            <div class="vol-stats"><div class="num">4</div><div class="lbl">Active</div></div>
-                        </div>
-                        <div class="vol-card">
-                            <div class="vol-avatar">KV</div>
-                            <div class="vol-info"><h4>Mrs. Kavitha</h4><p>Volunteer | Valuthoor</p></div>
-                            <div class="vol-stats"><div class="num">3</div><div class="lbl">Active</div></div>
+                    </div>
+
+                    <!-- Latest Complaints Table (Live) -->
+                    <div class="admin-card full-width">
+                        <h3><i class="fas fa-list"></i> Latest Complaints (Live)</h3>
+                        <div style="overflow-x:auto;" id="dashTableContainer">
+                            <table class="admin-table">
+                                <thead><tr><th>ID</th><th>Citizen</th><th>Complaint</th><th>Area</th><th>Category</th><th>Status</th><th>Assigned</th><th>Date</th></tr></thead>
+                                <tbody id="dashTableBody"></tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
 
-                <!-- Complaints Table -->
-                <div class="admin-card full-width">
-                    <h3><i class="fas fa-list" style="color:#0d6b3a;"></i> Recent Complaints - Action Required</h3>
-                    <div style="overflow-x:auto;">
-                        <table class="admin-table">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Citizen</th>
-                                    <th>Mobile</th>
-                                    <th>புகார்</th>
-                                    <th>Area</th>
-                                    <th>Category</th>
-                                    <th>Status</th>
-                                    <th>Assigned</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><code>IUML/PPN/2026/00101</code></td>
-                                    <td>ராஜா</td>
-                                    <td>98765xxxxx</td>
-                                    <td>சாலையில் பள்ளம் - Papanasam Main Road</td>
-                                    <td>Papanasam Town</td>
-                                    <td><span class="badge badge-progress">சாலைகள்</span></td>
-                                    <td><span class="badge badge-progress">பணியில்</span></td>
-                                    <td>Highway Dept - Mr. Karthik</td>
-                                    <td><button class="btn-action" style="background:#d1fae5;border:1px solid #10b981;color:#0d6b3a;width:28px;height:28px;border-radius:6px;cursor:pointer;"><i class="fas fa-eye"></i></button></td>
-                                </tr>
-                                <tr>
-                                    <td><code>IUML/PPN/2026/00102</code></td>
-                                    <td>முருகன்</td>
-                                    <td>98765xxxxx</td>
-                                    <td>Street Light வேலை செய்யல - Kabistalam</td>
-                                    <td>Kabistalam</td>
-                                    <td><span class="badge badge-assigned">மின்சாரம்</span></td>
-                                    <td><span class="badge badge-assigned">ஒதுக்கப்பட்டது</span></td>
-                                    <td>EB Team - Mr. Rajan</td>
-                                    <td><button class="btn-action" style="background:#d1fae5;border:1px solid #10b981;color:#0d6b3a;width:28px;height:28px;border-radius:6px;cursor:pointer;"><i class="fas fa-eye"></i></button></td>
-                                </tr>
-                                <tr>
-                                    <td><code>IUML/PPN/2026/00099</code></td>
-                                    <td>கமலா</td>
-                                    <td>98765xxxxx</td>
-                                    <td>குடிநீர் வரவில்லை - Adhanur</td>
-                                    <td>Adhanur</td>
-                                    <td><span class="badge badge-new">குடிநீர்</span></td>
-                                    <td><span class="badge badge-new">புதியது</span></td>
-                                    <td>-</td>
-                                    <td><button class="btn-action" style="background:#fef3c7;border:1px solid #f59e0b;color:#d97706;width:28px;height:28px;border-radius:6px;cursor:pointer;"><i class="fas fa-user-plus"></i></button></td>
-                                </tr>
-                                <tr>
-                                    <td><code>IUML/PPN/2026/00100</code></td>
-                                    <td>செல்வம்</td>
-                                    <td>98765xxxxx</td>
-                                    <td>Drainage overflow - Thiruvaigavur</td>
-                                    <td>Thiruvaigavur</td>
-                                    <td><span class="badge badge-resolved">வடிகால்</span></td>
-                                    <td><span class="badge badge-resolved">தீர்வு ✓</span></td>
-                                    <td>Corporation Team</td>
-                                    <td><button class="btn-action" style="background:#d1fae5;border:1px solid #10b981;color:#0d6b3a;width:28px;height:28px;border-radius:6px;cursor:pointer;"><i class="fas fa-eye"></i></button></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                <!-- SECTION: Complaints -->
+                <div class="admin-section" id="sec-complaints" style="display:none;">
+                    <div class="stats-row" style="margin-bottom:20px;">
+                        <div class="stat-card"><div class="stat-icon total"><i class="fas fa-clipboard-list"></i></div><div class="stat-info"><h4 id="cmpTotal">4</h4><p>Total</p></div></div>
+                        <div class="stat-card"><div class="stat-icon pending"><i class="fas fa-clock"></i></div><div class="stat-info"><h4 id="cmpPending">1</h4><p>Pending</p></div></div>
+                        <div class="stat-card"><div class="stat-icon today"><i class="fas fa-user-check"></i></div><div class="stat-info"><h4 id="cmpAssigned">1</h4><p>Assigned</p></div></div>
+                        <div class="stat-card"><div class="stat-icon resolved"><i class="fas fa-check-circle"></i></div><div class="stat-info"><h4 id="cmpResolved">1</h4><p>Resolved</p></div></div>
+                    </div>
+                    <!-- Filter Bar -->
+                    <div class="admin-card full-width" style="margin-bottom:20px;">
+                        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+                            <select id="filterStatus" onchange="renderComplaints()" style="padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:0.8rem;">
+                                <option value="all">All Status</option>
+                                <option value="badge-new">புதியது (New)</option>
+                                <option value="badge-assigned">ஒதுக்கப்பட்டது (Assigned)</option>
+                                <option value="badge-progress">பணியில் (In Progress)</option>
+                                <option value="badge-resolved">தீர்வு (Resolved)</option>
+                            </select>
+                            <select id="filterArea" onchange="renderComplaints()" style="padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:0.8rem;">
+                                <option value="all">All Areas</option>
+                                <option value="Papanasam Town">Papanasam Town</option>
+                                <option value="Kabistalam">Kabistalam</option>
+                                <option value="Thiruvaigavur">Thiruvaigavur</option>
+                                <option value="Adhanur">Adhanur</option>
+                                <option value="Swamimalai">Swamimalai</option>
+                                <option value="Ammapettai">Ammapettai</option>
+                                <option value="Valangaiman">Valangaiman</option>
+                            </select>
+                            <button class="btn-login" onclick="loadFromFirebase()" style="padding:8px 16px;font-size:0.8rem;border-radius:8px;">
+                                <i class="fas fa-sync"></i> Refresh
+                            </button>
+                            <span style="font-size:0.75rem;color:#666;" id="lastRefresh">Last updated: -</span>
+                        </div>
+                    </div>
+                    <!-- Complaints Table -->
+                    <div class="admin-card full-width">
+                        <h3><i class="fas fa-clipboard-list"></i> All Complaints <span id="complaintsCount" style="font-size:0.7rem;background:#f3f4f6;padding:2px 8px;border-radius:10px;margin-left:8px;"></span></h3>
+                        <div style="overflow-x:auto;" id="complaintsTableContainer">
+                            <table class="admin-table" id="complaintsTable">
+                                <thead><tr><th>ID</th><th>Citizen</th><th>Mobile</th><th>Complaint</th><th>Area</th><th>Category</th><th>Status</th><th>Assigned</th><th>Date</th><th>Actions</th></tr></thead>
+                                <tbody id="complaintsTableBody"></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
+
+                <!-- SECTION: Volunteers -->
+                <div class="admin-section" id="sec-volunteers" style="display:none;">
+                    <div class="stats-row" style="margin-bottom:20px;">
+                        <div class="stat-card"><div class="stat-icon volunteer"><i class="fas fa-users"></i></div><div class="stat-info"><h4 id="volTotal">36</h4><p>Total Volunteers</p></div></div>
+                        <div class="stat-card"><div class="stat-icon today"><i class="fas fa-user-check"></i></div><div class="stat-info"><h4 id="volActive">24</h4><p>Active Today</p></div></div>
+                        <div class="stat-card"><div class="stat-icon resolved"><i class="fas fa-trophy"></i></div><div class="stat-info"><h4 id="volTop">Mr. Ibrahim</h4><p>Top Performer</p></div></div>
+                    </div>
+                    <!-- Add Volunteer -->
+                    <div class="admin-card full-width" style="margin-bottom:20px;">
+                        <h3><i class="fas fa-user-plus"></i> Add New Volunteer</h3>
+                        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;">
+                            <div style="flex:1;min-width:150px;"><label style="font-size:0.7rem;font-weight:600;display:block;margin-bottom:4px;">Name</label><input type="text" id="newVolName" placeholder="Volunteer Name" style="width:100%;padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:0.8rem;box-sizing:border-box;"></div>
+                            <div style="flex:1;min-width:120px;"><label style="font-size:0.7rem;font-weight:600;display:block;margin-bottom:4px;">Area</label><select id="newVolArea" style="width:100%;padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:0.8rem;"><option>Papanasam Town</option><option>Kabistalam</option><option>Thiruvaigavur</option><option>Adhanur</option><option>Swamimalai</option><option>Ammapettai</option><option>Valangaiman</option></select></div>
+                            <div style="flex:0.5;min-width:80px;"><label style="font-size:0.7rem;font-weight:600;display:block;margin-bottom:4px;">Ward</label><input type="text" id="newVolWard" placeholder="Ward 1" style="width:100%;padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:0.8rem;box-sizing:border-box;"></div>
+                            <div style="flex:0.5;min-width:100px;"><label style="font-size:0.7rem;font-weight:600;display:block;margin-bottom:4px;">Role</label><select id="newVolRole" style="width:100%;padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:0.8rem;"><option>Coordinator</option><option>Volunteer</option></select></div>
+                            <button onclick="addNewVolunteer()" style="padding:8px 16px;background:linear-gradient(135deg,var(--admin-primary),var(--admin-primary-dark));color:white;border:none;border-radius:8px;font-size:0.8rem;cursor:pointer;font-weight:600;"><i class="fas fa-plus"></i> Add</button>
+                        </div>
+                    </div>
+                    <!-- Volunteer List -->
+                    <div class="admin-card full-width">
+                        <h3><i class="fas fa-users"></i> Volunteer Management <span style="font-size:0.7rem;color:#666;">(Click to view assigned complaints)</span></h3>
+                        <div id="volunteerListContainer"></div>
+                    </div>
+                </div>
+
+                <!-- SECTION: Analytics -->
+                <div class="admin-section" id="sec-analytics" style="display:none;">
+                    <div class="admin-grid">
+                        <div class="admin-card"><h3><i class="fas fa-clock"></i> Avg Resolution Time</h3><div style="text-align:center;padding:20px;"><span style="font-size:3rem;font-weight:800;color:var(--admin-primary);">1.8</span><span style="font-size:1.2rem;color:#666;"> Days</span><p style="color:#059669;margin-top:10px;">↓ 20% faster than last month</p></div></div>
+                        <div class="admin-card"><h3><i class="fas fa-star"></i> Citizen Satisfaction</h3><div style="text-align:center;padding:20px;"><span style="font-size:3rem;font-weight:800;color:#f59e0b;">4.7</span><span style="font-size:1.2rem;color:#666;">/5 ⭐</span><p style="color:#059669;margin-top:10px;">Based on 756 ratings</p></div></div>
+                        <div class="admin-card"><h3><i class="fas fa-chart-pie"></i> Resolution Rate</h3><div style="text-align:center;padding:20px;"><span id="analyticsResRate" style="font-size:3rem;font-weight:800;color:#059669;">84.6%</span><p style="color:#059669;margin-top:10px;">756 of 892 resolved</p></div></div>
+                        <div class="admin-card"><h3><i class="fas fa-fire"></i> Busiest Area</h3><div style="text-align:center;padding:20px;"><span style="font-size:1.5rem;font-weight:800;color:var(--admin-primary);">Papanasam Town</span><p style="margin-top:10px;">198 complaints (22% of total)</p></div></div>
+                    </div>
+                </div>
+
+                <!-- SECTION: Post Updates -->
+                <div class="admin-section" id="sec-updates" style="display:none;">
+                    <div class="admin-card full-width" style="margin-bottom:20px;">
+                        <h3><i class="fas fa-plus-circle"></i> Create New Update</h3>
+                        <div style="display:grid;gap:12px;">
+                            <div style="display:flex;gap:12px;">
+                                <select id="adminUpdateTag" style="padding:10px;border:1px solid #e5e7eb;border-radius:8px;font-size:0.85rem;flex:1;">
+                                    <option value="📋 அறிவிப்பு">📋 அறிவிப்பு (Announcement)</option>
+                                    <option value="✅ நிறைவு">✅ நிறைவு (Completed)</option>
+                                    <option value="📅 நிகழ்வு">📅 நிகழ்வு (Event)</option>
+                                    <option value="⚠️ அவசரம்">⚠️ அவசரம் (Urgent)</option>
+                                </select>
+                            </div>
+                            <input type="text" id="adminUpdateTitle" placeholder="Update Title (e.g., Papanasam சாலை பணி நிறைவு)" style="padding:10px;border:1px solid #e5e7eb;border-radius:8px;font-size:0.85rem;">
+                            <textarea id="adminUpdateContent" rows="3" placeholder="Full update content in Tamil/English..." style="padding:10px;border:1px solid #e5e7eb;border-radius:8px;font-size:0.85rem;resize:vertical;"></textarea>
+                            <button onclick="postAdminUpdate()" style="padding:12px;background:linear-gradient(135deg,var(--admin-primary),var(--admin-primary-dark));color:white;border:none;border-radius:8px;font-size:0.85rem;font-weight:600;cursor:pointer;">
+                                <i class="fas fa-bullhorn"></i> Publish Update
+                            </button>
+                        </div>
+                    </div>
+                    <div class="admin-card full-width">
+                        <h3><i class="fas fa-history"></i> Previous Updates</h3>
+                        <div id="adminUpdatesList">
+                            <div style="padding:12px;border:1px solid #f3f4f6;border-radius:8px;margin-bottom:10px;">
+                                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+                                    <span style="font-size:0.7rem;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:4px;">✅ நிறைவு</span>
+                                    <span style="font-size:0.7rem;color:#999;">May 20, 2026</span>
+                                </div>
+                                <h4 style="font-size:0.85rem;margin:5px 0;">Papanasam Town - சாலை மேம்பாட்டு பணி தொடக்கம்</h4>
+                                <p style="font-size:0.75rem;color:#666;">3 கி.மீ சாலை மேம்பாட்டு பணி தொடங்கப்பட்டது. 20 நாட்களில் முடிக்கப்படும்.</p>
+                            </div>
+                            <div style="padding:12px;border:1px solid #f3f4f6;border-radius:8px;margin-bottom:10px;">
+                                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+                                    <span style="font-size:0.7rem;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:4px;">✅ நிறைவு</span>
+                                    <span style="font-size:0.7rem;color:#999;">May 18, 2026</span>
+                                </div>
+                                <h4 style="font-size:0.85rem;margin:5px 0;">Kabistalam - 40 புதிய Street Lights நிறுவப்பட்டன</h4>
+                                <p style="font-size:0.75rem;color:#666;">மக்கள் புகாரின் அடிப்படையில் Kabistalam பகுதியில் 40 புதிய LED Street Lights நிறுவப்பட்டுள்ளன.</p>
+                            </div>
+                            <div style="padding:12px;border:1px solid #f3f4f6;border-radius:8px;margin-bottom:10px;">
+                                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+                                    <span style="font-size:0.7rem;background:#dbeafe;color:#2563eb;padding:2px 8px;border-radius:4px;">📅 நிகழ்வு</span>
+                                    <span style="font-size:0.7rem;color:#999;">May 15, 2026</span>
+                                </div>
+                                <h4 style="font-size:0.85rem;margin:5px 0;">மக்கள் சந்திப்பு - ஒவ்வொரு சனிக்கிழமையும்</h4>
+                                <p style="font-size:0.75rem;color:#666;">காலை 10 - 1 வரை Minister அலுவலகத்தில் மக்கள் சந்திப்பு.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION: Notifications -->
+                <div class="admin-section" id="sec-notifications" style="display:none;">
+                    <div class="admin-card full-width" style="margin-bottom:20px;">
+                        <h3><i class="fas fa-bell"></i> Recent Notifications</h3>
+                        <div id="notificationsList">
+                            <div style="display:flex;align-items:start;gap:12px;padding:14px;border-left:3px solid var(--admin-primary);background:#f0fdf4;border-radius:0 8px 8px 0;margin-bottom:10px;">
+                                <div style="width:36px;height:36px;background:#d1fae5;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;">🚨</div>
+                                <div style="flex:1;"><h4 style="font-size:0.85rem;margin:0 0 3px;">New Complaint Received</h4><p style="font-size:0.75rem;color:#666;margin:0;">குடிநீர் வரவில்லை - Adhanur | ID: TN/PPN/ADR/2026/00125</p><span style="font-size:0.65rem;color:#999;">2 mins ago</span></div>
+                            </div>
+                            <div style="display:flex;align-items:start;gap:12px;padding:14px;border-left:3px solid #2563eb;background:#eff6ff;border-radius:0 8px 8px 0;margin-bottom:10px;">
+                                <div style="width:36px;height:36px;background:#dbeafe;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;">👤</div>
+                                <div style="flex:1;"><h4 style="font-size:0.85rem;margin:0 0 3px;">Volunteer Assigned</h4><p style="font-size:0.75rem;color:#666;margin:0;">Mr. Ibrahim assigned to Complaint #00123 - Kabistalam</p><span style="font-size:0.65rem;color:#999;">15 mins ago</span></div>
+                            </div>
+                            <div style="display:flex;align-items:start;gap:12px;padding:14px;border-left:3px solid #059669;background:#ecfdf5;border-radius:0 8px 8px 0;margin-bottom:10px;">
+                                <div style="width:36px;height:36px;background:#d1fae5;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;">✅</div>
+                                <div style="flex:1;"><h4 style="font-size:0.85rem;margin:0 0 3px;">Complaint Resolved</h4><p style="font-size:0.75rem;color:#666;margin:0;">Drainage overflow - Thiruvaigavur Bus Stand marked as resolved</p><span style="font-size:0.65rem;color:#999;">1 hour ago</span></div>
+                            </div>
+                            <div style="display:flex;align-items:start;gap:12px;padding:14px;border-left:3px solid #f59e0b;background:#fffbeb;border-radius:0 8px 8px 0;margin-bottom:10px;">
+                                <div style="width:36px;height:36px;background:#fef3c7;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;">⚠️</div>
+                                <div style="flex:1;"><h4 style="font-size:0.85rem;margin:0 0 3px;">Escalation Alert</h4><p style="font-size:0.75rem;color:#666;margin:0;">Complaint #00120 pending > 48hrs - Auto-escalated to Minister</p><span style="font-size:0.65rem;color:#999;">3 hours ago</span></div>
+                            </div>
+                            <div style="display:flex;align-items:start;gap:12px;padding:14px;border-left:3px solid #7c3aed;background:#f5f3ff;border-radius:0 8px 8px 0;margin-bottom:10px;">
+                                <div style="width:36px;height:36px;background:#ede9fe;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;">⭐</div>
+                                <div style="flex:1;"><h4 style="font-size:0.85rem;margin:0 0 3px;">Citizen Feedback</h4><p style="font-size:0.75rem;color:#666;margin:0;">5/5 ⭐ Rating received for Complaint #00122 - "மிக அருமை!"</p><span style="font-size:0.65rem;color:#999;">5 hours ago</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-        </div>
+        </main>
     </div>
 
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-db.js"></script>
+
     <script>
-        // ===== ADMIN LOGIN =====
-        function sendStaffOTP() {
-            const mobile = document.getElementById('staffMobile').value;
-            if (!mobile || mobile.length < 10) { alert('சரியான mobile number உள்ளிடுங்கள்!'); return; }
-            document.getElementById('loginStep1').classList.add('hidden');
-            document.getElementById('loginStep2').classList.remove('hidden');
-            document.getElementById('mobileDisplay').textContent = '+91 ' + mobile.substring(0,5) + 'xxxxx';
-            // Auto-focus first OTP
-            setTimeout(() => {
-                const firstOtp = document.querySelector('.staff-otp');
-                if (firstOtp) firstOtp.focus();
-                document.querySelectorAll('.staff-otp').forEach((inp, idx, arr) => {
-                    inp.addEventListener('input', (e) => { if (e.target.value.length === 1 && idx < arr.length - 1) arr[idx + 1].focus(); });
-                    inp.addEventListener('keydown', (e) => { if (e.key === 'Backspace' && !e.target.value && idx > 0) arr[idx - 1].focus(); });
-                });
-            }, 200);
+        // ===== COMPLAINTS DATA (local + Firebase) =====
+        let complaintsDB = {
+            'PPN-2026-00121': { id: 'PPN-2026-00121', govId: 'TN/PPN/PTN/2026/00121', title: 'சாலையில் பள்ளம் - Papanasam Main Road', category: 'சாலைகள்', area: 'Papanasam Town', citizenName: 'ராஜேஷ்', mobileNumber: '9876543210', assigned: 'Highway Dept - Mr. Ibrahim', date: 'May 20, 2026', status: 'பணியில்', statusClass: 'badge-progress' },
+            'PPN-2026-00122': { id: 'PPN-2026-00122', govId: 'TN/PPN/KBS/2026/00122', title: 'Street Light வேலை செய்யல - Kabistalam 3rd Cross', category: 'மின்சாரம்', area: 'Kabistalam', citizenName: 'சுரேஷ்', mobileNumber: '8765432109', assigned: 'EB Team - Mr. Farooq', date: 'May 21, 2026', status: 'ஒதுக்கப்பட்டது', statusClass: 'badge-assigned' },
+            'PPN-2026-00123': { id: 'PPN-2026-00123', govId: 'TN/PPN/TVR/2026/00123', title: 'Drainage overflow - Thiruvaigavur Bus Stand அருகில்', category: 'வடிகால்', area: 'Thiruvaigavur', citizenName: 'கவிதா', mobileNumber: '7654321098', assigned: 'Corporation Team', date: 'May 19, 2026', status: 'தீர்வு ✓', statusClass: 'badge-resolved' },
+            'PPN-2026-00124': { id: 'PPN-2026-00124', govId: 'TN/PPN/ADR/2026/00124', title: 'குடிநீர் வரவில்லை - Adhanur 3 நாட்கள்', category: 'குடிநீர்', area: 'Adhanur', citizenName: 'முருகன்', mobileNumber: '6543210987', assigned: '-', date: 'May 22, 2026', status: 'புதியது', statusClass: 'badge-new' }
+        };
+
+        // ===== LOAD FROM FIREBASE =====
+        async function loadFromFirebase() {
+            try {
+                if (window.VoiceToMinister_DB) {
+                    const fc = await VoiceToMinister_DB.getAllComplaints();
+                    if (fc && Object.keys(fc).length > 0) {
+                        Object.keys(fc).forEach(k => { complaintsDB[k] = fc[k]; });
+                    }
+                } else if (typeof db !== 'undefined') {
+                    const snapshot = await db.collection('vtm_ppn_complaints').get();
+                    snapshot.forEach(doc => { complaintsDB[doc.id] = doc.data(); });
+                }
+            } catch (e) { console.log('Firebase load error:', e); }
+            renderComplaints();
+            updateDashboardLive();
+            document.getElementById('lastRefresh').textContent = 'Last updated: ' + new Date().toLocaleTimeString();
         }
 
-        function verifyStaffOTP() {
-            const inputs = document.querySelectorAll('.staff-otp');
-            const otp = Array.from(inputs).map(i => i.value).join('');
-            if (otp === '1234') {
-                document.getElementById('loginOverlay').style.display = 'none';
-                document.getElementById('adminLayout').style.display = 'flex';
+        // ===== RENDER COMPLAINTS TABLE =====
+        function renderComplaints() {
+            const statusFilter = document.getElementById('filterStatus') ? document.getElementById('filterStatus').value : 'all';
+            const areaFilter = document.getElementById('filterArea') ? document.getElementById('filterArea').value : 'all';
+
+            let all = Object.values(complaintsDB);
+            if (statusFilter !== 'all') all = all.filter(c => c.statusClass === statusFilter);
+            if (areaFilter !== 'all') all = all.filter(c => c.area === areaFilter);
+
+            all.sort((a, b) => {
+                const numA = parseInt((a.id || '').split('-').pop()) || 0;
+                const numB = parseInt((b.id || '').split('-').pop()) || 0;
+                return numB - numA;
+            });
+
+            const tbody = document.getElementById('complaintsTableBody');
+            if (!tbody) return;
+
+            if (all.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:40px;color:#999;"><i class="fas fa-inbox" style="font-size:2rem;margin-bottom:10px;display:block;"></i>No complaints found</td></tr>';
             } else {
-                alert('❌ Invalid OTP! Demo OTP: 1234');
-                inputs.forEach(i => { i.value = ''; i.style.borderColor = '#ef4444'; });
-                inputs[0].focus();
+                tbody.innerHTML = all.map(c => {
+                    const displayId = c.govId || `TN/PPN/2026/${(c.id || '').split('-').pop()}`;
+                    const statusLabel = c.status || 'புதியது';
+                    const statusCls = c.statusClass || 'badge-new';
+                    return `<tr>
+                        <td><code style="font-size:0.7rem;">${displayId}</code></td>
+                        <td>${c.citizenName || '-'}</td>
+                        <td>${c.mobileNumber ? c.mobileNumber.substring(0,5) + 'xxxxx' : '-'}</td>
+                        <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${c.title || '-'}</td>
+                        <td>${c.area || '-'}</td>
+                        <td>${c.category || '-'}</td>
+                        <td><span class="badge ${statusCls}">${statusLabel}</span></td>
+                        <td>${c.assigned || '-'}</td>
+                        <td>${c.date || '-'}</td>
+                        <td><button onclick="viewDetail('${c.id}')" style="background:none;border:1px solid #e5e7eb;border-radius:6px;padding:4px 8px;cursor:pointer;font-size:0.7rem;"><i class="fas fa-eye"></i></button></td>
+                    </tr>`;
+                }).join('');
+            }
+
+            const totalAll = Object.values(complaintsDB);
+            document.getElementById('cmpTotal').textContent = totalAll.length;
+            document.getElementById('cmpPending').textContent = totalAll.filter(c => c.statusClass === 'badge-new').length;
+            document.getElementById('cmpAssigned').textContent = totalAll.filter(c => c.statusClass === 'badge-assigned' || c.statusClass === 'badge-progress').length;
+            document.getElementById('cmpResolved').textContent = totalAll.filter(c => c.statusClass === 'badge-resolved').length;
+            document.getElementById('complaintsCount').textContent = all.length + ' shown';
+        }
+
+        function viewDetail(id) {
+            const c = complaintsDB[id];
+            if (!c) return;
+            const displayId = c.govId || `TN/PPN/2026/${(c.id || '').split('-').pop()}`;
+            const statusCls = c.statusClass || 'badge-new';
+            const statusLabel = c.status || 'புதியது';
+            const existing = document.getElementById('complaintDetailModal');
+            if (existing) existing.remove();
+
+            const areaVolunteers = volunteersData.filter(v => {
+                if (!c.area) return false;
+                return c.area.toLowerCase().includes(v.area.toLowerCase()) || v.area.toLowerCase().includes(c.area.toLowerCase());
+            });
+            const otherVolunteers = volunteersData.filter(v => {
+                if (!c.area) return true;
+                return !c.area.toLowerCase().includes(v.area.toLowerCase()) && !v.area.toLowerCase().includes(c.area.toLowerCase());
+            });
+            let volOptions = '';
+            if (areaVolunteers.length > 0) {
+                volOptions += `<optgroup label="📍 ${c.area} Area Volunteers">`;
+                volOptions += areaVolunteers.map(v => `<option value="${v.name} (${v.role})" ${(c.assigned || '').includes(v.name.split(' ').pop()) ? 'selected' : ''}>${v.name} - ${v.ward} (${v.role})</option>`).join('');
+                volOptions += `</optgroup>`;
+            }
+            if (otherVolunteers.length > 0) {
+                volOptions += `<optgroup label="🌐 Other Area Volunteers">`;
+                volOptions += otherVolunteers.map(v => `<option value="${v.name} (${v.role})">${v.name} - ${v.area} (${v.role})</option>`).join('');
+                volOptions += `</optgroup>`;
+            }
+
+            const statusOptions = [
+                { value: 'badge-new', label: 'புதியது (New)', status: 'புதியது' },
+                { value: 'badge-assigned', label: 'ஒதுக்கப்பட்டது (Assigned)', status: 'ஒதுக்கப்பட்டது' },
+                { value: 'badge-progress', label: 'பணியில் (In Progress)', status: 'பணியில்' },
+                { value: 'badge-escalated', label: '⚠️ Escalated', status: '⚠️ Escalated' },
+                { value: 'badge-resolved', label: 'தீர்வு ✓ (Resolved)', status: 'தீர்வு ✓' }
+            ];
+            const statusOpts = statusOptions.map(s => `<option value="${s.value}" ${statusCls === s.value ? 'selected' : ''}>${s.label}</option>`).join('');
+
+            const modal = document.createElement('div');
+            modal.id = 'complaintDetailModal';
+            modal.className = 'detail-modal-overlay';
+            modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+            modal.innerHTML = `
+                <div class="detail-modal-box">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;">
+                        <h3 style="margin:0;"><i class="fas fa-clipboard-list"></i> Complaint Detail</h3>
+                        <button onclick="document.getElementById('complaintDetailModal').remove()" style="background:none;border:none;font-size:1.3rem;cursor:pointer;color:#999;">&times;</button>
+                    </div>
+                    <div style="background:#f0fdf4;padding:12px;border-radius:10px;margin-bottom:15px;text-align:center;">
+                        <code style="font-size:0.9rem;font-weight:700;color:var(--admin-primary);">${displayId}</code>
+                        <span class="badge ${statusCls}" style="margin-left:10px;">${statusLabel}</span>
+                    </div>
+                    <div class="detail-row"><span class="dlabel">📝 Complaint</span><span class="dvalue">${c.title || '-'}</span></div>
+                    <div class="detail-row"><span class="dlabel">📍 Area</span><span class="dvalue">${c.area || '-'}</span></div>
+                    <div class="detail-row"><span class="dlabel">🏷️ Category</span><span class="dvalue">${c.category || '-'}</span></div>
+                    <div class="detail-row"><span class="dlabel">👤 Citizen</span><span class="dvalue">${c.citizenName || '-'}</span></div>
+                    <div class="detail-row"><span class="dlabel">📱 Mobile</span><span class="dvalue">${c.mobileNumber || '-'}</span></div>
+                    <div class="detail-row"><span class="dlabel">🔧 Assigned To</span><span class="dvalue">${c.assigned || 'Not assigned'}</span></div>
+                    <div class="detail-row"><span class="dlabel">📅 Date</span><span class="dvalue">${c.date || '-'}</span></div>
+                    ${c.location && c.location !== 'இடம் குறிப்பிடப்படவில்லை' ? `<div class="detail-row"><span class="dlabel">📌 Location</span><span class="dvalue">${c.location}</span></div>` : ''}
+                    ${c.address ? `<div class="detail-row"><span class="dlabel">🏠 Address</span><span class="dvalue">${c.address}</span></div>` : ''}
+                    ${c.description ? `<div class="detail-row"><span class="dlabel">📄 Description</span><span class="dvalue" style="white-space:pre-wrap;font-size:0.75rem;">${c.description}</span></div>` : ''}
+                    
+                    <!-- ASSIGN VOLUNTEER SECTION -->
+                    <div style="margin-top:18px;padding:15px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;">
+                        <h4 style="font-size:0.85rem;margin:0 0 10px;color:#1d4ed8;"><i class="fas fa-user-plus"></i> Assign Volunteer</h4>
+                        <select id="modalAssignVolunteer" style="width:100%;padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:0.8rem;margin-bottom:8px;">
+                            <option value="">-- Select Volunteer --</option>
+                            ${volOptions}
+                        </select>
+                        <button onclick="assignVolunteerToComplaint('${id}')" style="width:100%;padding:8px;background:linear-gradient(135deg,#2563eb,#1d4ed8);color:white;border:none;border-radius:8px;font-size:0.8rem;cursor:pointer;font-weight:600;">
+                            <i class="fas fa-user-check"></i> Assign & Update
+                        </button>
+                    </div>
+
+                    <!-- CHANGE STATUS SECTION -->
+                    <div style="margin-top:12px;padding:15px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;">
+                        <h4 style="font-size:0.85rem;margin:0 0 10px;color:#059669;"><i class="fas fa-exchange-alt"></i> Change Status</h4>
+                        <select id="modalChangeStatus" style="width:100%;padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:0.8rem;margin-bottom:8px;">
+                            ${statusOpts}
+                        </select>
+                        <button onclick="changeComplaintStatus('${id}')" style="width:100%;padding:8px;background:linear-gradient(135deg,#059669,#047857);color:white;border:none;border-radius:8px;font-size:0.8rem;cursor:pointer;font-weight:600;">
+                            <i class="fas fa-sync-alt"></i> Update Status
+                        </button>
+                    </div>
+
+                    <div style="margin-top:15px;display:flex;gap:8px;">
+                        <button onclick="document.getElementById('complaintDetailModal').remove()" style="flex:1;padding:10px;background:#f3f4f6;border:none;border-radius:8px;cursor:pointer;font-size:0.8rem;">Close</button>
+                    </div>
+                </div>`;
+            document.body.appendChild(modal);
+        }
+
+        // ===== ASSIGN VOLUNTEER TO COMPLAINT =====
+        async function assignVolunteerToComplaint(complaintId) {
+            const volSelect = document.getElementById('modalAssignVolunteer');
+            const selectedVol = volSelect.value;
+            if (!selectedVol) { alert('Please select a volunteer!'); return; }
+
+            complaintsDB[complaintId].assigned = selectedVol;
+            if (complaintsDB[complaintId].statusClass === 'badge-new') {
+                complaintsDB[complaintId].status = 'ஒதுக்கப்பட்டது';
+                complaintsDB[complaintId].statusClass = 'badge-assigned';
+            }
+
+            try {
+                if (typeof db !== 'undefined') {
+                    await db.collection('vtm_ppn_complaints').doc(complaintId).update({
+                        assigned: selectedVol,
+                        status: complaintsDB[complaintId].status,
+                        statusClass: complaintsDB[complaintId].statusClass,
+                        updatedAt: new Date().toISOString()
+                    });
+                    console.log('✅ Volunteer assigned in Firebase:', complaintId, selectedVol);
+                }
+            } catch (e) { console.log('Firebase assign error:', e); }
+
+            document.getElementById('complaintDetailModal').remove();
+            await loadFromFirebase();
+            alert(`✅ ${selectedVol} assigned to complaint!`);
+        }
+
+        // ===== CHANGE COMPLAINT STATUS =====
+        async function changeComplaintStatus(complaintId) {
+            const statusSelect = document.getElementById('modalChangeStatus');
+            const newStatusClass = statusSelect.value;
+            const statusMap = {
+                'badge-new': 'புதியது',
+                'badge-assigned': 'ஒதுக்கப்பட்டது',
+                'badge-progress': 'பணியில்',
+                'badge-escalated': '⚠️ Escalated',
+                'badge-resolved': 'தீர்வு ✓'
+            };
+            const newStatus = statusMap[newStatusClass] || 'புதியது';
+
+            complaintsDB[complaintId].status = newStatus;
+            complaintsDB[complaintId].statusClass = newStatusClass;
+
+            try {
+                if (typeof db !== 'undefined') {
+                    await db.collection('vtm_ppn_complaints').doc(complaintId).update({
+                        status: newStatus,
+                        statusClass: newStatusClass,
+                        updatedAt: new Date().toISOString()
+                    });
+                    console.log('✅ Status updated in Firebase:', complaintId, newStatus);
+                }
+            } catch (e) { console.log('Firebase status update error:', e); }
+
+            document.getElementById('complaintDetailModal').remove();
+            renderComplaints();
+            updateDashboardLive();
+            alert(`✅ Status changed to: ${newStatus}`);
+        }
+
+        // ===== MARK RESOLVED FROM VOLUNTEER PAGE =====
+        async function markResolvedFromVolunteer(complaintId) {
+            if (!confirm('Mark this complaint as Resolved?')) return;
+
+            complaintsDB[complaintId].status = 'தீர்வு ✓';
+            complaintsDB[complaintId].statusClass = 'badge-resolved';
+
+            try {
+                if (typeof db !== 'undefined') {
+                    await db.collection('vtm_ppn_complaints').doc(complaintId).update({
+                        status: 'தீர்வு ✓',
+                        statusClass: 'badge-resolved',
+                        resolvedAt: new Date().toISOString(),
+                        updatedAt: new Date().toISOString()
+                    });
+                    console.log('✅ Marked resolved in Firebase:', complaintId);
+                }
+            } catch (e) { console.log('Firebase resolve error:', e); }
+
+            document.getElementById('complaintDetailModal').remove();
+            renderComplaints();
+            renderVolunteers();
+            updateDashboardLive();
+            alert('✅ Complaint marked as Resolved!');
+        }
+
+        // Sidebar navigation
+        document.querySelectorAll('.sidebar-nav a[data-section]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+                link.classList.add('active');
+                document.querySelectorAll('.admin-section').forEach(s => s.style.display = 'none');
+                const sec = document.getElementById('sec-' + link.dataset.section);
+                if (sec) sec.style.display = 'block';
+                document.querySelector('.admin-topbar h2').innerHTML = `<i class="${link.querySelector('i').className}"></i> ${link.textContent.trim()}`;
+                if (link.dataset.section === 'complaints') loadFromFirebase();
+                if (link.dataset.section === 'volunteers') renderVolunteers();
+                if (link.dataset.section === 'dashboard') updateDashboardLive();
+            });
+        });
+
+        // ===== STAFF LOGIN SYSTEM =====
+        let currentStaffUser = JSON.parse(localStorage.getItem('vtm_ppn_admin_staff') || 'null');
+        let staffAccounts = JSON.parse(localStorage.getItem('vtm_ppn_staff_accounts') || '{}');
+
+        if (!staffAccounts['admin']) {
+            staffAccounts['admin'] = { username: 'admin', password: 'admin123', name: 'Admin User', mobile: '9999999999', role: 'Office Manager', area: 'All Areas', staffId: 'STAFF-001', registeredAt: '2026-01-01' };
+            localStorage.setItem('vtm_ppn_staff_accounts', JSON.stringify(staffAccounts));
+        }
+
+        if (currentStaffUser) {
+            document.getElementById('adminLoginOverlay').style.display = 'none';
+            document.getElementById('adminLayout').style.display = 'flex';
+            setTimeout(() => { updateStaffTopbar(); loadFromFirebase(); loadVolunteersFromFirebase(); }, 300);
+        }
+
+        function showRegisterView() {
+            document.getElementById('loginFormView').classList.add('hidden');
+            document.getElementById('registerFormView').classList.remove('hidden');
+        }
+        function showLoginView() {
+            document.getElementById('registerFormView').classList.add('hidden');
+            document.getElementById('loginFormView').classList.remove('hidden');
+        }
+
+        function staffLogin() {
+            const username = document.getElementById('loginUsername').value.trim().toLowerCase();
+            const password = document.getElementById('loginPassword').value;
+            if (!username || !password) { alert('Username and Password required!'); return; }
+            const account = staffAccounts[username];
+            if (!account) { alert('❌ Account not found! Please register first.'); return; }
+            if (account.password !== password) { alert('❌ Wrong password! Try again.'); document.getElementById('loginPassword').value = ''; return; }
+            currentStaffUser = { ...account, lastLogin: new Date().toISOString() };
+            localStorage.setItem('vtm_ppn_admin_staff', JSON.stringify(currentStaffUser));
+            document.getElementById('adminLoginOverlay').style.display = 'none';
+            document.getElementById('adminLayout').style.display = 'flex';
+            updateStaffTopbar();
+            setTimeout(() => { loadFromFirebase(); loadVolunteersFromFirebase(); }, 500);
+            alert(`👋 Welcome back, ${account.name}!`);
+        }
+
+        function staffRegister() {
+            const name = document.getElementById('regName').value.trim();
+            const mobile = document.getElementById('regMobile').value.trim();
+            const role = document.getElementById('regRole').value;
+            const area = document.getElementById('regArea').value;
+            const username = document.getElementById('regUsername').value.trim().toLowerCase();
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
+
+            if (!name) { alert('Please enter your full name!'); return; }
+            if (!mobile || mobile.length < 10) { alert('Please enter valid mobile number!'); return; }
+            if (!role) { alert('Please select your role!'); return; }
+            if (!area) { alert('Please select your area!'); return; }
+            if (!username || username.length < 3) { alert('Username must be at least 3 characters!'); return; }
+            if (staffAccounts[username]) { alert('❌ Username already exists! Choose different one.'); return; }
+            if (!password || password.length < 4) { alert('Password must be at least 4 characters!'); return; }
+            if (password !== confirmPassword) { alert('❌ Passwords do not match!'); return; }
+
+            const staffId = 'STAFF-' + String(Object.keys(staffAccounts).length + 1).padStart(3, '0');
+            const newAccount = { username, password, name, mobile, role, area, staffId, registeredAt: new Date().toISOString() };
+            staffAccounts[username] = newAccount;
+            localStorage.setItem('vtm_ppn_staff_accounts', JSON.stringify(staffAccounts));
+
+            try {
+                if (typeof db !== 'undefined') {
+                    db.collection('vtm_ppn_staff').doc(username).set({ ...newAccount, password: '***' });
+                }
+            } catch(e) { console.log('Staff Firebase save error:', e); }
+
+            currentStaffUser = { ...newAccount, lastLogin: new Date().toISOString() };
+            localStorage.setItem('vtm_ppn_admin_staff', JSON.stringify(currentStaffUser));
+            document.getElementById('adminLoginOverlay').style.display = 'none';
+            document.getElementById('adminLayout').style.display = 'flex';
+            updateStaffTopbar();
+            setTimeout(() => { loadFromFirebase(); loadVolunteersFromFirebase(); }, 500);
+            alert(`✅ Registration Successful!\n\nWelcome, ${name}!\nStaff ID: ${staffId}\nUsername: ${username}\n\nUse these credentials to login next time.`);
+        }
+
+        function updateStaffTopbar() {
+            if (!currentStaffUser) return;
+            const topbarUser = document.getElementById('staffUserDisplay');
+            if (topbarUser) {
+                topbarUser.innerHTML = `👤 <strong>${currentStaffUser.name}</strong> <span style="font-size:0.65rem;background:#d1fae5;color:#059669;padding:2px 6px;border-radius:4px;margin-left:5px;">${currentStaffUser.role}</span>`;
             }
         }
 
-        // Allow Enter key on mobile input
-        document.getElementById('staffMobile').addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') sendStaffOTP();
-        });
+        // Logout
+        document.getElementById('logoutBtn').onclick = (e) => {
+            e.preventDefault();
+            currentStaffUser = null;
+            localStorage.removeItem('vtm_ppn_admin_staff');
+            document.getElementById('loginUsername').value = '';
+            document.getElementById('loginPassword').value = '';
+            showLoginView();
+            document.getElementById('adminLayout').style.display = 'none';
+            document.getElementById('adminLoginOverlay').style.display = 'flex';
+        };
+
+        document.getElementById('loginPassword').addEventListener('keydown', (e) => { if (e.key === 'Enter') staffLogin(); });
+        document.getElementById('loginUsername').addEventListener('keydown', (e) => { if (e.key === 'Enter') document.getElementById('loginPassword').focus(); });
+
+        // Load staff accounts from Firebase
+        async function loadStaffAccounts() {
+            try {
+                if (typeof db !== 'undefined') {
+                    const snapshot = await db.collection('vtm_ppn_staff').get();
+                    snapshot.forEach(doc => {
+                        if (!staffAccounts[doc.id]) { staffAccounts[doc.id] = doc.data(); }
+                    });
+                    localStorage.setItem('vtm_ppn_staff_accounts', JSON.stringify(staffAccounts));
+                }
+            } catch(e) { console.log('Load staff accounts error:', e); }
+        }
+        setTimeout(loadStaffAccounts, 1000);
+
+        // Post Update
+        function postAdminUpdate() {
+            const tag = document.getElementById('adminUpdateTag').value;
+            const title = document.getElementById('adminUpdateTitle').value;
+            const content = document.getElementById('adminUpdateContent').value;
+            if (!title || !content) { alert('Title and Content required!'); return; }
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            const newItem = document.createElement('div');
+            newItem.style.cssText = 'padding:12px;border:1px solid #f3f4f6;border-radius:8px;margin-bottom:10px;';
+            newItem.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;"><span style="font-size:0.7rem;background:#fef3c7;color:#d97706;padding:2px 8px;border-radius:4px;">${tag}</span><span style="font-size:0.7rem;color:#999;">${dateStr}</span></div><h4 style="font-size:0.85rem;margin:5px 0;">${title}</h4><p style="font-size:0.75rem;color:#666;">${content}</p>`;
+            const list = document.getElementById('adminUpdatesList');
+            list.insertBefore(newItem, list.firstChild);
+            document.getElementById('adminUpdateTitle').value = '';
+            document.getElementById('adminUpdateContent').value = '';
+
+            // Save to Firebase
+            try {
+                if (typeof db !== 'undefined') {
+                    db.collection('vtm_ppn_updates').add({ tag, title, content, date: dateStr, createdAt: new Date().toISOString(), postedBy: currentStaffUser ? currentStaffUser.name : 'Admin' });
+                }
+            } catch(e) { console.log('Update save error:', e); }
+
+            alert('✅ Update published successfully!');
+        }
+
+        // ===== VOLUNTEER MANAGEMENT SYSTEM =====
+        let volunteersData = [
+            { id: 1, name: 'Mr. Ibrahim Khan', initials: 'IK', area: 'Papanasam Town', ward: 'Ward 5', role: 'Coordinator', resolved: ['PPN-2026-00121'], resolvedTitles: ['சாலையில் பள்ளம் - Papanasam Main Road'] },
+            { id: 2, name: 'Mr. Farooq Ahmed', initials: 'FA', area: 'Kabistalam', ward: 'Ward 8', role: 'Coordinator', resolved: ['PPN-2026-00122'], resolvedTitles: ['Street Light வேலை செய்யல - Kabistalam 3rd Cross'] },
+            { id: 3, name: 'Mr. Rafiq', initials: 'RF', area: 'Thiruvaigavur', ward: 'Ward 12', role: 'Coordinator', resolved: ['PPN-2026-00123'], resolvedTitles: ['Drainage overflow - Thiruvaigavur Bus Stand அருகில்'] },
+            { id: 4, name: 'Mr. Selvam', initials: 'SV', area: 'Adhanur', ward: 'Ward 3', role: 'Coordinator', resolved: [], resolvedTitles: [] },
+            { id: 5, name: 'Mrs. Fatima', initials: 'FT', area: 'Swamimalai', ward: 'Ward 15', role: 'Coordinator', resolved: [], resolvedTitles: [] },
+            { id: 6, name: 'Mr. Ganesh', initials: 'GN', area: 'Ammapettai', ward: 'Ward 9', role: 'Coordinator', resolved: [], resolvedTitles: [] },
+            { id: 7, name: 'Mr. Hussain', initials: 'HS', area: 'Valangaiman', ward: 'Ward 7', role: 'Coordinator', resolved: [], resolvedTitles: [] }
+        ];
+
+        function renderVolunteers() {
+            const all = Object.values(complaintsDB);
+            volunteersData.forEach(vol => {
+                const assigned = all.filter(c => c.assigned && c.assigned.includes(vol.name.split(' ').pop()));
+                const resolvedByVol = assigned.filter(c => c.statusClass === 'badge-resolved');
+                resolvedByVol.forEach(c => {
+                    if (!vol.resolved.includes(c.id)) { vol.resolved.push(c.id); vol.resolvedTitles.push(c.title); }
+                });
+            });
+
+            const container = document.getElementById('volunteerListContainer');
+            if (!container) return;
+            container.innerHTML = volunteersData.map(vol => {
+                const resolvedCount = vol.resolved.length;
+                return `<div class="vol-card" style="cursor:pointer;" onclick="showVolunteerResolved(${vol.id})">
+                    <div class="vol-avatar">${vol.initials}</div>
+                    <div class="vol-info"><h4>${vol.name}</h4><p>${vol.ward} - ${vol.area} | ${vol.role}</p></div>
+                    <div class="vol-stats"><div class="num">${resolvedCount}</div><div class="lbl">Resolved</div></div>
+                </div>`;
+            }).join('');
+
+            document.getElementById('volTotal').textContent = volunteersData.length;
+            document.getElementById('dashVolunteers').textContent = volunteersData.length;
+            const topVol = [...volunteersData].sort((a, b) => b.resolved.length - a.resolved.length)[0];
+            if (topVol) document.getElementById('volTop').textContent = topVol.name.split(' ').slice(0, 2).join(' ');
+        }
+
+        function showVolunteerResolved(volId) {
+            const vol = volunteersData.find(v => v.id === volId);
+            if (!vol) return;
+            const all = Object.values(complaintsDB);
+            const assigned = all.filter(c => c.assigned && c.assigned.includes(vol.name.split(' ').pop()));
+            
+            const existing = document.getElementById('complaintDetailModal');
+            if (existing) existing.remove();
+            const modal = document.createElement('div');
+            modal.id = 'complaintDetailModal';
+            modal.className = 'detail-modal-overlay';
+            modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+
+            let complaintsHTML = '';
+            if (assigned.length > 0) {
+                complaintsHTML = assigned.map(c => {
+                    const displayId = c.govId || `TN/PPN/2026/${(c.id || '').split('-').pop()}`;
+                    const isResolved = c.statusClass === 'badge-resolved';
+                    const resolveBtn = isResolved ? '' : `<button onclick="markResolvedFromVolunteer('${c.id}')" style="margin-top:6px;padding:5px 10px;background:#059669;color:white;border:none;border-radius:6px;font-size:0.7rem;cursor:pointer;font-weight:600;"><i class="fas fa-check"></i> Mark Resolved</button>`;
+                    return `<div style="padding:10px;border:1px solid ${isResolved ? '#bbf7d0' : '#f3f4f6'};border-radius:8px;margin-bottom:8px;background:${isResolved ? '#f0fdf4' : 'white'};">
+                        <div style="display:flex;justify-content:space-between;align-items:center;">
+                            <code style="font-size:0.7rem;color:var(--admin-primary);">${displayId}</code>
+                            <span class="badge ${c.statusClass || 'badge-new'}" style="font-size:0.65rem;">${c.status || 'புதியது'}</span>
+                        </div>
+                        <p style="font-size:0.8rem;font-weight:600;margin:5px 0 2px;">${c.title || '-'}</p>
+                        <p style="font-size:0.7rem;color:#666;">${c.area} | ${c.category} | ${c.date}</p>
+                        ${resolveBtn}
+                    </div>`;
+                }).join('');
+            } else {
+                complaintsHTML = '<p style="text-align:center;color:#999;padding:20px;">No complaints assigned yet</p>';
+            }
+
+            modal.innerHTML = `
+                <div class="detail-modal-box">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;">
+                        <h3 style="margin:0;"><i class="fas fa-user"></i> ${vol.name}</h3>
+                        <button onclick="document.getElementById('complaintDetailModal').remove()" style="background:none;border:none;font-size:1.3rem;cursor:pointer;color:#999;">&times;</button>
+                    </div>
+                    <div style="background:#f0fdf4;padding:10px;border-radius:8px;margin-bottom:15px;display:flex;gap:15px;justify-content:center;">
+                        <div style="text-align:center;"><span style="font-size:1.3rem;font-weight:800;color:var(--admin-primary);">${assigned.length}</span><p style="font-size:0.65rem;color:#666;">Total Assigned</p></div>
+                        <div style="text-align:center;"><span style="font-size:1.3rem;font-weight:800;color:#059669;">${assigned.filter(c => c.statusClass === 'badge-resolved').length}</span><p style="font-size:0.65rem;color:#666;">Resolved</p></div>
+                        <div style="text-align:center;"><span style="font-size:1.3rem;font-weight:800;color:#d97706;">${assigned.filter(c => c.statusClass !== 'badge-resolved').length}</span><p style="font-size:0.65rem;color:#666;">Pending</p></div>
+                    </div>
+                    <p style="font-size:0.75rem;color:#666;margin-bottom:10px;">${vol.ward} - ${vol.area} | ${vol.role}</p>
+                    <h4 style="font-size:0.85rem;margin-bottom:10px;">📋 Assigned Complaints:</h4>
+                    ${complaintsHTML}
+                    <button onclick="document.getElementById('complaintDetailModal').remove()" style="width:100%;margin-top:10px;padding:10px;background:#f3f4f6;border:none;border-radius:8px;cursor:pointer;font-size:0.8rem;">Close</button>
+                </div>`;
+            document.body.appendChild(modal);
+        }
+
+        function addNewVolunteer() {
+            const name = document.getElementById('newVolName').value.trim();
+            const area = document.getElementById('newVolArea').value;
+            const ward = document.getElementById('newVolWard').value.trim() || 'Ward -';
+            const role = document.getElementById('newVolRole').value;
+            if (!name) { alert('Volunteer name required!'); return; }
+            const initials = name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+            const newVol = { id: volunteersData.length + 1, name: name, initials: initials, area: area, ward: ward, role: role, resolved: [], resolvedTitles: [] };
+            volunteersData.push(newVol);
+            document.getElementById('newVolName').value = '';
+            document.getElementById('newVolWard').value = '';
+            renderVolunteers();
+            saveVolunteersToFirebase();
+            alert(`✅ ${name} added as ${role} for ${area}!`);
+        }
+
+        // Save volunteers to Firebase
+        async function saveVolunteersToFirebase() {
+            try {
+                if (typeof db !== 'undefined') {
+                    const saveData = volunteersData.map(v => ({ id: v.id, name: v.name, initials: v.initials, area: v.area, ward: v.ward, role: v.role }));
+                    await db.collection('vtm_ppn_volunteers').doc('volunteer_list').set({ list: saveData, updatedAt: new Date().toISOString() });
+                    console.log('✅ Volunteers saved to Firebase:', saveData.length);
+                } else {
+                    localStorage.setItem('vtm_ppn_volunteers', JSON.stringify(volunteersData.map(v => ({ id: v.id, name: v.name, initials: v.initials, area: v.area, ward: v.ward, role: v.role }))));
+                }
+            } catch (e) {
+                console.log('Save volunteers error (using localStorage fallback):', e);
+                localStorage.setItem('vtm_ppn_volunteers', JSON.stringify(volunteersData.map(v => ({ id: v.id, name: v.name, initials: v.initials, area: v.area, ward: v.ward, role: v.role }))));
+            }
+        }
+
+        // Load volunteers from Firebase
+        async function loadVolunteersFromFirebase() {
+            try {
+                if (typeof db !== 'undefined') {
+                    const docSnap = await db.collection('vtm_ppn_volunteers').doc('volunteer_list').get();
+                    if (docSnap.exists && docSnap.data().list) {
+                        const saved = docSnap.data().list;
+                        console.log('✅ Loaded volunteers from Firebase:', saved.length);
+                        saved.forEach(sv => {
+                            const exists = volunteersData.find(v => v.name === sv.name);
+                            if (!exists) { volunteersData.push({ ...sv, resolved: [], resolvedTitles: [] }); }
+                        });
+                    }
+                } else {
+                    const local = localStorage.getItem('vtm_ppn_volunteers');
+                    if (local) {
+                        const saved = JSON.parse(local);
+                        saved.forEach(sv => {
+                            const exists = volunteersData.find(v => v.name === sv.name);
+                            if (!exists) { volunteersData.push({ ...sv, resolved: [], resolvedTitles: [] }); }
+                        });
+                    }
+                }
+            } catch (e) {
+                console.log('Load volunteers error (trying localStorage):', e);
+                const local = localStorage.getItem('vtm_ppn_volunteers');
+                if (local) {
+                    const saved = JSON.parse(local);
+                    saved.forEach(sv => {
+                        const exists = volunteersData.find(v => v.name === sv.name);
+                        if (!exists) { volunteersData.push({ ...sv, resolved: [], resolvedTitles: [] }); }
+                    });
+                }
+            }
+            renderVolunteers();
+        }
+
+        // ===== UPDATE DASHBOARD LIVE FROM FIREBASE DATA =====
+        function updateDashboardLive() {
+            const all = Object.values(complaintsDB);
+            const total = all.length;
+            const resolved = all.filter(c => c.statusClass === 'badge-resolved').length;
+            const pending = all.filter(c => c.statusClass === 'badge-new').length;
+            const escalated = all.filter(c => c.status && c.status.includes('Escalated')).length;
+            const today = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            const todayCount = all.filter(c => c.date === today).length;
+            const resRate = total > 0 ? ((resolved / total) * 100).toFixed(1) : '0.0';
+
+            document.getElementById('dashTotal').textContent = total;
+            document.getElementById('dashPending').textContent = pending;
+            document.getElementById('dashResolved').textContent = resolved;
+            document.getElementById('dashToday').textContent = todayCount;
+            document.getElementById('dashEscalated').textContent = escalated;
+            document.getElementById('dashResRate').textContent = resRate + '%';
+
+            // Area-wise chart
+            const areaCounts = {};
+            all.forEach(c => { if (c.area) areaCounts[c.area] = (areaCounts[c.area] || 0) + 1; });
+            const sortedAreas = Object.entries(areaCounts).sort((a, b) => b[1] - a[1]);
+            const maxArea = sortedAreas.length > 0 ? sortedAreas[0][1] : 1;
+            const areaColors = ['#0d6b3a','#059669','#10b981','#34d399','#6ee7b7','#a7f3d0','#d1fae5','#2563eb'];
+            const areaContainer = document.getElementById('areaChartContainer');
+            if (areaContainer) {
+                areaContainer.innerHTML = sortedAreas.map((item, i) => {
+                    const pct = Math.round((item[1] / maxArea) * 100);
+                    const color = areaColors[i % areaColors.length];
+                    return `<div class="chart-item"><span class="label">${item[0]}</span><div class="bar"><div class="bar-fill" style="width:${pct}%;background:${color};">${item[1]}</div></div></div>`;
+                }).join('') || '<p style="color:#999;font-size:0.8rem;">No data</p>';
+            }
+
+            // Category-wise chart
+            const catCounts = {};
+            all.forEach(c => { if (c.category) catCounts[c.category] = (catCounts[c.category] || 0) + 1; });
+            const sortedCats = Object.entries(catCounts).sort((a, b) => b[1] - a[1]);
+            const maxCat = sortedCats.length > 0 ? sortedCats[0][1] : 1;
+            const catColors = ['#0d6b3a','#7c3aed','#2563eb','#0891b2','#059669','#d97706','#db2777','#6366f1'];
+            const catContainer = document.getElementById('categoryChartContainer');
+            if (catContainer) {
+                catContainer.innerHTML = sortedCats.map((item, i) => {
+                    const pct = Math.round((item[1] / maxCat) * 100);
+                    const color = catColors[i % catColors.length];
+                    return `<div class="chart-item"><span class="label">${item[0]}</span><div class="bar"><div class="bar-fill" style="width:${pct}%;background:${color};">${item[1]}</div></div></div>`;
+                }).join('') || '<p style="color:#999;font-size:0.8rem;">No data</p>';
+            }
+
+            // Latest complaints table (top 10)
+            const sorted = [...all].sort((a, b) => {
+                const numA = parseInt((a.id || '').split('-').pop()) || 0;
+                const numB = parseInt((b.id || '').split('-').pop()) || 0;
+                return numB - numA;
+            }).slice(0, 10);
+            const dashBody = document.getElementById('dashTableBody');
+            if (dashBody) {
+                dashBody.innerHTML = sorted.map(c => {
+                    const displayId = c.govId || `TN/PPN/2026/${(c.id || '').split('-').pop()}`;
+                    return `<tr><td><code style="font-size:0.65rem;">${displayId}</code></td><td>${c.citizenName || '-'}</td><td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${c.title || '-'}</td><td>${c.area || '-'}</td><td>${c.category || '-'}</td><td><span class="badge ${c.statusClass || 'badge-new'}">${c.status || 'புதியது'}</span></td><td>${c.assigned || '-'}</td><td>${c.date || '-'}</td></tr>`;
+                }).join('');
+            }
+        }
+
+        // Initial render
+        renderComplaints();
+        updateDashboardLive();
     </script>
 </body>
 </html>
