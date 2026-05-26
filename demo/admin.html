@@ -418,13 +418,8 @@
     <script src="firebase-db.js"></script>
 
     <script>
-        // ===== COMPLAINTS DATA (local + Firebase) =====
-        let complaintsDB = {
-            'PPN-2026-00121': { id: 'PPN-2026-00121', govId: 'TN/PPN/PTN/2026/00121', title: 'சாலையில் பள்ளம் - Papanasam Main Road', category: 'சாலைகள்', area: 'Papanasam Town', citizenName: 'ராஜேஷ்', mobileNumber: '9876543210', assigned: 'Highway Dept - Mr. Ibrahim', date: 'May 20, 2026', status: 'பணியில்', statusClass: 'badge-progress' },
-            'PPN-2026-00122': { id: 'PPN-2026-00122', govId: 'TN/PPN/KBS/2026/00122', title: 'Street Light வேலை செய்யல - Kabistalam 3rd Cross', category: 'மின்சாரம்', area: 'Kabistalam', citizenName: 'சுரேஷ்', mobileNumber: '8765432109', assigned: 'EB Team - Mr. Farooq', date: 'May 21, 2026', status: 'ஒதுக்கப்பட்டது', statusClass: 'badge-assigned' },
-            'PPN-2026-00123': { id: 'PPN-2026-00123', govId: 'TN/PPN/TVR/2026/00123', title: 'Drainage overflow - Thiruvaigavur Bus Stand அருகில்', category: 'வடிகால்', area: 'Thiruvaigavur', citizenName: 'கவிதா', mobileNumber: '7654321098', assigned: 'Corporation Team', date: 'May 19, 2026', status: 'தீர்வு ✓', statusClass: 'badge-resolved' },
-            'PPN-2026-00124': { id: 'PPN-2026-00124', govId: 'TN/PPN/ADR/2026/00124', title: 'குடிநீர் வரவில்லை - Adhanur 3 நாட்கள்', category: 'குடிநீர்', area: 'Adhanur', citizenName: 'முருகன்', mobileNumber: '6543210987', assigned: '-', date: 'May 22, 2026', status: 'புதியது', statusClass: 'badge-new' }
-        };
+        // ===== COMPLAINTS DATA (loaded from Firebase - same as public site) =====
+        let complaintsDB = {};
 
         // ===== LOAD FROM FIREBASE =====
         async function loadFromFirebase() {
@@ -432,16 +427,40 @@
                 if (window.VoiceToMinister_DB) {
                     const fc = await VoiceToMinister_DB.getAllComplaints();
                     if (fc && Object.keys(fc).length > 0) {
-                        Object.keys(fc).forEach(k => { complaintsDB[k] = fc[k]; });
+                        complaintsDB = fc;
                     }
                 } else if (typeof db !== 'undefined') {
                     const snapshot = await db.collection('vtm_ppn_complaints').get();
+                    complaintsDB = {};
                     snapshot.forEach(doc => { complaintsDB[doc.id] = doc.data(); });
                 }
             } catch (e) { console.log('Firebase load error:', e); }
             renderComplaints();
             updateDashboardLive();
             document.getElementById('lastRefresh').textContent = 'Last updated: ' + new Date().toLocaleTimeString();
+        }
+
+        // ===== REAL-TIME LISTENER =====
+        function setupRealtimeListener() {
+            try {
+                if (window.VoiceToMinister_DB) {
+                    VoiceToMinister_DB.onComplaintsChange((updatedComplaints) => {
+                        complaintsDB = updatedComplaints;
+                        renderComplaints();
+                        updateDashboardLive();
+                        document.getElementById('lastRefresh').textContent = 'Live updated: ' + new Date().toLocaleTimeString();
+                        console.log('🔄 Admin: Real-time update -', Object.keys(updatedComplaints).length, 'complaints');
+                    });
+                } else if (typeof db !== 'undefined') {
+                    db.collection('vtm_ppn_complaints').onSnapshot((snapshot) => {
+                        complaintsDB = {};
+                        snapshot.forEach(doc => { complaintsDB[doc.id] = doc.data(); });
+                        renderComplaints();
+                        updateDashboardLive();
+                        document.getElementById('lastRefresh').textContent = 'Live updated: ' + new Date().toLocaleTimeString();
+                    });
+                }
+            } catch (e) { console.log('Real-time listener error:', e); }
         }
 
         // ===== RENDER COMPLAINTS TABLE =====
@@ -701,7 +720,7 @@
         if (currentStaffUser) {
             document.getElementById('adminLoginOverlay').style.display = 'none';
             document.getElementById('adminLayout').style.display = 'flex';
-            setTimeout(() => { updateStaffTopbar(); loadFromFirebase(); loadVolunteersFromFirebase(); }, 300);
+            setTimeout(() => { updateStaffTopbar(); loadFromFirebase(); loadVolunteersFromFirebase(); setupRealtimeListener(); }, 300);
         }
 
         function showRegisterView() {
