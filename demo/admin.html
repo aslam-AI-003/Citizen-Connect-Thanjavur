@@ -616,12 +616,41 @@
                 complaintsDB[complaintId].statusClass = 'badge-assigned';
             }
 
+            // Update timeline
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            let timeline = complaintsDB[complaintId].timeline || [];
+            // Update "துறைக்கு ஒதுக்கப்படும்" step or add assignment step
+            let assignStep = timeline.find(t => t.text && (t.text.includes('ஒதுக்கப்படும்') || t.text.includes('ஒதுக்கப்பட்டது')));
+            if (assignStep) {
+                assignStep.text = `${selectedVol} ஒதுக்கப்பட்டது`;
+                assignStep.time = `${dateStr} - ${timeStr}`;
+                assignStep.state = 'completed';
+            }
+            // Update "ஆய்வு" step to completed
+            let reviewStep = timeline.find(t => t.text && t.text.includes('ஆய்வு'));
+            if (reviewStep && reviewStep.state !== 'completed') {
+                reviewStep.state = 'completed';
+                reviewStep.time = `${dateStr} - ${timeStr}`;
+            }
+            // Set next pending step to active
+            let foundActive = false;
+            timeline.forEach(t => {
+                if (!foundActive && t.state === '' && !t.text.includes('தீர்வு')) {
+                    t.state = 'active';
+                    foundActive = true;
+                }
+            });
+            complaintsDB[complaintId].timeline = timeline;
+
             try {
                 if (typeof db !== 'undefined') {
                     await db.collection('vtm_ppn_complaints').doc(complaintId).update({
                         assigned: selectedVol,
                         status: complaintsDB[complaintId].status,
                         statusClass: complaintsDB[complaintId].statusClass,
+                        timeline: timeline,
                         updatedAt: new Date().toISOString()
                     });
                     console.log('✅ Volunteer assigned in Firebase:', complaintId, selectedVol);
@@ -649,11 +678,40 @@
             complaintsDB[complaintId].status = newStatus;
             complaintsDB[complaintId].statusClass = newStatusClass;
 
+            // Update timeline based on new status
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            let timeline = complaintsDB[complaintId].timeline || [];
+
+            if (newStatusClass === 'badge-assigned') {
+                // Mark review as completed, assignment as active
+                timeline.forEach(t => {
+                    if (t.text && t.text.includes('ஆய்வு') && t.state !== 'completed') { t.state = 'completed'; t.time = `${dateStr} - ${timeStr}`; }
+                    if (t.text && (t.text.includes('ஒதுக்கப்படும்') || t.text.includes('ஒதுக்கப்பட்டது'))) { t.state = 'active'; t.time = `${dateStr} - ${timeStr}`; }
+                });
+            } else if (newStatusClass === 'badge-progress') {
+                // Mark review + assignment as completed, work as active
+                timeline.forEach(t => {
+                    if (t.text && t.text.includes('ஆய்வு')) { t.state = 'completed'; if (t.time.includes('நிலுவை')) t.time = `${dateStr} - ${timeStr}`; }
+                    if (t.text && (t.text.includes('ஒதுக்கப்படும்') || t.text.includes('ஒதுக்கப்பட்டது'))) { t.state = 'completed'; if (t.time.includes('நிலுவை')) t.time = `${dateStr} - ${timeStr}`; }
+                    if (t.text && t.text.includes('தொடங்க')) { t.state = 'active'; t.time = `${dateStr} - ${timeStr}`; }
+                });
+            } else if (newStatusClass === 'badge-resolved') {
+                // Mark all steps as completed
+                timeline.forEach(t => {
+                    t.state = 'completed';
+                    if (t.time.includes('நிலுவை')) t.time = `${dateStr} - ${timeStr}`;
+                });
+            }
+            complaintsDB[complaintId].timeline = timeline;
+
             try {
                 if (typeof db !== 'undefined') {
                     await db.collection('vtm_ppn_complaints').doc(complaintId).update({
                         status: newStatus,
                         statusClass: newStatusClass,
+                        timeline: timeline,
                         updatedAt: new Date().toISOString()
                     });
                     console.log('✅ Status updated in Firebase:', complaintId, newStatus);
