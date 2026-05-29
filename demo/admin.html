@@ -96,15 +96,49 @@
         .detail-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f3f4f6; font-size: 0.8rem; }
         .detail-row .dlabel { color: #666; font-weight: 500; }
         .detail-row .dvalue { font-weight: 600; color: #1f2937; text-align: right; max-width: 60%; }
+        /* Mobile Menu Toggle Button */
+        .mobile-menu-btn { display: none; background: none; border: none; font-size: 1.3rem; color: #374151; cursor: pointer; padding: 5px; }
         /* Responsive */
         @media (max-width: 768px) {
             .admin-sidebar { transform: translateX(-100%); }
             .admin-sidebar.open { transform: translateX(0); }
             .admin-main { margin-left: 0; }
             .admin-grid { grid-template-columns: 1fr; }
-            .stats-row { grid-template-columns: repeat(2, 1fr); }
+            .stats-row { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .stat-card { padding: 14px 12px; gap: 10px; }
+            .stat-card .stat-icon { width: 40px; height: 40px; font-size: 1rem; }
+            .stat-card .stat-info h4 { font-size: 1.2rem; }
+            .stat-card .stat-info p { font-size: 0.7rem; }
             .admin-content { padding: 15px; }
             .admin-topbar { padding: 12px 15px; }
+            .admin-topbar h2 { font-size: 0.95rem; }
+            .mobile-menu-btn { display: block; }
+            /* Table scroll on mobile */
+            .table-scroll-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -15px; padding: 0 15px; }
+            .admin-table { min-width: 700px; font-size: 0.72rem; }
+            .admin-table th, .admin-table td { padding: 8px 6px; white-space: nowrap; }
+            .admin-table td:nth-child(4) { max-width: 120px; white-space: normal; word-break: break-word; }
+            /* Sidebar overlay */
+            .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 99; }
+            .sidebar-overlay.active { display: block; }
+            /* Charts */
+            .chart-item .label { width: 70px; font-size: 0.7rem; }
+            .chart-item .bar { height: 20px; }
+            /* Vol cards */
+            .vol-card { padding: 10px; gap: 8px; }
+            .vol-avatar { width: 35px; height: 35px; font-size: 0.8rem; }
+            .vol-info h4 { font-size: 0.8rem; }
+        }
+        @media (max-width: 480px) {
+            .stats-row { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .stat-card { padding: 12px 10px; }
+            .stat-card .stat-icon { width: 36px; height: 36px; font-size: 0.9rem; border-radius: 8px; }
+            .stat-card .stat-info h4 { font-size: 1rem; }
+            .admin-content { padding: 12px; }
+            .admin-card { padding: 14px; border-radius: 10px; }
+            .admin-card h3 { font-size: 0.85rem; }
+            .admin-table { min-width: 650px; font-size: 0.7rem; }
+            .detail-modal-box { padding: 18px; border-radius: 12px; }
         }
     </style>
 </head>
@@ -167,8 +201,10 @@
 
     <!-- ADMIN LAYOUT -->
     <div class="admin-layout" id="adminLayout" style="display:none;">
+        <!-- Sidebar Overlay for mobile -->
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeMobileSidebar()"></div>
         <!-- SIDEBAR -->
-        <aside class="admin-sidebar">
+        <aside class="admin-sidebar" id="adminSidebar">
             <div class="sidebar-brand">
                 <img src="../assets/minister-photo.jpg" alt="Minister" onerror="this.src='https://ui-avatars.com/api/?name=AM+Shahjahan&background=0d6b3a&color=fff&size=50'">
                 <h3>A.M. Shahjahan</h3>
@@ -192,6 +228,7 @@
         <!-- MAIN CONTENT -->
         <main class="admin-main">
             <div class="admin-topbar">
+                <button class="mobile-menu-btn" onclick="toggleMobileSidebar()"><i class="fas fa-bars"></i></button>
                 <h2><i class="fas fa-tachometer-alt"></i> Minister Dashboard</h2>
                 <div class="topbar-right">
                     <div class="notif-bell" onclick="alert('3 new notifications')"><i class="fas fa-bell"></i><span class="badge">3</span></div>
@@ -1128,6 +1165,26 @@
                 }).join('');
             }
         }
+
+        // ===== MOBILE SIDEBAR TOGGLE =====
+        function toggleMobileSidebar() {
+            const sidebar = document.getElementById('adminSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
+        function closeMobileSidebar() {
+            const sidebar = document.getElementById('adminSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+        }
+        // Close sidebar when clicking a nav link on mobile
+        document.querySelectorAll('.sidebar-nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) closeMobileSidebar();
+            });
+        });
 
         // Initial render
         renderComplaints();
