@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minister Admin Dashboard | Staff Portal - A.M. Shahjahan</title>
+    <title>MLA Admin Dashboard | Staff Portal - R. Vijaysaravanan - Thanjavur</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <style>
-        :root { --sidebar-w: 260px; --admin-primary: #0d6b3a; --admin-primary-dark: #094d2a; --admin-accent: #10b981; }
+        :root { --sidebar-w: 260px; --admin-primary: #dc2626; --admin-primary-dark: #991b1b; --admin-accent: #ef4444; }
         body { background: #f5f5f5; margin: 0; }
         .admin-layout { display: flex; min-height: 100vh; }
         /* Sidebar */
-        .admin-sidebar { width: var(--sidebar-w); background: linear-gradient(180deg, #0a1f0f 0%, #0d3d1f 100%); color: white; position: fixed; height: 100vh; overflow-y: auto; z-index: 100; transition: transform 0.3s; }
+        .admin-sidebar { width: var(--sidebar-w); background: linear-gradient(180deg, #1a1a1a 0%, #2d2d2d 100%); color: white; position: fixed; height: 100vh; overflow-y: auto; z-index: 100; transition: transform 0.3s; }
         .sidebar-brand { padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: center; }
         .sidebar-brand h3 { font-size: 0.95rem; margin: 8px 0 4px; }
         .sidebar-brand p { font-size: 0.7rem; color: rgba(255,255,255,0.6); }
@@ -51,7 +51,7 @@
         .admin-card.full-width { grid-column: 1 / -1; }
         /* Table */
         .admin-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
-        .admin-table th { background: #f0fdf4; padding: 10px 12px; text-align: left; font-weight: 600; color: #374151; border-bottom: 2px solid #e5e7eb; }
+        .admin-table th { background: #fff3e0; padding: 10px 12px; text-align: left; font-weight: 600; color: #374151; border-bottom: 2px solid #e5e7eb; }
         .admin-table td { padding: 10px 12px; border-bottom: 1px solid #f3f4f6; }
         .admin-table tr:hover { background: #f9fafb; }
         .admin-table .badge { padding: 3px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 600; }
@@ -67,7 +67,7 @@
         .chart-item .bar-fill { height: 100%; border-radius: 6px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; font-size: 0.7rem; color: white; font-weight: 600; transition: width 1s ease; }
         /* Volunteer cards */
         .vol-card { display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid #f3f4f6; border-radius: 10px; margin-bottom: 10px; }
-        .vol-card:hover { border-color: var(--admin-primary); background: #f0fdf4; }
+        .vol-card:hover { border-color: var(--admin-primary); background: #fff3e0; }
         .vol-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--admin-primary), var(--admin-primary-dark)); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 0.9rem; }
         .vol-info { flex: 1; }
         .vol-info h4 { font-size: 0.85rem; margin: 0 0 3px; }
@@ -76,7 +76,7 @@
         .vol-stats .num { font-size: 1.1rem; font-weight: 700; color: var(--admin-primary); }
         .vol-stats .lbl { font-size: 0.65rem; color: #666; }
         /* Login overlay */
-        .admin-login-overlay { position: fixed; inset: 0; background: linear-gradient(135deg, #0a1f0f, #0d3d1f); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+        .admin-login-overlay { position: fixed; inset: 0; background: linear-gradient(135deg, #1a1a1a, #2d2d2d); display: flex; align-items: center; justify-content: center; z-index: 9999; }
         .admin-login-box { background: white; border-radius: 16px; padding: 40px; max-width: 400px; width: 90%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
         .admin-login-box .shield { width: 70px; height: 70px; background: linear-gradient(135deg, var(--admin-primary), var(--admin-primary-dark)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
         .admin-login-box .shield i { color: white; font-size: 2rem; }
@@ -148,7 +148,7 @@
         <div class="admin-login-box">
             <div class="shield"><i class="fas fa-shield-alt"></i></div>
             <h2>🔒 Minister Staff Portal</h2>
-            <p>Authorized office staff only - Papanasam Constituency</p>
+            <p>Authorized office staff only - Thanjavur Constituency</p>
             
             <!-- LOGIN FORM -->
             <div id="loginFormView">
@@ -177,13 +177,13 @@
                 <select id="regArea" style="width:100%;padding:12px 16px;border:2px solid #e5e7eb;border-radius:10px;font-size:0.9rem;margin-bottom:10px;outline:none;appearance:auto;">
                     <option value="">-- Assigned Area --</option>
                     <option value="All Areas">🌐 All Areas (Office)</option>
-                    <option value="Papanasam Town">Papanasam Town</option>
-                    <option value="Kabistalam">Kabistalam</option>
-                    <option value="Thiruvaigavur">Thiruvaigavur</option>
-                    <option value="Adhanur">Adhanur</option>
-                    <option value="Swamimalai">Swamimalai</option>
-                    <option value="Ammapettai">Ammapettai</option>
-                    <option value="Valangaiman">Valangaiman</option>
+                    <option value="Thanjavur Fort Area">Thanjavur Fort Area</option>
+                    <option value="Gandhi Nagar">Gandhi Nagar</option>
+                    <option value="New Bus Stand Area">New Bus Stand Area</option>
+                    <option value="Punnainallur">Punnainallur</option>
+                    <option value="Anna Nagar">Anna Nagar</option>
+                    <option value="Karanthai">Karanthai</option>
+                    <option value="East Main Street">East Main Street</option>
                 </select>
                 <div style="border-top:1px solid #e5e7eb;padding-top:12px;margin-top:5px;">
                     <p style="font-size:0.75rem;color:#666;margin-bottom:10px;">🔑 Create Login Credentials</p>
@@ -206,9 +206,9 @@
         <!-- SIDEBAR -->
         <aside class="admin-sidebar" id="adminSidebar">
             <div class="sidebar-brand">
-                <img src="../assets/minister-photo.jpg" alt="Minister" onerror="this.src='https://ui-avatars.com/api/?name=AM+Shahjahan&background=0d6b3a&color=fff&size=50'">
-                <h3>A.M. Shahjahan</h3>
-                <p>Minister of Minority Welfare | பாபநாசம்</p>
+                <img src="vijay.jpg" alt="MLA" onerror="this.src='https://ui-avatars.com/api/?name=R+Vijaysaravanan&background=dc2626&color=fff&size=50'">
+                <h3>R. Vijaysaravanan</h3>
+                <p>MLA - Thanjavur (TVK) | தஞ்சாவூர்</p>
             </div>
             <nav class="sidebar-nav">
                 <div class="sidebar-section">Main</div>
@@ -229,7 +229,7 @@
         <main class="admin-main">
             <div class="admin-topbar">
                 <button class="mobile-menu-btn" onclick="toggleMobileSidebar()"><i class="fas fa-bars"></i></button>
-                <h2><i class="fas fa-tachometer-alt"></i> Minister Dashboard</h2>
+                <h2><i class="fas fa-tachometer-alt"></i> MLA Dashboard</h2>
                 <div class="topbar-right">
                     <div class="notif-bell" onclick="alert('3 new notifications')"><i class="fas fa-bell"></i><span class="badge">3</span></div>
                     <span id="staffUserDisplay" style="font-size:0.8rem;color:#666;">👤 Staff User</span>
@@ -250,10 +250,10 @@
                     </div>
 
                     <!-- Resolution Rate -->
-                    <div class="admin-card full-width" style="margin-bottom:20px;background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1px solid #bbf7d0;">
+                    <div class="admin-card full-width" style="margin-bottom:20px;background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1px solid #fca5a5;">
                         <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;">
-                            <div><h3 style="margin:0;color:#059669;"><i class="fas fa-percentage"></i> Resolution Rate</h3><p style="font-size:0.75rem;color:#666;margin:5px 0 0;">Live from Firebase data</p></div>
-                            <div style="text-align:center;"><span id="dashResRate" style="font-size:2.5rem;font-weight:800;color:#059669;">--%</span><p style="font-size:0.7rem;color:#666;">Resolved / Total</p></div>
+                            <div><h3 style="margin:0;color:#e65100;"><i class="fas fa-percentage"></i> Resolution Rate</h3><p style="font-size:0.75rem;color:#666;margin:5px 0 0;">Live from Firebase data</p></div>
+                            <div style="text-align:center;"><span id="dashResRate" style="font-size:2.5rem;font-weight:800;color:#e65100;">--%</span><p style="font-size:0.7rem;color:#666;">Resolved / Total</p></div>
                             <div style="text-align:center;"><span id="dashAvgTime" style="font-size:1.5rem;font-weight:700;color:#d97706;">1.8 Days</span><p style="font-size:0.7rem;color:#666;">Avg Resolution Time</p></div>
                         </div>
                     </div>
@@ -304,13 +304,13 @@
                             </select>
                             <select id="filterArea" onchange="renderComplaints()" style="padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:0.8rem;">
                                 <option value="all">All Areas</option>
-                                <option value="Papanasam Town">Papanasam Town</option>
-                                <option value="Kabistalam">Kabistalam</option>
-                                <option value="Thiruvaigavur">Thiruvaigavur</option>
-                                <option value="Adhanur">Adhanur</option>
-                                <option value="Swamimalai">Swamimalai</option>
-                                <option value="Ammapettai">Ammapettai</option>
-                                <option value="Valangaiman">Valangaiman</option>
+                                <option value="Thanjavur Fort Area">Thanjavur Fort Area</option>
+                                <option value="Gandhi Nagar">Gandhi Nagar</option>
+                                <option value="New Bus Stand Area">New Bus Stand Area</option>
+                                <option value="Punnainallur">Punnainallur</option>
+                                <option value="Anna Nagar">Anna Nagar</option>
+                                <option value="Karanthai">Karanthai</option>
+                                <option value="East Main Street">East Main Street</option>
                             </select>
                             <button class="btn-login" onclick="loadFromFirebase()" style="padding:8px 16px;font-size:0.8rem;border-radius:8px;">
                                 <i class="fas fa-sync"></i> Refresh
@@ -342,7 +342,7 @@
                         <h3><i class="fas fa-user-plus"></i> Add New Volunteer</h3>
                         <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;">
                             <div style="flex:1;min-width:150px;"><label style="font-size:0.7rem;font-weight:600;display:block;margin-bottom:4px;">Name</label><input type="text" id="newVolName" placeholder="Volunteer Name" style="width:100%;padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:0.8rem;box-sizing:border-box;"></div>
-                            <div style="flex:1;min-width:120px;"><label style="font-size:0.7rem;font-weight:600;display:block;margin-bottom:4px;">Area</label><select id="newVolArea" style="width:100%;padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:0.8rem;"><option>Papanasam Town</option><option>Kabistalam</option><option>Thiruvaigavur</option><option>Adhanur</option><option>Swamimalai</option><option>Ammapettai</option><option>Valangaiman</option></select></div>
+                            <div style="flex:1;min-width:120px;"><label style="font-size:0.7rem;font-weight:600;display:block;margin-bottom:4px;">Area</label><select id="newVolArea" style="width:100%;padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:0.8rem;"><option>Thanjavur Fort Area</option><option>Gandhi Nagar</option><option>New Bus Stand Area</option><option>Punnainallur</option><option>Anna Nagar</option><option>Karanthai</option><option>East Main Street</option></select></div>
                             <div style="flex:0.5;min-width:80px;"><label style="font-size:0.7rem;font-weight:600;display:block;margin-bottom:4px;">Ward</label><input type="text" id="newVolWard" placeholder="Ward 1" style="width:100%;padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:0.8rem;box-sizing:border-box;"></div>
                             <div style="flex:0.5;min-width:100px;"><label style="font-size:0.7rem;font-weight:600;display:block;margin-bottom:4px;">Role</label><select id="newVolRole" style="width:100%;padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:0.8rem;"><option>Coordinator</option><option>Volunteer</option></select></div>
                             <button onclick="addNewVolunteer()" style="padding:8px 16px;background:linear-gradient(135deg,var(--admin-primary),var(--admin-primary-dark));color:white;border:none;border-radius:8px;font-size:0.8rem;cursor:pointer;font-weight:600;"><i class="fas fa-plus"></i> Add</button>
@@ -361,7 +361,7 @@
                         <div class="admin-card"><h3><i class="fas fa-clock"></i> Avg Resolution Time</h3><div style="text-align:center;padding:20px;"><span style="font-size:3rem;font-weight:800;color:var(--admin-primary);">1.8</span><span style="font-size:1.2rem;color:#666;"> Days</span><p style="color:#059669;margin-top:10px;">↓ 20% faster than last month</p></div></div>
                         <div class="admin-card"><h3><i class="fas fa-star"></i> Citizen Satisfaction</h3><div style="text-align:center;padding:20px;"><span style="font-size:3rem;font-weight:800;color:#f59e0b;">4.7</span><span style="font-size:1.2rem;color:#666;">/5 ⭐</span><p style="color:#059669;margin-top:10px;">Based on 756 ratings</p></div></div>
                         <div class="admin-card"><h3><i class="fas fa-chart-pie"></i> Resolution Rate</h3><div style="text-align:center;padding:20px;"><span id="analyticsResRate" style="font-size:3rem;font-weight:800;color:#059669;">84.6%</span><p style="color:#059669;margin-top:10px;">756 of 892 resolved</p></div></div>
-                        <div class="admin-card"><h3><i class="fas fa-fire"></i> Busiest Area</h3><div style="text-align:center;padding:20px;"><span style="font-size:1.5rem;font-weight:800;color:var(--admin-primary);">Papanasam Town</span><p style="margin-top:10px;">198 complaints (22% of total)</p></div></div>
+                        <div class="admin-card"><h3><i class="fas fa-fire"></i> Busiest Area</h3><div style="text-align:center;padding:20px;"><span style="font-size:1.5rem;font-weight:800;color:var(--admin-primary);">Thanjavur Fort Area</span><p style="margin-top:10px;">198 complaints (22% of total)</p></div></div>
                     </div>
                 </div>
 
@@ -378,7 +378,7 @@
                                     <option value="⚠️ அவசரம்">⚠️ அவசரம் (Urgent)</option>
                                 </select>
                             </div>
-                            <input type="text" id="adminUpdateTitle" placeholder="Update Title (e.g., Papanasam சாலை பணி நிறைவு)" style="padding:10px;border:1px solid #e5e7eb;border-radius:8px;font-size:0.85rem;">
+                            <input type="text" id="adminUpdateTitle" placeholder="Update Title (e.g., Thanjavur சாலை பணி நிறைவு)" style="padding:10px;border:1px solid #e5e7eb;border-radius:8px;font-size:0.85rem;">
                             <textarea id="adminUpdateContent" rows="3" placeholder="Full update content in Tamil/English..." style="padding:10px;border:1px solid #e5e7eb;border-radius:8px;font-size:0.85rem;resize:vertical;"></textarea>
                             <button onclick="postAdminUpdate()" style="padding:12px;background:linear-gradient(135deg,var(--admin-primary),var(--admin-primary-dark));color:white;border:none;border-radius:8px;font-size:0.85rem;font-weight:600;cursor:pointer;">
                                 <i class="fas fa-bullhorn"></i> Publish Update
@@ -393,7 +393,7 @@
                                     <span style="font-size:0.7rem;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:4px;">✅ நிறைவு</span>
                                     <span style="font-size:0.7rem;color:#999;">May 20, 2026</span>
                                 </div>
-                                <h4 style="font-size:0.85rem;margin:5px 0;">Papanasam Town - சாலை மேம்பாட்டு பணி தொடக்கம்</h4>
+                                <h4 style="font-size:0.85rem;margin:5px 0;">Thanjavur Fort Area - சாலை மேம்பாட்டு பணி தொடக்கம்</h4>
                                 <p style="font-size:0.75rem;color:#666;">3 கி.மீ சாலை மேம்பாட்டு பணி தொடங்கப்பட்டது. 20 நாட்களில் முடிக்கப்படும்.</p>
                             </div>
                             <div style="padding:12px;border:1px solid #f3f4f6;border-radius:8px;margin-bottom:10px;">
@@ -401,8 +401,8 @@
                                     <span style="font-size:0.7rem;background:#d1fae5;color:#059669;padding:2px 8px;border-radius:4px;">✅ நிறைவு</span>
                                     <span style="font-size:0.7rem;color:#999;">May 18, 2026</span>
                                 </div>
-                                <h4 style="font-size:0.85rem;margin:5px 0;">Kabistalam - 40 புதிய Street Lights நிறுவப்பட்டன</h4>
-                                <p style="font-size:0.75rem;color:#666;">மக்கள் புகாரின் அடிப்படையில் Kabistalam பகுதியில் 40 புதிய LED Street Lights நிறுவப்பட்டுள்ளன.</p>
+                                <h4 style="font-size:0.85rem;margin:5px 0;">Gandhi Nagar - 40 புதிய Street Lights நிறுவப்பட்டன</h4>
+                                <p style="font-size:0.75rem;color:#666;">மக்கள் புகாரின் அடிப்படையில் Gandhi Nagar பகுதியில் 40 புதிய LED Street Lights நிறுவப்பட்டுள்ளன.</p>
                             </div>
                             <div style="padding:12px;border:1px solid #f3f4f6;border-radius:8px;margin-bottom:10px;">
                                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
@@ -421,17 +421,17 @@
                     <div class="admin-card full-width" style="margin-bottom:20px;">
                         <h3><i class="fas fa-bell"></i> Recent Notifications</h3>
                         <div id="notificationsList">
-                            <div style="display:flex;align-items:start;gap:12px;padding:14px;border-left:3px solid var(--admin-primary);background:#f0fdf4;border-radius:0 8px 8px 0;margin-bottom:10px;">
+                            <div style="display:flex;align-items:start;gap:12px;padding:14px;border-left:3px solid var(--admin-primary);background:#fef2f2;border-radius:0 8px 8px 0;margin-bottom:10px;">
                                 <div style="width:36px;height:36px;background:#d1fae5;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;">🚨</div>
-                                <div style="flex:1;"><h4 style="font-size:0.85rem;margin:0 0 3px;">New Complaint Received</h4><p style="font-size:0.75rem;color:#666;margin:0;">குடிநீர் வரவில்லை - Adhanur | ID: TN/PPN/ADR/2026/00125</p><span style="font-size:0.65rem;color:#999;">2 mins ago</span></div>
+                                <div style="flex:1;"><h4 style="font-size:0.85rem;margin:0 0 3px;">New Complaint Received</h4><p style="font-size:0.75rem;color:#666;margin:0;">குடிநீர் வரவில்லை - Punnainallur | ID: TVK/TNJ/2026/00125</p><span style="font-size:0.65rem;color:#999;">2 mins ago</span></div>
                             </div>
                             <div style="display:flex;align-items:start;gap:12px;padding:14px;border-left:3px solid #2563eb;background:#eff6ff;border-radius:0 8px 8px 0;margin-bottom:10px;">
                                 <div style="width:36px;height:36px;background:#dbeafe;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;">👤</div>
-                                <div style="flex:1;"><h4 style="font-size:0.85rem;margin:0 0 3px;">Volunteer Assigned</h4><p style="font-size:0.75rem;color:#666;margin:0;">Mr. Ibrahim assigned to Complaint #00123 - Kabistalam</p><span style="font-size:0.65rem;color:#999;">15 mins ago</span></div>
+                                <div style="flex:1;"><h4 style="font-size:0.85rem;margin:0 0 3px;">Volunteer Assigned</h4><p style="font-size:0.75rem;color:#666;margin:0;">Mr. Murugan assigned to Complaint #00123 - Gandhi Nagar</p><span style="font-size:0.65rem;color:#999;">15 mins ago</span></div>
                             </div>
                             <div style="display:flex;align-items:start;gap:12px;padding:14px;border-left:3px solid #059669;background:#ecfdf5;border-radius:0 8px 8px 0;margin-bottom:10px;">
                                 <div style="width:36px;height:36px;background:#d1fae5;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;">✅</div>
-                                <div style="flex:1;"><h4 style="font-size:0.85rem;margin:0 0 3px;">Complaint Resolved</h4><p style="font-size:0.75rem;color:#666;margin:0;">Drainage overflow - Thiruvaigavur Bus Stand marked as resolved</p><span style="font-size:0.65rem;color:#999;">1 hour ago</span></div>
+                                <div style="flex:1;"><h4 style="font-size:0.85rem;margin:0 0 3px;">Complaint Resolved</h4><p style="font-size:0.75rem;color:#666;margin:0;">Drainage overflow - New Bus Stand Area Bus Stand marked as resolved</p><span style="font-size:0.65rem;color:#999;">1 hour ago</span></div>
                             </div>
                             <div style="display:flex;align-items:start;gap:12px;padding:14px;border-left:3px solid #f59e0b;background:#fffbeb;border-radius:0 8px 8px 0;margin-bottom:10px;">
                                 <div style="width:36px;height:36px;background:#fef3c7;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;">⚠️</div>
@@ -522,7 +522,7 @@
                 tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:40px;color:#999;"><i class="fas fa-inbox" style="font-size:2rem;margin-bottom:10px;display:block;"></i>No complaints found</td></tr>';
             } else {
                 tbody.innerHTML = all.map(c => {
-                    const displayId = c.govId || `TN/PPN/2026/${(c.id || '').split('-').pop()}`;
+                    const displayId = c.govId || `TVK/TNJ/2026/${(c.id || '').split('-').pop()}`;
                     const statusLabel = c.status || 'புதியது';
                     const statusCls = c.statusClass || 'badge-new';
                     return `<tr>
@@ -551,7 +551,7 @@
         function viewDetail(id) {
             const c = complaintsDB[id];
             if (!c) return;
-            const displayId = c.govId || `TN/PPN/2026/${(c.id || '').split('-').pop()}`;
+            const displayId = c.govId || `TVK/TNJ/2026/${(c.id || '').split('-').pop()}`;
             const statusCls = c.statusClass || 'badge-new';
             const statusLabel = c.status || 'புதியது';
             const existing = document.getElementById('complaintDetailModal');
@@ -596,7 +596,7 @@
                         <h3 style="margin:0;"><i class="fas fa-clipboard-list"></i> Complaint Detail</h3>
                         <button onclick="document.getElementById('complaintDetailModal').remove()" style="background:none;border:none;font-size:1.3rem;cursor:pointer;color:#999;">&times;</button>
                     </div>
-                    <div style="background:#f0fdf4;padding:12px;border-radius:10px;margin-bottom:15px;text-align:center;">
+                    <div style="background:#fef2f2;padding:12px;border-radius:10px;margin-bottom:15px;text-align:center;">
                         <code style="font-size:0.9rem;font-weight:700;color:var(--admin-primary);">${displayId}</code>
                         <span class="badge ${statusCls}" style="margin-left:10px;">${statusLabel}</span>
                     </div>
@@ -624,7 +624,7 @@
                     </div>
 
                     <!-- CHANGE STATUS SECTION -->
-                    <div style="margin-top:12px;padding:15px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;">
+                    <div style="margin-top:12px;padding:15px;background:#fef2f2;border:1px solid #fca5a5;border-radius:10px;">
                         <h4 style="font-size:0.85rem;margin:0 0 10px;color:#059669;"><i class="fas fa-exchange-alt"></i> Change Status</h4>
                         <select id="modalChangeStatus" style="width:100%;padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:0.8rem;margin-bottom:8px;">
                             ${statusOpts}
@@ -946,13 +946,13 @@
 
         // ===== VOLUNTEER MANAGEMENT SYSTEM =====
         let volunteersData = [
-            { id: 1, name: 'Mr. Ibrahim Khan', initials: 'IK', area: 'Papanasam Town', ward: 'Ward 5', role: 'Coordinator', resolved: ['PPN-2026-00121'], resolvedTitles: ['சாலையில் பள்ளம் - Papanasam Main Road'] },
-            { id: 2, name: 'Mr. Farooq Ahmed', initials: 'FA', area: 'Kabistalam', ward: 'Ward 8', role: 'Coordinator', resolved: ['PPN-2026-00122'], resolvedTitles: ['Street Light வேலை செய்யல - Kabistalam 3rd Cross'] },
-            { id: 3, name: 'Mr. Rafiq', initials: 'RF', area: 'Thiruvaigavur', ward: 'Ward 12', role: 'Coordinator', resolved: ['PPN-2026-00123'], resolvedTitles: ['Drainage overflow - Thiruvaigavur Bus Stand அருகில்'] },
-            { id: 4, name: 'Mr. Selvam', initials: 'SV', area: 'Adhanur', ward: 'Ward 3', role: 'Coordinator', resolved: [], resolvedTitles: [] },
-            { id: 5, name: 'Mrs. Fatima', initials: 'FT', area: 'Swamimalai', ward: 'Ward 15', role: 'Coordinator', resolved: [], resolvedTitles: [] },
-            { id: 6, name: 'Mr. Ganesh', initials: 'GN', area: 'Ammapettai', ward: 'Ward 9', role: 'Coordinator', resolved: [], resolvedTitles: [] },
-            { id: 7, name: 'Mr. Hussain', initials: 'HS', area: 'Valangaiman', ward: 'Ward 7', role: 'Coordinator', resolved: [], resolvedTitles: [] }
+            { id: 1, name: 'Mr. Senthil Kumar', initials: 'SK', area: 'Thanjavur Fort Area', ward: 'Ward 5', role: 'Coordinator', resolved: ['TNJ-2026-00121'], resolvedTitles: ['சாலையில் பள்ளம் - East Main Street'] },
+            { id: 2, name: 'Mr. Murugan', initials: 'MR', area: 'Gandhi Nagar', ward: 'Ward 8', role: 'Coordinator', resolved: ['TNJ-2026-00122'], resolvedTitles: ['Street Light வேலை செய்யல - Gandhi Nagar 3rd Cross'] },
+            { id: 3, name: 'Mr. Rajesh', initials: 'RJ', area: 'New Bus Stand Area', ward: 'Ward 12', role: 'Coordinator', resolved: ['TNJ-2026-00123'], resolvedTitles: ['Drainage overflow - New Bus Stand Area Bus Stand அருகில்'] },
+            { id: 4, name: 'Mr. Selvam', initials: 'SV', area: 'Punnainallur', ward: 'Ward 3', role: 'Coordinator', resolved: [], resolvedTitles: [] },
+            { id: 5, name: 'Mrs. Kavitha', initials: 'KV', area: 'Anna Nagar', ward: 'Ward 15', role: 'Coordinator', resolved: [], resolvedTitles: [] },
+            { id: 6, name: 'Mr. Ganesh', initials: 'GN', area: 'Karanthai', ward: 'Ward 9', role: 'Coordinator', resolved: [], resolvedTitles: [] },
+            { id: 7, name: 'Mrs. Lakshmi', initials: 'LK', area: 'East Main Street', ward: 'Ward 7', role: 'Coordinator', resolved: [], resolvedTitles: [] }
         ];
 
         function renderVolunteers() {
@@ -998,7 +998,7 @@
             let complaintsHTML = '';
             if (assigned.length > 0) {
                 complaintsHTML = assigned.map(c => {
-                    const displayId = c.govId || `TN/PPN/2026/${(c.id || '').split('-').pop()}`;
+                    const displayId = c.govId || `TVK/TNJ/2026/${(c.id || '').split('-').pop()}`;
                     const isResolved = c.statusClass === 'badge-resolved';
                     const resolveBtn = isResolved ? '' : `<button onclick="markResolvedFromVolunteer('${c.id}')" style="margin-top:6px;padding:5px 10px;background:#059669;color:white;border:none;border-radius:6px;font-size:0.7rem;cursor:pointer;font-weight:600;"><i class="fas fa-check"></i> Mark Resolved</button>`;
                     return `<div style="padding:10px;border:1px solid ${isResolved ? '#bbf7d0' : '#f3f4f6'};border-radius:8px;margin-bottom:8px;background:${isResolved ? '#f0fdf4' : 'white'};">
@@ -1021,7 +1021,7 @@
                         <h3 style="margin:0;"><i class="fas fa-user"></i> ${vol.name}</h3>
                         <button onclick="document.getElementById('complaintDetailModal').remove()" style="background:none;border:none;font-size:1.3rem;cursor:pointer;color:#999;">&times;</button>
                     </div>
-                    <div style="background:#f0fdf4;padding:10px;border-radius:8px;margin-bottom:15px;display:flex;gap:15px;justify-content:center;">
+                    <div style="background:#fef2f2;padding:10px;border-radius:8px;margin-bottom:15px;display:flex;gap:15px;justify-content:center;">
                         <div style="text-align:center;"><span style="font-size:1.3rem;font-weight:800;color:var(--admin-primary);">${assigned.length}</span><p style="font-size:0.65rem;color:#666;">Total Assigned</p></div>
                         <div style="text-align:center;"><span style="font-size:1.3rem;font-weight:800;color:#059669;">${assigned.filter(c => c.statusClass === 'badge-resolved').length}</span><p style="font-size:0.65rem;color:#666;">Resolved</p></div>
                         <div style="text-align:center;"><span style="font-size:1.3rem;font-weight:800;color:#d97706;">${assigned.filter(c => c.statusClass !== 'badge-resolved').length}</span><p style="font-size:0.65rem;color:#666;">Pending</p></div>
@@ -1126,7 +1126,7 @@
             all.forEach(c => { if (c.area) areaCounts[c.area] = (areaCounts[c.area] || 0) + 1; });
             const sortedAreas = Object.entries(areaCounts).sort((a, b) => b[1] - a[1]);
             const maxArea = sortedAreas.length > 0 ? sortedAreas[0][1] : 1;
-            const areaColors = ['#0d6b3a','#059669','#10b981','#34d399','#6ee7b7','#a7f3d0','#d1fae5','#2563eb'];
+            const areaColors = ['#e65100','#f57c00','#ff8f00','#ffb74d','#ffcc80','#ffe0b2','#fff3e0','#2563eb'];
             const areaContainer = document.getElementById('areaChartContainer');
             if (areaContainer) {
                 areaContainer.innerHTML = sortedAreas.map((item, i) => {
@@ -1141,7 +1141,7 @@
             all.forEach(c => { if (c.category) catCounts[c.category] = (catCounts[c.category] || 0) + 1; });
             const sortedCats = Object.entries(catCounts).sort((a, b) => b[1] - a[1]);
             const maxCat = sortedCats.length > 0 ? sortedCats[0][1] : 1;
-            const catColors = ['#0d6b3a','#7c3aed','#2563eb','#0891b2','#059669','#d97706','#db2777','#6366f1'];
+            const catColors = ['#e65100','#7c3aed','#2563eb','#0891b2','#059669','#d97706','#db2777','#6366f1'];
             const catContainer = document.getElementById('categoryChartContainer');
             if (catContainer) {
                 catContainer.innerHTML = sortedCats.map((item, i) => {
@@ -1160,7 +1160,7 @@
             const dashBody = document.getElementById('dashTableBody');
             if (dashBody) {
                 dashBody.innerHTML = sorted.map(c => {
-                    const displayId = c.govId || `TN/PPN/2026/${(c.id || '').split('-').pop()}`;
+                    const displayId = c.govId || `TVK/TNJ/2026/${(c.id || '').split('-').pop()}`;
                     return `<tr><td><code style="font-size:0.65rem;">${displayId}</code></td><td>${c.citizenName || '-'}</td><td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${c.title || '-'}</td><td>${c.area || '-'}</td><td>${c.category || '-'}</td><td><span class="badge ${c.statusClass || 'badge-new'}">${c.status || 'புதியது'}</span></td><td>${c.assigned || '-'}</td><td>${c.date || '-'}</td></tr>`;
                 }).join('');
             }

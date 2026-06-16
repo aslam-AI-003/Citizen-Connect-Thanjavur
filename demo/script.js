@@ -216,18 +216,18 @@ document.head.appendChild(notifStyle);
 
 // ===== COMPLAINTS DATABASE =====
 const categoryNames = { 'roads': 'சாலைகள்', 'drainage': 'வடிகால்', 'water': 'குடிநீர்', 'electricity': 'மின்சாரம்', 'garbage': 'கழிவு', 'traffic': 'போக்குவரத்து', 'streetlight': 'தெரு விளக்கு', 'scheme': 'அரசு திட்டம்' };
-const areaNames = { 'ward-1': 'Ward 1 - Pasupathikoil', 'ward-2': 'Ward 2 - MGR Nagar', 'ward-3': 'Ward 3 - Chekkadi', 'ward-4': 'Ward 4 - Mission Street', 'ward-5': 'Ward 5 - Bazaar', 'ward-6': 'Ward 6 - North Street', 'ward-7': 'Ward 7 - South Street', 'ward-8': 'Ward 8 - Bus Stand', 'ward-9': 'Ward 9 - Hospital Road', 'ward-10': 'Ward 10 - New Colony', 'ward-11': 'Ward 11 - East Extension', 'ward-12': 'Ward 12 - West Colony', 'ward-13': 'Ward 13 - Railway Area', 'ward-14': 'Ward 14 - River Side', 'ward-15': 'Ward 15 - Industrial Area', 'adhanur': 'Adhanur', 'alavandipuram': 'Alavandipuram', 'chakkarapalli': 'Chakkarapalli', 'eachankudi': 'Eachankudi', 'ganapathi-agraharam': 'Ganapathi Agraharam', 'gopurajapuram': 'Gopurajapuram', 'govindanattucheri': 'Govindanattucheri', 'illuppakkorai': 'Illuppakkorai', 'kabistalam': 'Kabistalam', 'konthagai': 'Konthagai', 'koonancheri': 'Koonancheri', 'manalur': 'Manalur', 'melakabisthalam': 'Melakabisthalam', 'olaipadi': 'Olaipadi', 'pandaravadai': 'Pandaravadai', 'pasupathikoil': 'Pasupathikoil', 'perumalkoil': 'Perumalkoil', 'rajagiri': 'Rajagiri', 'ramanujapuram': 'Ramanujapuram', 'ragunathapuram': 'Ragunathapuram', 'sarabhojirajapuram': 'Sarabhojirajapuram', 'sarukkai': 'Sarukkai', 'sathiyamangalam': 'Sathiyamangalam', 'someswarapuram': 'Someswarapuram', 'soolamangalam': 'Soolamangalam', 'thirumandangudi': 'Thirumandangudi', 'thiruvaigavur': 'Thiruvaigavur', 'thiyagasamudram': 'Thiyagasamudram', 'thurumbur': 'Thurumbur', 'ullikkadai': 'Ullikkadai', 'umayalpuram': 'Umayalpuram', 'umbalapadi': 'Umbalapadi', 'valuthoor': 'Valuthoor', 'veeramangudi': 'Veeramangudi' };
+const areaNames = { 'east-main-street': 'East Main Street', 'west-main-street': 'West Main Street', 'south-main-street': 'South Main Street', 'thanjavur-fort-area': 'Thanjavur Fort Area', 'gandhi-market': 'Gandhi Market', 'gandhiji-road': 'Gandhiji Road', 'court-road': 'Court Road', 'hospital-road': 'Hospital Road', 'medical-college-road': 'Medical College Road', 'kumbakonam-road': 'Kumbakonam Road', 'trichy-road': 'Trichy Road', 'nanjikottai-road': 'Nanjikottai Road', 'kutchery-road': 'Kutchery Road', 'rajaji-road': 'Rajaji Road', 'new-bus-stand': 'New Bus Stand Area', 'old-bus-stand': 'Old Bus Stand Area', 'karanthai': 'Karanthai', 'ayyappan-koil-street': 'Ayyappan Koil Street', 'brahmin-street': 'Brahmin Street', 'ponnusamy-nagar': 'Ponnusamy Nagar', 'saraboji-nagar': 'Saraboji Nagar', 'balaganapathy-nagar': 'Balaganapathy Nagar', 'anna-nagar': 'Anna Nagar', 'gandhi-nagar': 'Gandhi Nagar', 'nehru-nagar': 'Nehru Nagar', 'indira-nagar': 'Indira Nagar', 'anand-nagar': 'Anand Nagar', 'ashok-nagar': 'Ashok Nagar', 'bharathi-nagar': 'Bharathi Nagar', 'kamraj-nagar': 'Kamraj Nagar', 'karunanidhi-nagar': 'Karunanidhi Nagar', 'mgr-nagar': 'MGR Nagar', 'periyar-nagar': 'Periyar Nagar', 'kurinji-nagar': 'Kurinji Nagar', 'sathya-nagar': 'Sathya Nagar', 'vatavetra-nagar': 'Vatavetra Nagar', 'serfoji-nagar': 'Serfoji Nagar', 'rajaram-nagar': 'Rajaram Nagar', 'punnainallur': 'Punnainallur', 'vallam': 'Vallam', 'palavur': 'Palavur', 'sengipatti': 'Sengipatti', 'maruthuvakudi': 'Maruthuvakudi', 'pillaiyarpalayam': 'Pillaiyarpalayam', 'kovilvenni': 'Kovilvenni', 'thirukattupalli': 'Thirukattupalli', 'budalur': 'Budalur', 'papanasam-road': 'Papanasam Road Area', 'thiruvaiyaru-road': 'Thiruvaiyaru Road Area', 'pattukottai-road': 'Pattukottai Road Area' };
 
 let complaintsDB = {
-    'IUML-2026-00101': { id: 'IUML-2026-00101', govId: 'IUML/PPN/2026/00101', title: 'சாலையில் பள்ளம் - Papanasam Main Road', category: 'சாலைகள்', area: 'Papanasam Town', assigned: 'Highway Department - Mr. Karthik', date: 'May 20, 2026', status: 'பணியில்', statusClass: 'badge-progress', citizenName: 'ராஜா', mobileNumber: '9876543210', timeline: [{ text: 'புகார் பதிவு', time: 'May 20, 2026 - 10:30 AM', state: 'completed' }, { text: 'ஆய்வு', time: 'May 20, 2026 - 11:15 AM', state: 'completed' }, { text: 'Highway Dept ஒதுக்கப்பட்டது', time: 'May 20, 2026 - 02:00 PM', state: 'completed' }, { text: 'பணி தொடங்கப்பட்டது', time: 'May 21, 2026 - 09:00 AM', state: 'active' }, { text: 'தீர்வு & உறுதிப்படுத்தல்', time: 'நிலுவையில்...', state: '' }] },
-    'IUML-2026-00102': { id: 'IUML-2026-00102', govId: 'IUML/PPN/2026/00102', title: 'Street Light வேலை செய்யல - Kabistalam 2nd Street', category: 'மின்சாரம்', area: 'Kabistalam', assigned: 'EB Team - Mr. Rajan', date: 'May 21, 2026', status: 'ஒதுக்கப்பட்டது', statusClass: 'badge-assigned', citizenName: 'முருகன்', mobileNumber: '9876543211', timeline: [{ text: 'புகார் பதிவு', time: 'May 21, 2026 - 08:45 AM', state: 'completed' }, { text: 'EB Team ஒதுக்கப்பட்டது', time: 'May 21, 2026 - 11:30 AM', state: 'active' }, { text: 'பணி தொடங்கப்படும்', time: 'நிலுவையில்...', state: '' }, { text: 'தீர்வு', time: 'நிலுவையில்...', state: '' }] },
-    'IUML-2026-00100': { id: 'IUML-2026-00100', govId: 'IUML/PPN/2026/00100', title: 'Drainage overflow - Thiruvaigavur Bus Stand', category: 'வடிகால்', area: 'Thiruvaigavur', assigned: 'Corporation Team', date: 'May 19, 2026', status: 'தீர்வு ✓', statusClass: 'badge-resolved', citizenName: 'செல்வம்', mobileNumber: '9876543210', timeline: [{ text: 'புகார் பதிவு', time: 'May 19, 2026', state: 'completed' }, { text: 'Corporation Team ஒதுக்கப்பட்டது', time: 'May 19, 2026', state: 'completed' }, { text: 'பணி தொடங்கப்பட்டது', time: 'May 20, 2026', state: 'completed' }, { text: 'தீர்வு ✓', time: 'May 21, 2026', state: 'completed' }] },
-    'IUML-2026-00099': { id: 'IUML-2026-00099', govId: 'IUML/PPN/2026/00099', title: 'குடிநீர் வரவில்லை - Adhanur 3 நாட்கள்', category: 'குடிநீர்', area: 'Adhanur', assigned: '-', date: 'May 22, 2026', status: 'புதியது', statusClass: 'badge-new', citizenName: 'கமலா', mobileNumber: '9876543212', timeline: [{ text: 'புகார் பதிவு', time: 'May 22, 2026 - 07:30 AM', state: 'completed' }, { text: 'ஆய்வு', time: 'நிலுவையில்...', state: 'active' }, { text: 'ஒதுக்கப்படும்', time: 'நிலுவையில்...', state: '' }, { text: 'தீர்வு', time: 'நிலுவையில்...', state: '' }] }
+    'TVK-2026-00101': { id: 'TVK-2026-00101', govId: 'TVK/TNJ/2026/00101', title: 'சாலையில் பள்ளம் - East Main Street', category: 'சாலைகள்', area: 'Thanjavur Fort Area', assigned: 'PWD - Mr. Karthik', date: 'May 20, 2026', status: 'பணியில்', statusClass: 'badge-progress', citizenName: 'ராஜா', mobileNumber: '9876543210', timeline: [{ text: 'புகார் பதிவு', time: 'May 20, 2026 - 10:30 AM', state: 'completed' }, { text: 'ஆய்வு', time: 'May 20, 2026 - 11:15 AM', state: 'completed' }, { text: 'PWD Dept ஒதுக்கப்பட்டது', time: 'May 20, 2026 - 02:00 PM', state: 'completed' }, { text: 'பணி தொடங்கப்பட்டது', time: 'May 21, 2026 - 09:00 AM', state: 'active' }, { text: 'தீர்வு & உறுதிப்படுத்தல்', time: 'நிலுவையில்...', state: '' }] },
+    'TVK-2026-00102': { id: 'TVK-2026-00102', govId: 'TVK/TNJ/2026/00102', title: 'Street Light வேலை செய்யல - Gandhi Nagar 2nd Street', category: 'மின்சாரம்', area: 'Gandhi Nagar', assigned: 'TNEB Team - Mr. Rajan', date: 'May 21, 2026', status: 'ஒதுக்கப்பட்டது', statusClass: 'badge-assigned', citizenName: 'முருகன்', mobileNumber: '9876543211', timeline: [{ text: 'புகார் பதிவு', time: 'May 21, 2026 - 08:45 AM', state: 'completed' }, { text: 'TNEB Team ஒதுக்கப்பட்டது', time: 'May 21, 2026 - 11:30 AM', state: 'active' }, { text: 'பணி தொடங்கப்படும்', time: 'நிலுவையில்...', state: '' }, { text: 'தீர்வு', time: 'நிலுவையில்...', state: '' }] },
+    'TVK-2026-00100': { id: 'TVK-2026-00100', govId: 'TVK/TNJ/2026/00100', title: 'Drainage overflow - New Bus Stand Area', category: 'வடிகால்', area: 'New Bus Stand Area', assigned: 'Corporation Team', date: 'May 19, 2026', status: 'தீர்வு ✓', statusClass: 'badge-resolved', citizenName: 'செல்வம்', mobileNumber: '9876543210', timeline: [{ text: 'புகார் பதிவு', time: 'May 19, 2026', state: 'completed' }, { text: 'Corporation Team ஒதுக்கப்பட்டது', time: 'May 19, 2026', state: 'completed' }, { text: 'பணி தொடங்கப்பட்டது', time: 'May 20, 2026', state: 'completed' }, { text: 'தீர்வு ✓', time: 'May 21, 2026', state: 'completed' }] },
+    'TVK-2026-00099': { id: 'TVK-2026-00099', govId: 'TVK/TNJ/2026/00099', title: 'குடிநீர் வரவில்லை - Punnainallur 3 நாட்கள்', category: 'குடிநீர்', area: 'Punnainallur', assigned: '-', date: 'May 22, 2026', status: 'புதியது', statusClass: 'badge-new', citizenName: 'கமலா', mobileNumber: '9876543212', timeline: [{ text: 'புகார் பதிவு', time: 'May 22, 2026 - 07:30 AM', state: 'completed' }, { text: 'ஆய்வு', time: 'நிலுவையில்...', state: 'active' }, { text: 'ஒதுக்கப்படும்', time: 'நிலுவையில்...', state: '' }, { text: 'தீர்வு', time: 'நிலுவையில்...', state: '' }] }
 };
 
 // ===== COMPLAINT FORM SUBMIT =====
 const complaintForm = document.getElementById('complaintForm');
-let lastComplaintId = 'IUML-2026-00102';
+let lastComplaintId = 'TVK-2026-00102';
 let complaintCounter = 103;
 
 if (complaintForm) {
@@ -255,8 +255,8 @@ if (complaintForm) {
             }
             
             const paddedNum = String(nextNum).padStart(5, '0');
-            const govStyleId = `IUML/PPN/2026/${paddedNum}`;
-            lastComplaintId = `IUML-2026-${paddedNum}`;
+            const govStyleId = `TVK/TNJ/2026/${paddedNum}`;
+            lastComplaintId = `TVK-2026-${paddedNum}`;
             complaintCounter = nextNum + 1;
             const now = new Date();
             const dateStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
@@ -328,13 +328,13 @@ function searchComplaint() {
             if (match) complaint = complaintsDB[match];
         }
         if (!complaint) {
-            if (!searchVal.startsWith('IUML')) searchVal = 'IUML-2026-' + searchVal.replace('#', '').replace('IUML-2026-', '');
+            if (!searchVal.startsWith('TVK')) searchVal = 'TVK-2026-' + searchVal.replace('#', '').replace('TVK-2026-', '');
             complaint = complaintsDB[searchVal];
         }
         if (!complaint) { const m = Object.keys(complaintsDB).find(k => k.includes(searchVal) || searchVal.includes(k.split('-').pop())); if (m) complaint = complaintsDB[m]; }
 
         if (complaint) {
-            const displayId = complaint.govId || `IUML/PPN/2026/${complaint.id.split('-').pop()}`;
+            const displayId = complaint.govId || `TVK/TNJ/2026/${complaint.id.split('-').pop()}`;
             input.value = displayId;
             let timelineHTML = (complaint.timeline || []).map(item => `<div class="tl-item ${item.state}"><div class="tl-dot"></div><div class="tl-content"><h4>${item.text}</h4><p>${item.time}</p></div></div>`).join('');
             result.innerHTML = `<div class="track-card"><div class="track-header"><div><h3>Complaint ${displayId}</h3><p>${complaint.title}</p></div><span class="status-badge ${complaint.statusClass}">${complaint.status}</span></div><div class="track-details"><div class="track-detail"><span class="label">வகை:</span><span class="value">${complaint.category}</span></div><div class="track-detail"><span class="label">பகுதி:</span><span class="value">${complaint.area}</span></div><div class="track-detail"><span class="label">ஒதுக்கப்பட்டவர்:</span><span class="value">${complaint.assigned}</span></div><div class="track-detail"><span class="label">பதிவு நாள்:</span><span class="value">${complaint.date}</span></div></div><div class="track-timeline">${timelineHTML}</div></div>`;
@@ -350,12 +350,12 @@ function searchComplaint() {
 
 // ===== WARD VOLUNTEERS =====
 const wardVolunteers = {
-    'Papanasam Town': [{ name: 'Mr. Anwar', phone: '98765xxxxx', ward: 'Ward 2', role: 'Coordinator' }, { name: 'Mrs. Fatima', phone: '87654xxxxx', ward: 'Ward 5', role: 'Volunteer' }],
-    'Kabistalam': [{ name: 'Mr. Ibrahim', phone: '98762xxxxx', ward: 'Kabistalam', role: 'Coordinator' }],
-    'Thiruvaigavur': [{ name: 'Mr. Murugan', phone: '98763xxxxx', ward: 'Thiruvaigavur', role: 'Coordinator' }],
-    'Adhanur': [{ name: 'Mr. Selvam', phone: '98764xxxxx', ward: 'Adhanur', role: 'Coordinator' }],
-    'Valuthoor': [{ name: 'Mrs. Kavitha', phone: '87654xxxxx', ward: 'Valuthoor', role: 'Volunteer' }],
-    'Thurumbur': [{ name: 'Mr. Karthik', phone: '98766xxxxx', ward: 'Thurumbur', role: 'Coordinator' }]
+    'Thanjavur Fort Area': [{ name: 'Mr. Senthil', phone: '98765xxxxx', ward: 'Fort Area', role: 'Coordinator' }, { name: 'Mrs. Lakshmi', phone: '87654xxxxx', ward: 'East Main', role: 'Volunteer' }],
+    'Gandhi Nagar': [{ name: 'Mr. Murugan', phone: '98762xxxxx', ward: 'Gandhi Nagar', role: 'Coordinator' }],
+    'New Bus Stand Area': [{ name: 'Mr. Rajesh', phone: '98763xxxxx', ward: 'Bus Stand', role: 'Coordinator' }],
+    'Punnainallur': [{ name: 'Mr. Selvam', phone: '98764xxxxx', ward: 'Punnainallur', role: 'Coordinator' }],
+    'Anna Nagar': [{ name: 'Mrs. Kavitha', phone: '87654xxxxx', ward: 'Anna Nagar', role: 'Volunteer' }],
+    'Karanthai': [{ name: 'Mr. Karthik', phone: '98766xxxxx', ward: 'Karanthai', role: 'Coordinator' }]
 };
 
 let currentAssignComplaintId = null;
@@ -363,7 +363,7 @@ let currentAssignComplaintId = null;
 function openAssignModal(complaintId) {
     const complaint = complaintsDB[complaintId]; if (!complaint) { showNotification('Complaint not found!', 'error'); return; }
     currentAssignComplaintId = complaintId;
-    const displayId = complaint.govId || `IUML/PPN/2026/${complaintId.split('-').pop()}`;
+    const displayId = complaint.govId || `TVK/TNJ/2026/${complaintId.split('-').pop()}`;
     document.getElementById('assignComplaintInfo').textContent = `Complaint ${displayId} - ${complaint.title}`;
     document.getElementById('assignArea').value = complaint.area;
     const vs = document.getElementById('volunteerSelect');
@@ -443,20 +443,20 @@ if (getLocationBtn) {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
                     const { latitude, longitude } = position.coords;
-                    document.getElementById('locationText').textContent = `📍 ${latitude.toFixed(4)}, ${longitude.toFixed(4)} (Papanasam Area)`;
+                    document.getElementById('locationText').textContent = `📍 ${latitude.toFixed(4)}, ${longitude.toFixed(4)} (Thanjavur Area)`;
                     document.getElementById('locationText').style.color = '#10b981';
                     getLocationBtn.innerHTML = '<i class="fas fa-check"></i> Location Set';
                     showNotification('Location captured!', 'success');
                 },
                 () => {
-                    document.getElementById('locationText').textContent = '📍 10.9346, 79.2718 (Papanasam Area)';
+                    document.getElementById('locationText').textContent = '📍 10.7870, 79.1378 (Thanjavur Area)';
                     document.getElementById('locationText').style.color = '#10b981';
                     getLocationBtn.innerHTML = '<i class="fas fa-check"></i> Location Set';
                     showNotification('Location set (demo)!', 'success');
                 }
             );
         } else {
-            document.getElementById('locationText').textContent = '📍 10.9346, 79.2718 (Papanasam Area)';
+            document.getElementById('locationText').textContent = '📍 10.7870, 79.1378 (Thanjavur Area)';
             getLocationBtn.innerHTML = '<i class="fas fa-check"></i> Location Set';
             showNotification('Location set!', 'success');
         }
@@ -538,6 +538,6 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => { initFirebaseData(); }, 500);
 });
 
-console.log('🟢 Voice to Minister - Papanasam | IUML | A.M. Shahjahan');
-console.log('🏛️ Minister of Minority Welfare | Papanasam Constituency');
-console.log('Pages: Home | Complaint | Track | My Complaints | Updates | Minister Dashboard');
+console.log('🟠 Voice to Minister - Thanjavur | TVK | R. Vijaysaravanan');
+console.log('🏛️ MLA - Thanjavur Constituency (No. 174) | Tamilaga Vettri Kazhagam');
+console.log('Pages: Home | Complaint | Track | My Complaints | Updates | MLA Dashboard');
