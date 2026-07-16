@@ -1,12 +1,12 @@
-// ===== FIREBASE CONFIGURATION FOR VOICE TO MINISTER - PAPANASAM =====
+// ===== FIREBASE CONFIGURATION FOR CITIZEN CONNECT - THANJAVUR =====
 const firebaseConfig = {
-    apiKey: "AIzaSyA0h41dnLHhll9QebR4fkiaiG8C3cdo8Es",
-    authDomain: "abm-billing.firebaseapp.com",
-    projectId: "abm-billing",
-    storageBucket: "abm-billing.firebasestorage.app",
-    messagingSenderId: "774462936172",
-    appId: "1:774462936172:web:3312f7c3876aa09ba77449",
-    measurementId: "G-6ZN8GZYY8Q"
+    apiKey: "AIzaSyAA1yDMs4NbXum_XhOrZuqpHdWeC0p1c7A",
+    authDomain: "thanjavur-mla-citizen-connect.firebaseapp.com",
+    projectId: "thanjavur-mla-citizen-connect",
+    storageBucket: "thanjavur-mla-citizen-connect.firebasestorage.app",
+    messagingSenderId: "23489117883",
+    appId: "1:23489117883:web:fd68eff734300b6e25b39e",
+    measurementId: "G-JW2LFF1BH4"
 };
 
 // Initialize Firebase

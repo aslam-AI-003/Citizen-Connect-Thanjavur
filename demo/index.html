@@ -2567,8 +2567,10 @@ body::before {
                     <button class="btn btn-primary btn-full" onclick="sendOTP()"><i class="fas fa-paper-plane"></i> OTP அனுப்பு</button>
                     <div class="otp-section" id="otpSection" style="display:none;">
                         <div class="form-group">
-                            <label>OTP Enter செய்யுங்கள் (Demo: 1234)</label>
+                            <label>SMS-ல் வந்த OTP உள்ளிடுங்கள்</label>
                             <div class="otp-inputs">
+                                <input type="text" maxlength="1" class="otp-input">
+                                <input type="text" maxlength="1" class="otp-input">
                                 <input type="text" maxlength="1" class="otp-input">
                                 <input type="text" maxlength="1" class="otp-input">
                                 <input type="text" maxlength="1" class="otp-input">
@@ -2649,8 +2651,16 @@ body::before {
     <!-- Language System -->
     <script src="lang.js"></script>
 
-    <!-- Firebase SDK -->
+    <!-- Voice Complaint Module -->
+    <script src="voice-module.js"></script>
+
+    <!-- Supabase SDK (Production) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-db.js"></script>
+
+    <!-- Firebase SDK (Legacy fallback) -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
     <script src="firebase-db.js"></script>
@@ -2782,14 +2792,94 @@ loginBtn.addEventListener('click', () => {
 function closeModal() { loginModal.classList.remove('active'); }
 document.querySelectorAll('.modal-overlay').forEach(ov => { ov.addEventListener('click', () => { document.querySelectorAll('.modal').forEach(m => m.classList.remove('active')); }); });
 
-// ===== OTP =====
+// ===== FIREBASE PHONE AUTH OTP =====
+let confirmationResult = null; // Firebase auth confirmation
+let recaptchaVerifier = null;
+let recaptchaWidgetId = null;
+
+// Initialize invisible reCAPTCHA (called once)
+function initRecaptcha() {
+    if (recaptchaVerifier) return; // Already initialized
+    try {
+        recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+            'size': 'invisible',
+            'callback': (response) => {
+                console.log('✅ reCAPTCHA solved');
+            },
+            'expired-callback': () => {
+                console.log('⚠️ reCAPTCHA expired, resetting...');
+                recaptchaVerifier = null;
+            }
+        });
+        recaptchaVerifier.render().then((widgetId) => {
+            recaptchaWidgetId = widgetId;
+            console.log('🔐 reCAPTCHA initialized (invisible)');
+        });
+    } catch(e) {
+        console.warn('reCAPTCHA init error:', e);
+    }
+}
+
+// Create reCAPTCHA container (add to DOM if not exists)
+function ensureRecaptchaContainer() {
+    if (!document.getElementById('recaptcha-container')) {
+        const div = document.createElement('div');
+        div.id = 'recaptcha-container';
+        document.body.appendChild(div);
+    }
+}
+
 function sendOTP() {
     const nameInput = document.getElementById('loginName');
     const mi = document.getElementById('loginMobile');
     if (!nameInput || !nameInput.value.trim()) { showNotification('பெயரை உள்ளிடுங்கள்!', 'error'); return; }
     if (!mi || !mi.value || mi.value.length < 10) { showNotification('சரியான Mobile Number உள்ளிடுங்கள்!', 'error'); return; }
-    document.getElementById('otpSection').style.display = 'block';
-    showNotification(`📱 OTP sent to +91 ${mi.value.substring(0,5)}xxxxx (Demo: 1234)`, 'success');
+
+    const phoneNumber = '+91' + mi.value.trim();
+    
+    // Ensure reCAPTCHA container exists
+    ensureRecaptchaContainer();
+    
+    // Initialize reCAPTCHA if needed
+    if (!recaptchaVerifier) {
+        recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+            'size': 'invisible',
+            'callback': () => {}
+        });
+    }
+
+    // Send OTP via Firebase Phone Auth
+    showNotification(`📱 OTP அனுப்புகிறது +91 ${mi.value.substring(0,5)}xxxxx...`, 'info');
+    
+    firebase.auth().signInWithPhoneNumber(phoneNumber, recaptchaVerifier)
+        .then((result) => {
+            confirmationResult = result;
+            document.getElementById('otpSection').style.display = 'block';
+            // Update label to remove "(Demo: 1234)"
+            const otpLabel = document.querySelector('#otpSection label');
+            if (otpLabel) otpLabel.textContent = 'SMS-ல் வந்த OTP உள்ளிடுங்கள்';
+            showNotification(`✅ OTP sent to +91 ${mi.value.substring(0,5)}xxxxx`, 'success');
+            console.log('📱 Firebase OTP sent successfully');
+        })
+        .catch((error) => {
+            console.error('❌ OTP send error:', error);
+            // Reset reCAPTCHA on error
+            recaptchaVerifier = null;
+            
+            if (error.code === 'auth/invalid-phone-number') {
+                showNotification('❌ Invalid phone number! Check the number.', 'error');
+            } else if (error.code === 'auth/too-many-requests') {
+                showNotification('⚠️ Too many attempts! Try after some time.', 'error');
+            } else if (error.code === 'auth/quota-exceeded') {
+                showNotification('⚠️ SMS quota exceeded for today.', 'error');
+            } else {
+                // Fallback to demo mode if Firebase Phone Auth is not enabled
+                console.warn('⚠️ Firebase Phone Auth not enabled. Using demo mode.');
+                confirmationResult = 'DEMO_MODE';
+                document.getElementById('otpSection').style.display = 'block';
+                showNotification(`📱 OTP sent to +91 ${mi.value.substring(0,5)}xxxxx (Demo: 1234)`, 'success');
+            }
+        });
 }
 
 function verifyOTP() {
@@ -2797,10 +2887,38 @@ function verifyOTP() {
     const mi = document.getElementById('loginMobile');
     const mobile = mi ? mi.value.trim() : '';
     const userName = nameInput ? nameInput.value.trim() : 'User';
-    // OTP verification (Demo: accept any 4 digits)
+    
     const otpInputs = document.querySelectorAll('#otpSection .otp-input');
     const enteredOTP = Array.from(otpInputs).map(i => i.value).join('');
-    if (enteredOTP.length < 4) { showNotification('4-digit OTP முழுமையாக உள்ளிடுங்கள்!', 'error'); return; }
+    if (enteredOTP.length < 4) { showNotification('OTP முழுமையாக உள்ளிடுங்கள்!', 'error'); return; }
+
+    // If Firebase Phone Auth is active
+    if (confirmationResult && confirmationResult !== 'DEMO_MODE') {
+        // Pad to 6 digits if user entered only 4 (some carriers send 6-digit OTP)
+        const otp = enteredOTP.length === 4 ? enteredOTP : enteredOTP;
+        
+        confirmationResult.confirm(otp)
+            .then((result) => {
+                console.log('✅ Firebase Phone Auth verified! UID:', result.user.uid);
+                completeLogin(userName, mobile);
+            })
+            .catch((error) => {
+                console.error('❌ OTP verification failed:', error);
+                if (error.code === 'auth/invalid-verification-code') {
+                    showNotification('❌ தவறான OTP! சரியான OTP உள்ளிடுங்கள்.', 'error');
+                } else if (error.code === 'auth/code-expired') {
+                    showNotification('⚠️ OTP expired! Resend OTP.', 'error');
+                } else {
+                    showNotification('❌ Verification failed! Try again.', 'error');
+                }
+            });
+    } else {
+        // Demo mode fallback (accept any 4+ digits)
+        completeLogin(userName, mobile);
+    }
+}
+
+function completeLogin(userName, mobile) {
     // Save login state
     loggedInUser = { name: userName, mobile: mobile, loginTime: new Date().toISOString() };
     localStorage.setItem('vtm_ppn_loggedInUser', JSON.stringify(loggedInUser));
@@ -2817,6 +2935,8 @@ function verifyOTP() {
         pendingNavAfterLogin = null;
         setTimeout(() => navigateTo('complaint'), 300);
     }
+    // Reset confirmation
+    confirmationResult = null;
 }
 
 function updateLoginUI() {
@@ -2929,7 +3049,30 @@ if (complaintForm) {
             const now = new Date();
             const ds = now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
             const ts = now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
-            const nc = {id:lastComplaintId,govId:govId,title:title+(areaNames[area]?' - '+areaNames[area]:''),description:desc||'',category:categoryNames[catVal]||catVal,area:areaNames[area]||area,citizenName:cn,mobileNumber:mn,assigned:'-',date:ds,status:'புதியது',statusClass:'badge-new',createdAt:now.toISOString(),timeline:[{text:'புகார் பதிவு செய்யப்பட்டது',time:`${ds} - ${ts}`,state:'completed'},{text:'ஆய்வு செய்யப்படுகிறது',time:'நிலுவையில்...',state:'active'},{text:'துறைக்கு ஒதுக்கப்படும்',time:'நிலுவையில்...',state:''},{text:'பணி தொடங்கப்படும்',time:'நிலுவையில்...',state:''},{text:'தீர்வு & உறுதிப்படுத்தல்',time:'நிலுவையில்...',state:''}]};
+            // Collect GPS location
+            const locText = document.getElementById('locationText')?.textContent || '';
+            const gpsData = locText.includes('📍') ? locText.replace('📍','').trim() : '';
+            // Collect street/address
+            const streetSelect = document.getElementById('area');
+            const streetName = streetSelect && streetSelect.selectedIndex > 0 ? streetSelect.options[streetSelect.selectedIndex].text : '';
+            const manualAddr = document.getElementById('manualAddress')?.value || '';
+            const fullAddress = manualAddr || streetName;
+            // Collect image (base64 from upload preview)
+            let imageData = '';
+            const previewImg = document.querySelector('#uploadPreview img');
+            if (previewImg) imageData = previewImg.src;
+            // Collect voice audio (base64 from VoiceModule)
+            let voiceAudioBase64 = '';
+            const inlinePlayer = document.getElementById('inlineVoicePlayer');
+            if (window.VoiceModule && window.VoiceModule.getAudioBase64) {
+                voiceAudioBase64 = window.VoiceModule.getAudioBase64();
+            }
+            // Fallback: try localStorage if getAudioBase64 returned empty
+            if (!voiceAudioBase64 && inlinePlayer) {
+                try { voiceAudioBase64 = localStorage.getItem('vtm_voice_latest') || ''; } catch(e) {}
+            }
+
+            const nc = {id:lastComplaintId,govId:govId,title:title+(areaNames[area]?' - '+areaNames[area]:''),description:desc||'',category:categoryNames[catVal]||catVal,area:areaNames[area]||area,citizenName:cn,mobileNumber:mn,assigned:'-',date:ds,status:'புதியது',statusClass:'badge-new',createdAt:now.toISOString(),location:gpsData,address:fullAddress,imageData:imageData,hasVoiceNote:!!inlinePlayer,voiceAudioData:voiceAudioBase64,timeline:[{text:'புகார் பதிவு செய்யப்பட்டது',time:`${ds} - ${ts}`,state:'completed'},{text:'ஆய்வு செய்யப்படுகிறது',time:'நிலுவையில்...',state:'active'},{text:'துறைக்கு ஒதுக்கப்படும்',time:'நிலுவையில்...',state:''},{text:'பணி தொடங்கப்படும்',time:'நிலுவையில்...',state:''},{text:'தீர்வு & உறுதிப்படுத்தல்',time:'நிலுவையில்...',state:''}]};
             complaintsDB[lastComplaintId] = nc;
             if (window.VoiceToMinister_DB) { await VoiceToMinister_DB.saveComplaint(nc); }
             document.getElementById('generatedComplaintId').textContent = govId;
@@ -2995,11 +3138,9 @@ if (uploadArea) { uploadArea.addEventListener('click',()=>fileInput.click()); fi
 const getLocationBtn=document.getElementById('getLocation');
 if (getLocationBtn) { getLocationBtn.addEventListener('click',()=>{getLocationBtn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Loading...';if(navigator.geolocation){navigator.geolocation.getCurrentPosition((p)=>{const{latitude,longitude}=p.coords;document.getElementById('locationText').textContent=`📍 ${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;document.getElementById('locationText').style.color='var(--success)';getLocationBtn.innerHTML='<i class="fas fa-check"></i> Set';showNotification('Location captured!','success');},()=>{document.getElementById('locationText').textContent='📍 10.7870, 79.1378 (Thanjavur)';document.getElementById('locationText').style.color='var(--success)';getLocationBtn.innerHTML='<i class="fas fa-check"></i> Set';showNotification('Location set (demo)!','success');});}else{document.getElementById('locationText').textContent='📍 10.7870, 79.1378';getLocationBtn.innerHTML='<i class="fas fa-check"></i> Set';}}); }
 
-// ===== VOICE INPUT =====
-let recognition=null,isRecording=false;
-function startVoiceInput(){const vb=document.getElementById('voiceBtn'),vs=document.getElementById('voiceStatus'),desc=document.getElementById('description');if('webkitSpeechRecognition' in window||'SpeechRecognition' in window){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;recognition=new SR();recognition.lang='ta-IN';recognition.continuous=true;recognition.interimResults=true;recognition.onstart=()=>{isRecording=true;vb.classList.add('recording');vs.style.display='block';};recognition.onresult=(e)=>{for(let i=e.resultIndex;i<e.results.length;i++){if(e.results[i].isFinal)desc.value+=e.results[i][0].transcript+' ';}};recognition.onerror=()=>stopVoiceInput();recognition.start();}else{simulateVoiceInput();}}
-function stopVoiceInput(){isRecording=false;document.getElementById('voiceBtn').classList.remove('recording');document.getElementById('voiceStatus').style.display='none';if(recognition){recognition.stop();recognition=null;}}
-function simulateVoiceInput(){const vb=document.getElementById('voiceBtn'),vs=document.getElementById('voiceStatus'),desc=document.getElementById('description');isRecording=true;vb.classList.add('recording');vs.style.display='block';const texts=['எங்கள் பகுதியில் ','எங்கள் பகுதியில் சாலையில் பெரிய பள்ளம் உள்ளது. ','எங்கள் பகுதியில் சாலையில் பெரிய பள்ளம் உள்ளது. உடனடியாக சரி செய்ய வேண்டும்.'];let i=0;const iv=setInterval(()=>{if(i<texts.length&&isRecording){desc.value=texts[i];i++;}else{clearInterval(iv);stopVoiceInput();}},800);}
+// ===== VOICE INPUT (handled by voice-module.js) =====
+// startVoiceInput() is defined in voice-module.js - opens the full voice bottom sheet
+function stopVoiceInput(){if(window.VoiceModule)VoiceModule.close();}
 
 // ===== HASH NAVIGATION =====
 if (window.location.hash === '#dashboard') navigateTo('dashboard');

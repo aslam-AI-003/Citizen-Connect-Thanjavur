@@ -449,7 +449,11 @@
         </main>
     </div>
 
-    <!-- Firebase SDK -->
+    <!-- Supabase SDK (Production) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-db.js"></script>
+
+    <!-- Firebase SDK (Legacy fallback) -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
     <script src="firebase-db.js"></script>
@@ -607,9 +611,31 @@
                     <div class="detail-row"><span class="dlabel">📱 Mobile</span><span class="dvalue">${c.mobileNumber || '-'}</span></div>
                     <div class="detail-row"><span class="dlabel">🔧 Assigned To</span><span class="dvalue">${c.assigned || 'Not assigned'}</span></div>
                     <div class="detail-row"><span class="dlabel">📅 Date</span><span class="dvalue">${c.date || '-'}</span></div>
-                    ${c.location && c.location !== 'இடம் குறிப்பிடப்படவில்லை' ? `<div class="detail-row"><span class="dlabel">📌 Location</span><span class="dvalue">${c.location}</span></div>` : ''}
-                    ${c.address ? `<div class="detail-row"><span class="dlabel">🏠 Address</span><span class="dvalue">${c.address}</span></div>` : ''}
+                    ${c.location && c.location !== 'இடம் குறிப்பிடப்படவில்லை' ? `<div class="detail-row"><span class="dlabel">📌 GPS Location</span><span class="dvalue" style="color:#3b82f6;font-weight:600;">${c.location}</span></div>` : ''}
+                    ${c.address ? `<div class="detail-row"><span class="dlabel">🏠 Street/Address</span><span class="dvalue">${c.address}</span></div>` : ''}
                     ${c.description ? `<div class="detail-row"><span class="dlabel">📄 Description</span><span class="dvalue" style="white-space:pre-wrap;font-size:0.75rem;">${c.description}</span></div>` : ''}
+                    
+                    ${c.hasVoiceNote ? `
+                    <div style="margin-top:12px;padding:12px;background:#ecfdf5;border:1px solid #a7f3d0;border-radius:10px;">
+                        <div style="display:flex;align-items:center;gap:10px;">
+                            <button onclick="playAdminVoice('${id}')" style="width:40px;height:40px;border-radius:50%;background:#10b981;border:none;color:white;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;" id="adminPlayBtn_${id}">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            <div style="flex:1;">
+                                <p style="font-size:0.78rem;font-weight:600;color:#059669;margin:0;">🎤 Voice Note Attached</p>
+                                <p style="font-size:0.68rem;color:#6b7280;margin:2px 0 0;">${c.voiceAudioData ? 'Click ▶ to play' : 'Audio recorded by citizen'}</p>
+                                ${c.voiceAudioData ? `<audio id="adminAudio_${id}" src="${c.voiceAudioData}" preload="none"></audio>` : ''}
+                            </div>
+                        </div>
+                    </div>` : ''}
+                    
+                    ${c.imageData ? `
+                    <div style="margin-top:12px;">
+                        <p style="font-size:0.75rem;font-weight:600;color:#374151;margin-bottom:6px;">📷 Attached Photo:</p>
+                        <div style="border-radius:10px;overflow:hidden;border:1px solid #e5e7eb;max-width:250px;">
+                            <img src="${c.imageData}" style="width:100%;height:auto;display:block;" alt="Complaint Photo">
+                        </div>
+                    </div>` : ''}
                     
                     <!-- ASSIGN VOLUNTEER SECTION -->
                     <div style="margin-top:18px;padding:15px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;">
@@ -1185,6 +1211,59 @@
                 if (window.innerWidth <= 768) closeMobileSidebar();
             });
         });
+
+        // ===== PLAY ADMIN VOICE NOTE =====
+        let adminAudioElement = null;
+        function playAdminVoice(id) {
+            const playBtn = document.getElementById('adminPlayBtn_' + id);
+            
+            // If already playing, pause
+            if (adminAudioElement && !adminAudioElement.paused) {
+                adminAudioElement.pause();
+                adminAudioElement = null;
+                if (playBtn) playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                return;
+            }
+
+            // Try 1: Check if audio element exists in DOM (base64 was stored in complaint)
+            let audioEl = document.getElementById('adminAudio_' + id);
+            if (audioEl && audioEl.src) {
+                adminAudioElement = audioEl;
+                if (playBtn) playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                audioEl.onended = () => { if (playBtn) playBtn.innerHTML = '<i class="fas fa-play"></i>'; adminAudioElement = null; };
+                audioEl.play().catch(e => { 
+                    console.warn('Audio play error:', e);
+                    // Try fallback
+                    tryLocalStorageFallback(id, playBtn);
+                });
+                return;
+            }
+
+            // Try 2: Check localStorage for the audio (same browser session)
+            tryLocalStorageFallback(id, playBtn);
+        }
+
+        function tryLocalStorageFallback(id, playBtn) {
+            try {
+                // Try complaint-specific key first, then latest
+                let audioData = localStorage.getItem('vtm_voice_' + id) || localStorage.getItem('vtm_voice_latest');
+                if (audioData && audioData.startsWith('data:audio')) {
+                    adminAudioElement = new Audio(audioData);
+                    if (playBtn) playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                    adminAudioElement.onended = () => { if (playBtn) playBtn.innerHTML = '<i class="fas fa-play"></i>'; adminAudioElement = null; };
+                    adminAudioElement.play().catch(e => {
+                        alert('Cannot play audio: ' + e.message);
+                        if (playBtn) playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                    });
+                } else {
+                    alert('🎤 Voice audio was recorded but not available in this browser session.\n\nNote: Audio is stored locally and can only be played on the same device where it was recorded.');
+                    if (playBtn) playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                }
+            } catch(e) {
+                alert('Audio not available: ' + e.message);
+                if (playBtn) playBtn.innerHTML = '<i class="fas fa-play"></i>';
+            }
+        }
 
         // Initial render
         renderComplaints();
