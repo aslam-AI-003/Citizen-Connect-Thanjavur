@@ -2835,51 +2835,35 @@ function sendOTP() {
     if (!nameInput || !nameInput.value.trim()) { showNotification('பெயரை உள்ளிடுங்கள்!', 'error'); return; }
     if (!mi || !mi.value || mi.value.length < 10) { showNotification('சரியான Mobile Number உள்ளிடுங்கள்!', 'error'); return; }
 
-    const phoneNumber = '+91' + mi.value.trim();
+    const mobile = mi.value.trim();
     
-    // Ensure reCAPTCHA container exists
-    ensureRecaptchaContainer();
-    
-    // Initialize reCAPTCHA if needed
-    if (!recaptchaVerifier) {
-        recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-            'size': 'invisible',
-            'callback': () => {}
-        });
-    }
+    // Show sending notification
+    showNotification(`📱 OTP அனுப்புகிறது +91 ${mobile.substring(0,5)}xxxxx...`, 'info');
 
-    // Send OTP via Firebase Phone Auth
-    showNotification(`📱 OTP அனுப்புகிறது +91 ${mi.value.substring(0,5)}xxxxx...`, 'info');
-    
-    firebase.auth().signInWithPhoneNumber(phoneNumber, recaptchaVerifier)
-        .then((result) => {
-            confirmationResult = result;
+    // Send OTP via MSG91 (Vercel serverless function)
+    fetch('/api/send-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mobile: mobile })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            confirmationResult = 'MSG91_OTP';
             document.getElementById('otpSection').style.display = 'block';
-            // Update label to remove "(Demo: 1234)"
             const otpLabel = document.querySelector('#otpSection label');
             if (otpLabel) otpLabel.textContent = 'SMS-ல் வந்த OTP உள்ளிடுங்கள்';
-            showNotification(`✅ OTP sent to +91 ${mi.value.substring(0,5)}xxxxx`, 'success');
-            console.log('📱 Firebase OTP sent successfully');
-        })
-        .catch((error) => {
-            console.error('❌ OTP send error:', error);
-            // Reset reCAPTCHA on error
-            recaptchaVerifier = null;
-            
-            if (error.code === 'auth/invalid-phone-number') {
-                showNotification('❌ Invalid phone number! Check the number.', 'error');
-            } else if (error.code === 'auth/too-many-requests') {
-                showNotification('⚠️ Too many attempts! Try after some time.', 'error');
-            } else if (error.code === 'auth/quota-exceeded') {
-                showNotification('⚠️ SMS quota exceeded for today.', 'error');
-            } else {
-                // Fallback to demo mode if Firebase Phone Auth is not enabled
-                console.warn('⚠️ Firebase Phone Auth not enabled. Using demo mode.');
-                confirmationResult = 'DEMO_MODE';
-                document.getElementById('otpSection').style.display = 'block';
-                showNotification(`📱 OTP sent to +91 ${mi.value.substring(0,5)}xxxxx (Demo: 1234)`, 'success');
-            }
-        });
+            showNotification(`✅ OTP sent to +91 ${mobile.substring(0,5)}xxxxx`, 'success');
+            console.log('📱 MSG91 OTP sent successfully');
+        } else {
+            console.error('❌ OTP send failed:', data);
+            showNotification(`❌ OTP அனுப்ப முடியவில்லை: ${data.message || 'Try again'}`, 'error');
+        }
+    })
+    .catch(error => {
+        console.error('❌ OTP send error:', error);
+        showNotification('❌ Network error! Please try again.', 'error');
+    });
 }
 
 function verifyOTP() {
@@ -2892,28 +2876,41 @@ function verifyOTP() {
     const enteredOTP = Array.from(otpInputs).map(i => i.value).join('');
     if (enteredOTP.length < 4) { showNotification('OTP முழுமையாக உள்ளிடுங்கள்!', 'error'); return; }
 
-    // If Firebase Phone Auth is active
-    if (confirmationResult && confirmationResult !== 'DEMO_MODE') {
-        // Pad to 6 digits if user entered only 4 (some carriers send 6-digit OTP)
-        const otp = enteredOTP.length === 4 ? enteredOTP : enteredOTP;
-        
-        confirmationResult.confirm(otp)
+    // MSG91 OTP verification
+    if (confirmationResult === 'MSG91_OTP') {
+        showNotification('🔄 Verifying OTP...', 'info');
+        fetch('/api/verify-otp', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ mobile: mobile, otp: enteredOTP })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('✅ MSG91 OTP verified!');
+                completeLogin(userName, mobile);
+            } else {
+                console.error('❌ OTP verification failed:', data);
+                showNotification('❌ தவறான OTP! சரியான OTP உள்ளிடுங்கள்.', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('❌ OTP verify error:', error);
+            showNotification('❌ Network error! Try again.', 'error');
+        });
+    } else if (confirmationResult && confirmationResult !== 'DEMO_MODE') {
+        // Firebase fallback
+        confirmationResult.confirm(enteredOTP)
             .then((result) => {
-                console.log('✅ Firebase Phone Auth verified! UID:', result.user.uid);
+                console.log('✅ Firebase Phone Auth verified!');
                 completeLogin(userName, mobile);
             })
             .catch((error) => {
                 console.error('❌ OTP verification failed:', error);
-                if (error.code === 'auth/invalid-verification-code') {
-                    showNotification('❌ தவறான OTP! சரியான OTP உள்ளிடுங்கள்.', 'error');
-                } else if (error.code === 'auth/code-expired') {
-                    showNotification('⚠️ OTP expired! Resend OTP.', 'error');
-                } else {
-                    showNotification('❌ Verification failed! Try again.', 'error');
-                }
+                showNotification('❌ தவறான OTP! சரியான OTP உள்ளிடுங்கள்.', 'error');
             });
     } else {
-        // Demo mode fallback (accept any 4+ digits)
+        // Demo mode fallback
         completeLogin(userName, mobile);
     }
 }
