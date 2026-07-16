@@ -5,11 +5,11 @@ const SUPABASE_URL = 'https://utxghpplgjoquqrrhqom.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV0eGdocHBsZ2pvcXVxcnJocW9tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQxOTAxMDUsImV4cCI6MjA5OTc2NjEwNX0.d9SUs-FqIHOohiBr6yCPCZPfzOEkUYJ5ciMwf7VaKaI';
 
 // Initialize Supabase Client
-let supabase = null;
+let supabaseClient = null;
 
 function initSupabase() {
     if (window.supabase && window.supabase.createClient) {
-        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         console.log('✅ Supabase initialized successfully');
         return true;
     }
@@ -25,9 +25,9 @@ const CitizenConnect_DB = {
     // Save a new complaint
     async saveComplaint(complaint) {
         try {
-            if (!supabase) { console.warn('Supabase not ready'); return false; }
+            if (!supabaseClient) { console.warn('Supabase not ready'); return false; }
             
-            const { data, error } = await supabase
+            const { data, error } = await supabaseClient
                 .from('complaints')
                 .upsert({
                     id: complaint.id,
@@ -68,9 +68,9 @@ const CitizenConnect_DB = {
     // Get all complaints
     async getAllComplaints() {
         try {
-            if (!supabase) return {};
+            if (!supabaseClient) return {};
             
-            const { data, error } = await supabase
+            const { data, error } = await supabaseClient
                 .from('complaints')
                 .select('*')
                 .order('created_at', { ascending: false });
@@ -119,8 +119,8 @@ const CitizenConnect_DB = {
     // Get single complaint
     async getComplaint(complaintId) {
         try {
-            if (!supabase) return null;
-            const { data, error } = await supabase
+            if (!supabaseClient) return null;
+            const { data, error } = await supabaseClient
                 .from('complaints')
                 .select('*')
                 .eq('id', complaintId)
@@ -137,7 +137,7 @@ const CitizenConnect_DB = {
     // Update complaint
     async updateComplaint(complaintId, updates) {
         try {
-            if (!supabase) return false;
+            if (!supabaseClient) return false;
 
             // Convert camelCase to snake_case for DB
             const dbUpdates = {};
@@ -151,7 +151,7 @@ const CitizenConnect_DB = {
             if (updates.resolvedAt !== undefined) dbUpdates.resolved_at = updates.resolvedAt;
             dbUpdates.updated_at = new Date().toISOString();
 
-            const { error } = await supabase
+            const { error } = await supabaseClient
                 .from('complaints')
                 .update(dbUpdates)
                 .eq('id', complaintId);
@@ -168,9 +168,9 @@ const CitizenConnect_DB = {
     // Get next complaint number
     async getNextComplaintNumber() {
         try {
-            if (!supabase) return Date.now() % 10000 + 200;
+            if (!supabaseClient) return Date.now() % 10000 + 200;
 
-            const { data, error } = await supabase
+            const { data, error } = await supabaseClient
                 .from('config')
                 .select('value')
                 .eq('key', 'complaint_counter')
@@ -182,7 +182,7 @@ const CitizenConnect_DB = {
             }
 
             // Update counter
-            await supabase
+            await supabaseClient
                 .from('config')
                 .upsert({
                     key: 'complaint_counter',
@@ -200,9 +200,9 @@ const CitizenConnect_DB = {
 
     // Real-time listener for complaints changes
     onComplaintsChange(callback) {
-        if (!supabase) return null;
+        if (!supabaseClient) return null;
 
-        const channel = supabase
+        const channel = supabaseClient
             .channel('complaints-changes')
             .on('postgres_changes', 
                 { event: '*', schema: 'public', table: 'complaints' },
@@ -224,12 +224,12 @@ const CitizenConnect_DB = {
     // Upload voice audio
     async uploadVoiceAudio(complaintId, audioBlob) {
         try {
-            if (!supabase || !audioBlob) return '';
+            if (!supabaseClient || !audioBlob) return '';
 
             const fileName = `${complaintId}_${Date.now()}.webm`;
             const filePath = `voices/${fileName}`;
 
-            const { data, error } = await supabase.storage
+            const { data, error } = await supabaseClient.storage
                 .from('voice-recordings')
                 .upload(filePath, audioBlob, {
                     contentType: 'audio/webm',
@@ -239,7 +239,7 @@ const CitizenConnect_DB = {
             if (error) throw error;
 
             // Get public URL
-            const { data: urlData } = supabase.storage
+            const { data: urlData } = supabaseClient.storage
                 .from('voice-recordings')
                 .getPublicUrl(filePath);
 
@@ -255,7 +255,7 @@ const CitizenConnect_DB = {
     // Upload complaint image
     async uploadImage(complaintId, imageFile) {
         try {
-            if (!supabase || !imageFile) return '';
+            if (!supabaseClient || !imageFile) return '';
 
             let blob = imageFile;
             let ext = 'jpg';
@@ -275,7 +275,7 @@ const CitizenConnect_DB = {
             const fileName = `${complaintId}_${Date.now()}.${ext}`;
             const filePath = `images/${fileName}`;
 
-            const { data, error } = await supabase.storage
+            const { data, error } = await supabaseClient.storage
                 .from('complaint-images')
                 .upload(filePath, blob, {
                     contentType: contentType,
@@ -285,7 +285,7 @@ const CitizenConnect_DB = {
             if (error) throw error;
 
             // Get public URL
-            const { data: urlData } = supabase.storage
+            const { data: urlData } = supabaseClient.storage
                 .from('complaint-images')
                 .getPublicUrl(filePath);
 
@@ -303,8 +303,8 @@ const CitizenConnect_DB = {
     // Register/update citizen
     async upsertCitizen(name, mobile, ward, area) {
         try {
-            if (!supabase) return null;
-            const { data, error } = await supabase
+            if (!supabaseClient) return null;
+            const { data, error } = await supabaseClient
                 .from('citizens')
                 .upsert({
                     name: name,
@@ -327,8 +327,8 @@ const CitizenConnect_DB = {
     // Get citizen by mobile
     async getCitizenByMobile(mobile) {
         try {
-            if (!supabase) return null;
-            const { data, error } = await supabase
+            if (!supabaseClient) return null;
+            const { data, error } = await supabaseClient
                 .from('citizens')
                 .select('*')
                 .eq('mobile', mobile)
@@ -347,14 +347,14 @@ const CitizenConnect_DB = {
     // Generate and store OTP
     async generateOTP(mobile, purpose = 'login') {
         try {
-            if (!supabase) return null;
+            if (!supabaseClient) return null;
             
             // Generate 4-digit OTP
             const otpCode = String(Math.floor(1000 + Math.random() * 9000));
             const expiresAt = new Date(Date.now() + 5 * 60 * 1000).toISOString(); // 5 min expiry
 
             // Store in citizens table
-            await supabase
+            await supabaseClient
                 .from('citizens')
                 .upsert({
                     mobile: mobile,
@@ -364,7 +364,7 @@ const CitizenConnect_DB = {
                 }, { onConflict: 'mobile' });
 
             // Log OTP
-            await supabase
+            await supabaseClient
                 .from('otp_logs')
                 .insert({
                     mobile: mobile,
@@ -383,9 +383,9 @@ const CitizenConnect_DB = {
     // Verify OTP
     async verifyOTP(mobile, enteredOTP) {
         try {
-            if (!supabase) return false;
+            if (!supabaseClient) return false;
 
-            const { data, error } = await supabase
+            const { data, error } = await supabaseClient
                 .from('citizens')
                 .select('otp_code, otp_expires_at')
                 .eq('mobile', mobile)
@@ -399,13 +399,13 @@ const CitizenConnect_DB = {
 
             if (data.otp_code === enteredOTP && now < expires) {
                 // Mark as verified
-                await supabase
+                await supabaseClient
                     .from('citizens')
                     .update({ is_verified: true, otp_code: null, last_login: now.toISOString() })
                     .eq('mobile', mobile);
 
                 // Update OTP log
-                await supabase
+                await supabaseClient
                     .from('otp_logs')
                     .update({ is_verified: true, verified_at: now.toISOString() })
                     .eq('mobile', mobile)
@@ -429,8 +429,8 @@ const CitizenConnect_DB = {
     // Staff login
     async staffLogin(username, password) {
         try {
-            if (!supabase) return null;
-            const { data, error } = await supabase
+            if (!supabaseClient) return null;
+            const { data, error } = await supabaseClient
                 .from('staff')
                 .select('*')
                 .eq('username', username)
@@ -441,7 +441,7 @@ const CitizenConnect_DB = {
             if (error || !data) return null;
 
             // Update last login
-            await supabase
+            await supabaseClient
                 .from('staff')
                 .update({ last_login: new Date().toISOString() })
                 .eq('id', data.id);
@@ -457,9 +457,9 @@ const CitizenConnect_DB = {
     // Staff register
     async staffRegister(staffData) {
         try {
-            if (!supabase) return null;
+            if (!supabaseClient) return null;
 
-            const { data: existing } = await supabase
+            const { data: existing } = await supabaseClient
                 .from('staff')
                 .select('id')
                 .eq('username', staffData.username)
@@ -468,7 +468,7 @@ const CitizenConnect_DB = {
             if (existing) return { error: 'Username already exists' };
 
             const staffId = 'STAFF-' + String(Date.now()).slice(-6);
-            const { data, error } = await supabase
+            const { data, error } = await supabaseClient
                 .from('staff')
                 .insert({
                     username: staffData.username,
@@ -495,8 +495,8 @@ const CitizenConnect_DB = {
 
     async getAllVolunteers() {
         try {
-            if (!supabase) return [];
-            const { data, error } = await supabase
+            if (!supabaseClient) return [];
+            const { data, error } = await supabaseClient
                 .from('volunteers')
                 .select('*')
                 .eq('is_active', true)
@@ -512,8 +512,8 @@ const CitizenConnect_DB = {
 
     async addVolunteer(volunteer) {
         try {
-            if (!supabase) return null;
-            const { data, error } = await supabase
+            if (!supabaseClient) return null;
+            const { data, error } = await supabaseClient
                 .from('volunteers')
                 .insert({
                     name: volunteer.name,
@@ -539,8 +539,8 @@ const CitizenConnect_DB = {
 
     async postUpdate(update) {
         try {
-            if (!supabase) return null;
-            const { data, error } = await supabase
+            if (!supabaseClient) return null;
+            const { data, error } = await supabaseClient
                 .from('updates')
                 .insert({
                     tag: update.tag,
@@ -561,8 +561,8 @@ const CitizenConnect_DB = {
 
     async getUpdates() {
         try {
-            if (!supabase) return [];
-            const { data, error } = await supabase
+            if (!supabaseClient) return [];
+            const { data, error } = await supabaseClient
                 .from('updates')
                 .select('*')
                 .order('created_at', { ascending: false })
@@ -580,14 +580,14 @@ const CitizenConnect_DB = {
 
     // Check if Supabase is connected
     isConnected() {
-        return !!supabase;
+        return !!supabaseClient;
     },
 
     // Get complaint count by mobile
     async getComplaintsByMobile(mobile) {
         try {
-            if (!supabase) return [];
-            const { data, error } = await supabase
+            if (!supabaseClient) return [];
+            const { data, error } = await supabaseClient
                 .from('complaints')
                 .select('*')
                 .eq('mobile_number', mobile)
