@@ -10,6 +10,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Noto+Serif+Tamil:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Leaflet Map (FREE - OpenStreetMap) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
     <style>
 /* ===== VOICE TO MLA - THANJAVUR - PREMIUM DARK LUXURY THEME ===== */
 :root {
@@ -2665,6 +2667,11 @@ body::before {
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
     <script src="firebase-db.js"></script>
 
+    <!-- Leaflet Map Library (FREE - OpenStreetMap) -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    <!-- Enhanced Location Module -->
+    <script src="location-module.js"></script>
+
     <script>
 // ===== PARTICLES CANVAS =====
 (function() {
@@ -3131,9 +3138,31 @@ function confirmAssignment() { const vs=document.getElementById('volunteerSelect
 const uploadArea=document.getElementById('uploadArea'),fileInput=document.getElementById('fileInput'),uploadPreview=document.getElementById('uploadPreview');
 if (uploadArea) { uploadArea.addEventListener('click',()=>fileInput.click()); fileInput.addEventListener('change',(e)=>{Array.from(e.target.files).forEach(f=>{if(f.type.startsWith('image/')){const r=new FileReader();r.onload=(ev)=>{const p=document.createElement('div');p.style.cssText='width:80px;height:80px;border-radius:8px;overflow:hidden;position:relative;margin-top:10px;border:1px solid var(--gold-dim);';p.innerHTML=`<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover;"><button onclick="this.parentElement.remove()" style="position:absolute;top:2px;right:2px;width:20px;height:20px;border-radius:50%;background:var(--danger);color:white;border:none;cursor:pointer;">&times;</button>`;uploadPreview.appendChild(p);};r.readAsDataURL(f);}else{uploadPreview.innerHTML=`<p style="margin-top:10px;font-size:0.8rem;color:var(--gold);">📎 ${f.name}</p>`;}});showNotification('File uploaded!','success');}); }
 
-// ===== LOCATION =====
+// ===== LOCATION (Enhanced - Leaflet + OpenStreetMap) =====
 const getLocationBtn=document.getElementById('getLocation');
-if (getLocationBtn) { getLocationBtn.addEventListener('click',()=>{getLocationBtn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Loading...';if(navigator.geolocation){navigator.geolocation.getCurrentPosition((p)=>{const{latitude,longitude}=p.coords;document.getElementById('locationText').textContent=`📍 ${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;document.getElementById('locationText').style.color='var(--success)';getLocationBtn.innerHTML='<i class="fas fa-check"></i> Set';showNotification('Location captured!','success');},()=>{document.getElementById('locationText').textContent='📍 10.7870, 79.1378 (Thanjavur)';document.getElementById('locationText').style.color='var(--success)';getLocationBtn.innerHTML='<i class="fas fa-check"></i> Set';showNotification('Location set (demo)!','success');});}else{document.getElementById('locationText').textContent='📍 10.7870, 79.1378';getLocationBtn.innerHTML='<i class="fas fa-check"></i> Set';}}); }
+if (getLocationBtn) {
+    getLocationBtn.addEventListener('click', () => {
+        if (window.LocationModule) {
+            LocationModule.getLocation();
+        } else {
+            // Fallback if module not loaded
+            getLocationBtn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Loading...';
+            if(navigator.geolocation){
+                navigator.geolocation.getCurrentPosition((p)=>{
+                    const{latitude,longitude}=p.coords;
+                    document.getElementById('locationText').textContent=`📍 ${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
+                    document.getElementById('locationText').style.color='var(--success)';
+                    getLocationBtn.innerHTML='<i class="fas fa-check"></i> Set';
+                    showNotification('📍 Location captured!','success');
+                },()=>{
+                    document.getElementById('locationText').textContent='📍 10.7870, 79.1378 (Thanjavur)';
+                    document.getElementById('locationText').style.color='var(--success)';
+                    getLocationBtn.innerHTML='<i class="fas fa-check"></i> Set';
+                });
+            }
+        }
+    });
+}
 
 // ===== VOICE INPUT (handled by voice-module.js) =====
 // startVoiceInput() is defined in voice-module.js - opens the full voice bottom sheet
