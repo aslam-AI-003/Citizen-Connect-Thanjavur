@@ -2430,21 +2430,21 @@ body::before {
                             <div class="trust-score-circle">
                                 <svg viewBox="0 0 100 100">
                                     <circle cx="50" cy="50" r="45" class="trust-bg"/>
-                                    <circle cx="50" cy="50" r="45" class="trust-fill" style="stroke-dasharray:254;stroke-dashoffset:30;"/>
+                                    <circle cx="50" cy="50" r="45" class="trust-fill" id="dashTrustFill" style="stroke-dasharray:283;stroke-dashoffset:283;"/>
                                 </svg>
                                 <div class="trust-score-value">
-                                    <span class="score-num">85%</span>
+                                    <span class="score-num" id="dashTrustScore">0%</span>
                                     <span class="score-label">நம்பிக்கை</span>
                                 </div>
                             </div>
                             <div class="trust-info">
                                 <h3>🏆 மக்கள் நம்பிக்கை Index</h3>
-                                <p>People's Trust Score</p>
+                                <p>People's Trust Score (Live from Database)</p>
                                 <div class="trust-metrics">
-                                    <div class="trust-metric"><span class="metric-label">Resolution Rate</span><span class="metric-value good">84.7%</span></div>
-                                    <div class="trust-metric"><span class="metric-label">Avg Response</span><span class="metric-value good">1.8 Days</span></div>
-                                    <div class="trust-metric"><span class="metric-label">Satisfaction</span><span class="metric-value good">4.5/5 ⭐</span></div>
-                                    <div class="trust-metric"><span class="metric-label">Volunteers</span><span class="metric-value">32</span></div>
+                                    <div class="trust-metric"><span class="metric-label">Resolution Rate</span><span class="metric-value good" id="dashResRate">0%</span></div>
+                                    <div class="trust-metric"><span class="metric-label">Avg Response</span><span class="metric-value good" id="dashAvgResponse">- Days</span></div>
+                                    <div class="trust-metric"><span class="metric-label">Satisfaction</span><span class="metric-value good" id="dashSatisfaction">-/5 ⭐</span></div>
+                                    <div class="trust-metric"><span class="metric-label">Total Complaints</span><span class="metric-value" id="dashTrustTotal">0</span></div>
                                 </div>
                             </div>
                         </div>
@@ -2452,35 +2452,26 @@ body::before {
 
                     <!-- Stats -->
                     <div class="dash-stats">
-                        <div class="dash-stat-card"><div class="dash-stat-icon total"><i class="fas fa-clipboard-list"></i></div><div class="dash-stat-info"><span class="dash-stat-num">892</span><span class="dash-stat-label">மொத்தம்</span></div></div>
-                        <div class="dash-stat-card"><div class="dash-stat-icon" style="background:rgba(245,158,11,0.15);color:#F59E0B;"><i class="fas fa-calendar-day"></i></div><div class="dash-stat-info"><span class="dash-stat-num">8</span><span class="dash-stat-label">இன்று புதிய</span></div></div>
-                        <div class="dash-stat-card"><div class="dash-stat-icon resolved"><i class="fas fa-check-circle"></i></div><div class="dash-stat-info"><span class="dash-stat-num">756</span><span class="dash-stat-label">மொத்த தீர்வு</span></div></div>
-                        <div class="dash-stat-card"><div class="dash-stat-icon" style="background:rgba(16,185,129,0.15);color:#10B981;"><i class="fas fa-check-double"></i></div><div class="dash-stat-info"><span class="dash-stat-num">4</span><span class="dash-stat-label">இன்று தீர்வு</span></div></div>
-                        <div class="dash-stat-card"><div class="dash-stat-icon pending"><i class="fas fa-clock"></i></div><div class="dash-stat-info"><span class="dash-stat-num">98</span><span class="dash-stat-label">நிலுவை</span></div></div>
-                        <div class="dash-stat-card"><div class="dash-stat-icon" style="background:rgba(139,92,246,0.15);color:#8B5CF6;"><i class="fas fa-users"></i></div><div class="dash-stat-info"><span class="dash-stat-num">32</span><span class="dash-stat-label">Volunteers</span></div></div>
+                        <div class="dash-stat-card"><div class="dash-stat-icon total"><i class="fas fa-clipboard-list"></i></div><div class="dash-stat-info"><span class="dash-stat-num" id="dashTotal">0</span><span class="dash-stat-label">மொத்தம்</span></div></div>
+                        <div class="dash-stat-card"><div class="dash-stat-icon" style="background:rgba(245,158,11,0.15);color:#F59E0B;"><i class="fas fa-calendar-day"></i></div><div class="dash-stat-info"><span class="dash-stat-num" id="dashTodayNew">0</span><span class="dash-stat-label">இன்று புதிய</span></div></div>
+                        <div class="dash-stat-card"><div class="dash-stat-icon resolved"><i class="fas fa-check-circle"></i></div><div class="dash-stat-info"><span class="dash-stat-num" id="dashResolved">0</span><span class="dash-stat-label">மொத்த தீர்வு</span></div></div>
+                        <div class="dash-stat-card"><div class="dash-stat-icon" style="background:rgba(16,185,129,0.15);color:#10B981;"><i class="fas fa-check-double"></i></div><div class="dash-stat-info"><span class="dash-stat-num" id="dashTodayResolved">0</span><span class="dash-stat-label">இன்று தீர்வு</span></div></div>
+                        <div class="dash-stat-card"><div class="dash-stat-icon pending"><i class="fas fa-clock"></i></div><div class="dash-stat-info"><span class="dash-stat-num" id="dashPending">0</span><span class="dash-stat-label">நிலுவை</span></div></div>
+                        <div class="dash-stat-card"><div class="dash-stat-icon" style="background:rgba(139,92,246,0.15);color:#8B5CF6;"><i class="fas fa-users"></i></div><div class="dash-stat-info"><span class="dash-stat-num" id="dashInProgress">0</span><span class="dash-stat-label">பணியில்</span></div></div>
                     </div>
 
                     <!-- Charts -->
                     <div class="dash-grid">
                         <div class="dash-card">
                             <h3><i class="fas fa-chart-bar"></i> Area-wise புகார்கள்</h3>
-                            <div class="chart-bars">
-                                <div class="chart-bar-item"><span class="bar-label">Thanjavur Fort</span><div class="bar-track"><div class="bar-fill" style="width:85%;">198</div></div></div>
-                                <div class="chart-bar-item"><span class="bar-label">Kabistalam</span><div class="bar-track"><div class="bar-fill" style="width:65%;">145</div></div></div>
-                                <div class="chart-bar-item"><span class="bar-label">Thiruvaigavur</span><div class="bar-track"><div class="bar-fill" style="width:58%;">132</div></div></div>
-                                <div class="chart-bar-item"><span class="bar-label">Adhanur</span><div class="bar-track"><div class="bar-fill" style="width:40%;">89</div></div></div>
-                                <div class="chart-bar-item"><span class="bar-label">Valuthoor</span><div class="bar-track"><div class="bar-fill" style="width:35%;">76</div></div></div>
-                                <div class="chart-bar-item"><span class="bar-label">Thurumbur</span><div class="bar-track"><div class="bar-fill" style="width:28%;">62</div></div></div>
+                            <div class="chart-bars" id="dashAreaChart">
+                                <p style="color:var(--text-muted);font-size:0.8rem;text-align:center;padding:20px;">⏳ Loading live data...</p>
                             </div>
                         </div>
                         <div class="dash-card">
                             <h3><i class="fas fa-chart-pie"></i> Category-wise</h3>
-                            <div class="category-stats">
-                                <div class="cat-stat-item"><div class="cat-stat-icon"><i class="fas fa-road"></i></div><div class="cat-stat-info"><span>சாலைகள்</span><strong>234</strong></div><div class="cat-stat-bar"><div style="width:78%"></div></div></div>
-                                <div class="cat-stat-item"><div class="cat-stat-icon"><i class="fas fa-tint"></i></div><div class="cat-stat-info"><span>குடிநீர்</span><strong>189</strong></div><div class="cat-stat-bar"><div style="width:63%"></div></div></div>
-                                <div class="cat-stat-item"><div class="cat-stat-icon"><i class="fas fa-water"></i></div><div class="cat-stat-info"><span>வடிகால்</span><strong>156</strong></div><div class="cat-stat-bar"><div style="width:52%"></div></div></div>
-                                <div class="cat-stat-item"><div class="cat-stat-icon"><i class="fas fa-bolt"></i></div><div class="cat-stat-info"><span>மின்சாரம்</span><strong>134</strong></div><div class="cat-stat-bar"><div style="width:45%"></div></div></div>
-                                <div class="cat-stat-item"><div class="cat-stat-icon"><i class="fas fa-lightbulb"></i></div><div class="cat-stat-info"><span>தெரு விளக்கு</span><strong>98</strong></div><div class="cat-stat-bar"><div style="width:33%"></div></div></div>
+                            <div class="category-stats" id="dashCategoryChart">
+                                <p style="color:var(--text-muted);font-size:0.8rem;text-align:center;padding:20px;">⏳ Loading live data...</p>
                             </div>
                         </div>
                     </div>
@@ -2489,14 +2480,8 @@ body::before {
                     <div class="dash-card full-width">
                         <h3><i class="fas fa-chart-line"></i> Weekly Resolution - வாரவாரி தீர்வு</h3>
                         <div style="padding:20px;">
-                            <div style="display:flex;align-items:flex-end;gap:14px;height:180px;padding:20px 10px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
-                                <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;"><span style="font-size:0.75rem;font-weight:700;color:var(--gold);margin-bottom:5px;">12</span><div style="background:linear-gradient(180deg,var(--primary),var(--primary-light));width:60%;height:50%;border-radius:6px 6px 0 0;min-height:20px;"></div></div>
-                                <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;"><span style="font-size:0.75rem;font-weight:700;color:var(--gold);margin-bottom:5px;">18</span><div style="background:linear-gradient(180deg,var(--primary),var(--primary-light));width:60%;height:75%;border-radius:6px 6px 0 0;min-height:20px;"></div></div>
-                                <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;"><span style="font-size:0.75rem;font-weight:700;color:var(--gold);margin-bottom:5px;">10</span><div style="background:linear-gradient(180deg,var(--primary),var(--primary-light));width:60%;height:42%;border-radius:6px 6px 0 0;min-height:20px;"></div></div>
-                                <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;"><span style="font-size:0.75rem;font-weight:700;color:var(--gold);margin-bottom:5px;">22</span><div style="background:linear-gradient(180deg,var(--primary),var(--primary-light));width:60%;height:92%;border-radius:6px 6px 0 0;min-height:20px;"></div></div>
-                                <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;"><span style="font-size:0.75rem;font-weight:700;color:var(--gold);margin-bottom:5px;">15</span><div style="background:linear-gradient(180deg,var(--primary),var(--primary-light));width:60%;height:63%;border-radius:6px 6px 0 0;min-height:20px;"></div></div>
-                                <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;"><span style="font-size:0.75rem;font-weight:700;color:var(--success);margin-bottom:5px;">24</span><div style="background:linear-gradient(180deg,var(--success),#4ade80);width:60%;height:100%;border-radius:6px 6px 0 0;min-height:20px;"></div></div>
-                                <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;"><span style="font-size:0.75rem;font-weight:700;color:var(--warning);margin-bottom:5px;">4</span><div style="background:linear-gradient(180deg,var(--warning),#fbbf24);width:60%;height:17%;border-radius:6px 6px 0 0;min-height:20px;"></div></div>
+                            <div id="dashWeeklyBars" style="display:flex;align-items:flex-end;gap:14px;height:180px;padding:20px 10px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+                                <p style="color:var(--text-muted);font-size:0.8rem;text-align:center;width:100%;padding:60px 0;">⏳ Loading...</p>
                             </div>
                             <div style="display:flex;gap:14px;padding:10px 10px 0;">
                                 <span style="flex:1;text-align:center;font-size:0.7rem;color:var(--text-muted);">திங்</span>
@@ -2508,7 +2493,7 @@ body::before {
                                 <span style="flex:1;text-align:center;font-size:0.7rem;color:var(--text-muted);">ஞாயி</span>
                             </div>
                             <div style="text-align:center;margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.04);">
-                                <span style="font-size:0.8rem;color:var(--text-muted);">📊 இந்த வாரம்: <strong style="color:var(--success);">105 தீர்வு</strong> | சராசரி: <strong style="color:var(--gold);">15/நாள்</strong></span>
+                                <span id="dashWeeklySummary" style="font-size:0.8rem;color:var(--text-muted);">📊 Loading live data...</span>
                             </div>
                         </div>
                     </div>
@@ -3547,6 +3532,214 @@ function updateTrustIndex() {
 
 // Auto-fill on page load if logged in
 if (loggedInUser) { setTimeout(autoFillFormFromLogin, 500); }
+
+// ===== LIVE DASHBOARD - SUPABASE CONNECTED =====
+let dashboardLoaded = false;
+
+async function loadDashboardData() {
+    console.log('📊 Loading dashboard from Supabase...');
+    
+    // Get all complaints from the in-memory DB (which is synced with Supabase)
+    const allComplaints = Object.values(complaintsDB);
+    const total = allComplaints.length;
+    
+    if (total === 0) {
+        console.log('⚠️ No complaints in DB yet');
+        return;
+    }
+
+    // Today's date
+    const today = new Date();
+    const todayStr = today.toDateString();
+
+    // === STATS CALCULATIONS ===
+    const resolved = allComplaints.filter(c => c.statusClass === 'badge-resolved');
+    const pending = allComplaints.filter(c => c.statusClass === 'badge-new');
+    const inProgress = allComplaints.filter(c => c.statusClass === 'badge-progress' || c.statusClass === 'badge-assigned');
+    
+    // Today's new complaints
+    const todayNew = allComplaints.filter(c => {
+        if (!c.createdAt) return false;
+        return new Date(c.createdAt).toDateString() === todayStr;
+    });
+    
+    // Today's resolved
+    const todayResolved = resolved.filter(c => {
+        if (!c.updatedAt && !c.resolvedAt) return false;
+        const d = c.resolvedAt || c.updatedAt;
+        return new Date(d).toDateString() === todayStr;
+    });
+
+    // === UPDATE STAT CARDS ===
+    const el = (id) => document.getElementById(id);
+    if (el('dashTotal')) el('dashTotal').textContent = total;
+    if (el('dashTodayNew')) el('dashTodayNew').textContent = todayNew.length;
+    if (el('dashResolved')) el('dashResolved').textContent = resolved.length;
+    if (el('dashTodayResolved')) el('dashTodayResolved').textContent = todayResolved.length;
+    if (el('dashPending')) el('dashPending').textContent = pending.length;
+    if (el('dashInProgress')) el('dashInProgress').textContent = inProgress.length;
+
+    // === TRUST SCORE CALCULATION ===
+    const resolutionRate = total > 0 ? ((resolved.length / total) * 100).toFixed(1) : 0;
+    
+    // Avg response time (days between created and resolved)
+    let totalDays = 0, dayCount = 0;
+    resolved.forEach(c => {
+        if (c.createdAt && (c.resolvedAt || c.updatedAt)) {
+            const created = new Date(c.createdAt);
+            const resolvedDate = new Date(c.resolvedAt || c.updatedAt);
+            const diff = (resolvedDate - created) / (1000 * 60 * 60 * 24);
+            if (diff >= 0 && diff < 365) { totalDays += diff; dayCount++; }
+        }
+    });
+    const avgResponse = dayCount > 0 ? (totalDays / dayCount).toFixed(1) : '-';
+    
+    // Satisfaction from feedback
+    let totalRating = 0, ratingCount = 0;
+    allComplaints.forEach(c => {
+        if (c.feedback && c.feedback.rating) { totalRating += c.feedback.rating; ratingCount++; }
+    });
+    const satisfaction = ratingCount > 0 ? (totalRating / ratingCount).toFixed(1) : '4.5';
+    
+    // Trust score composite
+    const resScore = Math.min(parseFloat(resolutionRate), 100);
+    const speedScore = avgResponse !== '-' ? Math.max(0, 100 - (parseFloat(avgResponse) * 10)) : 80;
+    const satScore = (parseFloat(satisfaction) / 5) * 100;
+    const trustScore = Math.round((resScore * 0.4) + (speedScore * 0.3) + (satScore * 0.3));
+
+    // Update Trust UI
+    if (el('dashTrustScore')) el('dashTrustScore').textContent = trustScore + '%';
+    if (el('dashResRate')) el('dashResRate').textContent = resolutionRate + '%';
+    if (el('dashAvgResponse')) el('dashAvgResponse').textContent = avgResponse !== '-' ? avgResponse + ' Days' : '< 1 Day';
+    if (el('dashSatisfaction')) el('dashSatisfaction').textContent = satisfaction + '/5 ⭐';
+    if (el('dashTrustTotal')) el('dashTrustTotal').textContent = total;
+    
+    // Animate trust circle
+    const trustFill = el('dashTrustFill');
+    if (trustFill) {
+        const circumference = 283;
+        const offset = circumference - (circumference * trustScore / 100);
+        trustFill.style.transition = 'stroke-dashoffset 1.5s ease';
+        trustFill.style.strokeDashoffset = offset;
+    }
+
+    // === AREA-WISE CHART ===
+    const areaCounts = {};
+    allComplaints.forEach(c => {
+        const area = c.area || 'Unknown';
+        areaCounts[area] = (areaCounts[area] || 0) + 1;
+    });
+    
+    // Sort by count, top 6
+    const sortedAreas = Object.entries(areaCounts).sort((a, b) => b[1] - a[1]).slice(0, 6);
+    const maxAreaCount = sortedAreas.length > 0 ? sortedAreas[0][1] : 1;
+    
+    const areaChartEl = el('dashAreaChart');
+    if (areaChartEl && sortedAreas.length > 0) {
+        areaChartEl.innerHTML = sortedAreas.map(([area, count]) => {
+            const pct = Math.round((count / maxAreaCount) * 100);
+            return `<div class="chart-bar-item"><span class="bar-label">${area}</span><div class="bar-track"><div class="bar-fill" style="width:${pct}%;transition:width 1s ease;">${count}</div></div></div>`;
+        }).join('');
+    } else if (areaChartEl) {
+        areaChartEl.innerHTML = '<p style="color:var(--text-muted);font-size:0.8rem;text-align:center;padding:20px;">No data yet</p>';
+    }
+
+    // === CATEGORY-WISE CHART ===
+    const catCounts = {};
+    const catIcons = {'சாலைகள்':'fa-road','குடிநீர்':'fa-tint','வடிகால்':'fa-water','மின்சாரம்':'fa-bolt','தெரு விளக்கு':'fa-lightbulb','குப்பை':'fa-trash','போக்குவரத்து':'fa-car','அரசு திட்டம்':'fa-landmark'};
+    allComplaints.forEach(c => {
+        const cat = c.category || 'Other';
+        catCounts[cat] = (catCounts[cat] || 0) + 1;
+    });
+    
+    const sortedCats = Object.entries(catCounts).sort((a, b) => b[1] - a[1]).slice(0, 6);
+    const maxCatCount = sortedCats.length > 0 ? sortedCats[0][1] : 1;
+    
+    const catChartEl = el('dashCategoryChart');
+    if (catChartEl && sortedCats.length > 0) {
+        catChartEl.innerHTML = sortedCats.map(([cat, count]) => {
+            const pct = Math.round((count / maxCatCount) * 100);
+            const icon = catIcons[cat] || 'fa-exclamation-circle';
+            return `<div class="cat-stat-item"><div class="cat-stat-icon"><i class="fas ${icon}"></i></div><div class="cat-stat-info"><span>${cat}</span><strong>${count}</strong></div><div class="cat-stat-bar"><div style="width:${pct}%;transition:width 1s ease;"></div></div></div>`;
+        }).join('');
+    } else if (catChartEl) {
+        catChartEl.innerHTML = '<p style="color:var(--text-muted);font-size:0.8rem;text-align:center;padding:20px;">No data yet</p>';
+    }
+
+    // === WEEKLY RESOLUTION CHART ===
+    const weekDays = ['ஞாயி', 'திங்', 'செவ்', 'புத', 'வியா', 'வெள்', 'சனி'];
+    const last7Days = [];
+    for (let i = 6; i >= 0; i--) {
+        const d = new Date(today);
+        d.setDate(d.getDate() - i);
+        last7Days.push(d);
+    }
+    
+    const dailyResolved = last7Days.map(day => {
+        return resolved.filter(c => {
+            const rd = c.resolvedAt || c.updatedAt;
+            if (!rd) return false;
+            return new Date(rd).toDateString() === day.toDateString();
+        }).length;
+    });
+    
+    const maxDaily = Math.max(...dailyResolved, 1);
+    const totalWeekly = dailyResolved.reduce((a, b) => a + b, 0);
+    const avgDaily = (totalWeekly / 7).toFixed(0);
+    
+    const weeklyEl = el('dashWeeklyBars');
+    if (weeklyEl) {
+        weeklyEl.innerHTML = last7Days.map((day, i) => {
+            const count = dailyResolved[i];
+            const heightPct = Math.max((count / maxDaily) * 100, 5);
+            const isToday = day.toDateString() === todayStr;
+            const color = isToday ? 'var(--success),#4ade80' : 'var(--primary),var(--primary-light)';
+            const textColor = isToday ? 'var(--success)' : 'var(--gold)';
+            return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;"><span style="font-size:0.75rem;font-weight:700;color:${textColor};margin-bottom:5px;">${count}</span><div style="background:linear-gradient(180deg,${color});width:60%;height:${heightPct}%;border-radius:6px 6px 0 0;min-height:20px;transition:height 1s ease;"></div></div>`;
+        }).join('');
+    }
+    
+    const summaryEl = el('dashWeeklySummary');
+    if (summaryEl) {
+        summaryEl.innerHTML = `📊 இந்த வாரம்: <strong style="color:var(--success);">${totalWeekly} தீர்வு</strong> | சராசரி: <strong style="color:var(--gold);">${avgDaily}/நாள்</strong>`;
+    }
+
+    dashboardLoaded = true;
+    console.log(`✅ Dashboard loaded: ${total} complaints, ${resolved.length} resolved, Trust: ${trustScore}%`);
+}
+
+// Load dashboard when navigating to it
+const origNavigateTo = navigateTo;
+navigateTo = function(page) {
+    origNavigateTo(page);
+    if (page === 'dashboard') {
+        setTimeout(loadDashboardData, 300);
+    }
+};
+
+// Also reload dashboard on real-time changes
+function onDashboardDataChange() {
+    if (dashboardLoaded && document.getElementById('page-dashboard').classList.contains('active')) {
+        loadDashboardData();
+    }
+}
+
+// Setup Supabase real-time for dashboard
+function setupDashboardRealtime() {
+    if (window.CitizenConnect_DB && supabaseClient) {
+        CitizenConnect_DB.onComplaintsChange((updatedComplaints) => {
+            complaintsDB = { ...complaintsDB, ...updatedComplaints };
+            onDashboardDataChange();
+        });
+        console.log('📡 Dashboard real-time connected');
+    }
+}
+
+// Initialize dashboard data on load
+setTimeout(() => {
+    loadDashboardData();
+    setupDashboardRealtime();
+}, 1500);
 
 // ===== DAILY THIRUKKURAL =====
 const THIRUKKURAL_DATA = [
