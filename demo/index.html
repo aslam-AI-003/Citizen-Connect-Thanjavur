@@ -2844,10 +2844,19 @@ function sendOTP() {
 
     const mobile = mi.value.trim();
     
-    // Show sending notification
-    showNotification(`📱 OTP அனுப்புகிறது +91 ${mobile.substring(0,5)}xxxxx...`, 'info');
+    // DEMO MODE - Until DLT certificate is approved
+    // TODO: Switch to real OTP (MSG91) after DLT approval
+    // Uncomment the fetch() block below when ready for production
+    
+    confirmationResult = 'DEMO_MODE';
+    document.getElementById('otpSection').style.display = 'block';
+    const otpLabel = document.querySelector('#otpSection label');
+    if (otpLabel) otpLabel.textContent = 'OTP உள்ளிடுங்கள் (Demo: 1234)';
+    showNotification(`📱 OTP sent to +91 ${mobile.substring(0,5)}xxxxx (Demo: 1234)`, 'success');
+    console.log('📱 Demo OTP mode active (use 1234)');
 
-    // Send OTP via MSG91 (Vercel serverless function)
+    /* === PRODUCTION MODE - Enable after DLT certificate approval ===
+    showNotification(`📱 OTP அனுப்புகிறது +91 ${mobile.substring(0,5)}xxxxx...`, 'info');
     fetch('/api/send-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -2871,6 +2880,7 @@ function sendOTP() {
         console.error('❌ OTP send error:', error);
         showNotification('❌ Network error! Please try again.', 'error');
     });
+    === END PRODUCTION MODE === */
 }
 
 function verifyOTP() {
