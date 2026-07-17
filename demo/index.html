@@ -2366,46 +2366,10 @@ body::before {
                         <h2 data-lang="updates_title"><i class="fas fa-newspaper"></i> MLA Updates & அறிவிப்புகள்</h2>
                         <p data-lang="updates_sub">R. Vijaysaravanan - MLA | தஞ்சாவூர் தொகுதி (TVK)</p>
                     </div>
-                    <div class="updates-timeline">
-                        <div class="update-card">
-                            <div class="update-card-inner">
-                                <span class="update-date-badge">May 24, 2026</span>
-                                <span class="update-tag">அறிவிப்பு</span>
-                                <h4>Thanjavur Fort Area - சாலை மேம்பாட்டு பணி தொடக்கம்</h4>
-                                <p>East Main Street-ல 3 கி.மீ சாலை மேம்பாட்டு பணி இன்று தொடங்கப்பட்டது. 20 நாட்களில் முடிக்கப்படும்.</p>
-                            </div>
-                        </div>
-                        <div class="update-card">
-                            <div class="update-card-inner success-border">
-                                <span class="update-date-badge">May 22, 2026</span>
-                                <span class="update-tag success">நிறைவு</span>
-                                <h4>Kabistalam - 30 புதிய Street Lights நிறுவப்பட்டன</h4>
-                                <p>மக்கள் புகாரின் அடிப்படையில் Kabistalam பகுதியில் 30 புதிய LED Street Lights நிறுவப்பட்டுள்ளன.</p>
-                            </div>
-                        </div>
-                        <div class="update-card">
-                            <div class="update-card-inner info-border">
-                                <span class="update-date-badge">May 20, 2026</span>
-                                <span class="update-tag info">நிகழ்வு</span>
-                                <h4>மக்கள் சந்திப்பு - ஒவ்வொரு சனிக்கிழமையும்</h4>
-                                <p>ஒவ்வொரு சனிக்கிழமையும் காலை 10 - 1 வரை MLA அலுவலகத்தில் மக்கள் சந்திப்பு நடைபெறும்.</p>
-                            </div>
-                        </div>
-                        <div class="update-card">
-                            <div class="update-card-inner">
-                                <span class="update-date-badge">May 18, 2026</span>
-                                <span class="update-tag">அறிவிப்பு</span>
-                                <h4>Thiruvaigavur Drainage System Upgrade Project</h4>
-                                <p>Thiruvaigavur பகுதியில் Drainage system upgrade project-க்கு அரசு ஒப்புதல் கிடைத்துள்ளது.</p>
-                            </div>
-                        </div>
-                        <div class="update-card">
-                            <div class="update-card-inner success-border">
-                                <span class="update-date-badge">May 15, 2026</span>
-                                <span class="update-tag success">நிறைவு</span>
-                                <h4>Adhanur குடிநீர் பிரச்சனை தீர்வு</h4>
-                                <p>Adhanur கிராமத்தில் 3 வாரங்களாக இருந்த குடிநீர் பிரச்சனை முழுமையாக தீர்க்கப்பட்டது.</p>
-                            </div>
+                    <div class="updates-timeline" id="publicUpdatesTimeline">
+                        <div style="text-align:center;padding:40px;">
+                            <i class="fas fa-spinner fa-spin" style="font-size:1.5rem;color:var(--gold);margin-bottom:12px;display:block;"></i>
+                            <p style="color:var(--text-muted);font-size:0.85rem;">⏳ Loading updates from MLA office...</p>
                         </div>
                     </div>
                 </div>
@@ -3740,6 +3704,95 @@ setTimeout(() => {
     loadDashboardData();
     setupDashboardRealtime();
 }, 1500);
+
+// ===== PUBLIC UPDATES PAGE - LIVE FROM SUPABASE =====
+const DEFAULT_UPDATES = [
+    { tag: '📋 அறிவிப்பு', title: 'Thanjavur Fort Area - சாலை மேம்பாட்டு பணி தொடக்கம்', content: 'East Main Street-ல 3 கி.மீ சாலை மேம்பாட்டு பணி இன்று தொடங்கப்பட்டது. 20 நாட்களில் முடிக்கப்படும்.', created_at: '2026-05-24T10:00:00Z' },
+    { tag: '✅ நிறைவு', title: 'Kabistalam - 30 புதிய Street Lights நிறுவப்பட்டன', content: 'மக்கள் புகாரின் அடிப்படையில் Kabistalam பகுதியில் 30 புதிய LED Street Lights நிறுவப்பட்டுள்ளன.', created_at: '2026-05-22T10:00:00Z' },
+    { tag: '📅 நிகழ்வு', title: 'மக்கள் சந்திப்பு - ஒவ்வொரு சனிக்கிழமையும்', content: 'ஒவ்வொரு சனிக்கிழமையும் காலை 10 - 1 வரை MLA அலுவலகத்தில் மக்கள் சந்திப்பு நடைபெறும்.', created_at: '2026-05-20T10:00:00Z' },
+    { tag: '📋 அறிவிப்பு', title: 'Thiruvaigavur Drainage System Upgrade Project', content: 'Thiruvaigavur பகுதியில் Drainage system upgrade project-க்கு அரசு ஒப்புதல் கிடைத்துள்ளது.', created_at: '2026-05-18T10:00:00Z' },
+    { tag: '✅ நிறைவு', title: 'Adhanur குடிநீர் பிரச்சனை தீர்வு', content: 'Adhanur கிராமத்தில் 3 வாரங்களாக இருந்த குடிநீர் பிரச்சனை முழுமையாக தீர்க்கப்பட்டது.', created_at: '2026-05-15T10:00:00Z' }
+];
+
+async function loadPublicUpdates() {
+    const container = document.getElementById('publicUpdatesTimeline');
+    if (!container) return;
+
+    let updates = [];
+
+    // Try Supabase first
+    try {
+        if (window.CitizenConnect_DB && CitizenConnect_DB.isConnected()) {
+            updates = await CitizenConnect_DB.getUpdates();
+            console.log('📰 Loaded', updates.length, 'updates from Supabase');
+        }
+    } catch (e) { console.warn('Supabase updates fetch error:', e); }
+
+    // Try Firebase fallback
+    if (updates.length === 0) {
+        try {
+            if (typeof db !== 'undefined') {
+                const snapshot = await db.collection('vtm_ppn_updates').orderBy('createdAt', 'desc').limit(20).get();
+                snapshot.forEach(doc => { updates.push(doc.data()); });
+                console.log('📰 Loaded', updates.length, 'updates from Firebase');
+            }
+        } catch (e) { console.warn('Firebase updates fetch error:', e); }
+    }
+
+    // Use defaults if no DB data
+    if (updates.length === 0) {
+        updates = DEFAULT_UPDATES;
+        console.log('📰 Using default updates');
+    }
+
+    // Render updates
+    renderPublicUpdates(container, updates);
+}
+
+function renderPublicUpdates(container, updates) {
+    if (!updates || updates.length === 0) {
+        container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-muted);"><p>இப்போது updates இல்லை</p></div>';
+        return;
+    }
+
+    container.innerHTML = updates.map(update => {
+        const tag = update.tag || '📋 அறிவிப்பு';
+        const title = update.title || '';
+        const content = update.content || '';
+        const dateStr = update.created_at ? new Date(update.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : (update.date || '');
+        
+        // Determine tag style
+        let tagClass = '';
+        let borderClass = '';
+        if (tag.includes('நிறைவு') || tag.includes('Completed')) { tagClass = 'success'; borderClass = 'success-border'; }
+        else if (tag.includes('நிகழ்வு') || tag.includes('Event')) { tagClass = 'info'; borderClass = 'info-border'; }
+        else if (tag.includes('அவசரம்') || tag.includes('Urgent')) { tagClass = ''; borderClass = ''; }
+        
+        // Clean tag text (remove emojis for display in badge)
+        const tagText = tag.replace(/📋|✅|📅|⚠️/g, '').trim();
+
+        return `<div class="update-card">
+            <div class="update-card-inner ${borderClass}">
+                <span class="update-date-badge">${dateStr}</span>
+                <span class="update-tag ${tagClass}">${tagText}</span>
+                <h4>${title}</h4>
+                <p>${content}</p>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+// Load updates when navigating to updates page
+const origNavigateTo2 = navigateTo;
+navigateTo = function(page) {
+    origNavigateTo2(page);
+    if (page === 'updates') {
+        loadPublicUpdates();
+    }
+};
+
+// Also load on page init
+setTimeout(loadPublicUpdates, 2000);
 
 // ===== DAILY THIRUKKURAL =====
 const THIRUKKURAL_DATA = [

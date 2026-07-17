@@ -972,13 +972,32 @@
         setTimeout(loadStaffAccounts, 1000);
 
         // Post Update
-        function postAdminUpdate() {
+        async function postAdminUpdate() {
             const tag = document.getElementById('adminUpdateTag').value;
             const title = document.getElementById('adminUpdateTitle').value;
             const content = document.getElementById('adminUpdateContent').value;
             if (!title || !content) { alert('Title and Content required!'); return; }
             const now = new Date();
             const dateStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            const postedBy = currentStaffUser ? currentStaffUser.name : 'Admin';
+
+            // Save to Supabase (PRIMARY)
+            let saved = false;
+            try {
+                if (window.CitizenConnect_DB && CitizenConnect_DB.isConnected()) {
+                    const result = await CitizenConnect_DB.postUpdate({ tag, title, content, postedBy });
+                    if (result) { saved = true; console.log('✅ Update saved to Supabase:', result.id); }
+                }
+            } catch(e) { console.error('Supabase update save error:', e); }
+
+            // Fallback: Save to Firebase
+            try {
+                if (typeof db !== 'undefined') {
+                    db.collection('vtm_ppn_updates').add({ tag, title, content, date: dateStr, createdAt: new Date().toISOString(), postedBy });
+                }
+            } catch(e) { console.log('Firebase update save error:', e); }
+
+            // Update UI
             const newItem = document.createElement('div');
             newItem.style.cssText = 'padding:12px;border:1px solid #f3f4f6;border-radius:8px;margin-bottom:10px;';
             newItem.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;"><span style="font-size:0.7rem;background:#fef3c7;color:#d97706;padding:2px 8px;border-radius:4px;">${tag}</span><span style="font-size:0.7rem;color:#999;">${dateStr}</span></div><h4 style="font-size:0.85rem;margin:5px 0;">${title}</h4><p style="font-size:0.75rem;color:#666;">${content}</p>`;
@@ -987,14 +1006,7 @@
             document.getElementById('adminUpdateTitle').value = '';
             document.getElementById('adminUpdateContent').value = '';
 
-            // Save to Firebase
-            try {
-                if (typeof db !== 'undefined') {
-                    db.collection('vtm_ppn_updates').add({ tag, title, content, date: dateStr, createdAt: new Date().toISOString(), postedBy: currentStaffUser ? currentStaffUser.name : 'Admin' });
-                }
-            } catch(e) { console.log('Update save error:', e); }
-
-            alert('✅ Update published successfully!');
+            alert(saved ? '✅ Update published & synced to public website!' : '✅ Update published (offline mode)');
         }
 
         // ===== VOLUNTEER MANAGEMENT SYSTEM =====
