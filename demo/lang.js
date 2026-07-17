@@ -3,6 +3,7 @@
 
 const TRANSLATIONS = {
     // ===== BRAND =====
+    'brand_text': { ta: 'மக்கள் தொடர்பு', en: 'Citizen Connect' },
     'brand_sub': { ta: '| தஞ்சாவூர்', en: '| Thanjavur' },
 
     // ===== NAVBAR =====
