@@ -357,6 +357,37 @@ body::before {
     z-index: 2;
 }
 
+/* TVK 3D Flag Floating Animation */
+.tvk-flag-float {
+    margin-bottom: 16px;
+    display: inline-block;
+    animation: floatFlag 4s ease-in-out infinite;
+    filter: drop-shadow(0 8px 20px rgba(212,175,55,0.3));
+}
+
+.tvk-3d-flag {
+    width: 80px;
+    height: auto;
+    animation: gentleRotate 8s ease-in-out infinite;
+    transition: transform 0.3s ease;
+}
+
+.tvk-3d-flag:hover {
+    transform: scale(1.15) rotateY(15deg);
+    filter: brightness(1.2);
+}
+
+@keyframes floatFlag {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes gentleRotate {
+    0%, 100% { transform: perspective(400px) rotateY(0deg); }
+    25% { transform: perspective(400px) rotateY(8deg); }
+    75% { transform: perspective(400px) rotateY(-8deg); }
+}
+
 .hero-text .badge-party {
     display: inline-flex;
     align-items: center;
@@ -1970,6 +2001,9 @@ body::before {
                 <div class="container">
                     <div class="hero-content">
                         <div class="hero-text">
+                            <div class="tvk-flag-float">
+                                <img src="../assets/TVKflag3d.png" alt="TVK Flag" class="tvk-3d-flag">
+                            </div>
                             <div class="badge-party" data-lang="hero_badge">🏛️ TAMILAGA VETTRI KAZHAGAM</div>
                             <h1 data-lang="hero_title">மக்கள் குரல்</h1>
                             <h2 data-lang="hero_subtitle">தஞ்சாவூர் தொகுதி</h2>
@@ -1985,8 +2019,9 @@ body::before {
                             </div>
                         </div>
                         <div class="hero-mla-card">
-                            <div class="hero-photo-bg" style="width:100%;max-width:400px;border-radius:20px;overflow:hidden;">
-                                <img src="../assets/home_photo.png" alt="R. Vijaysaravanan" style="width:100%;height:auto;display:block;mix-blend-mode:multiply;filter:brightness(1.3);opacity:0.9;">
+                            <div class="hero-photo-bg" style="width:100%;max-width:400px;border-radius:20px;overflow:hidden;position:relative;">
+                                <img src="../assets/home_photo.png" alt="R. Vijaysaravanan" style="width:100%;height:auto;display:block;position:relative;z-index:1;">
+                                <div style="position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(ellipse 70% 80% at center, transparent 40%, var(--dark-bg) 85%);"></div>
                             </div>
                             <div class="mla-info-card" style="margin-top:16px;">
                                 <h3>R. Vijaysaravanan</h3>
@@ -1996,24 +2031,20 @@ body::before {
                         </div>
                     </div>
 
-                    <!-- Stats Bar -->
-                    <div class="hero-stats-bar">
-                        <div class="hero-stat">
-                            <span class="stat-num" data-count="892">0</span>
-                            <span class="stat-label" data-lang="stat_total">மொத்த புகார்கள்</span>
+                </div>
+            </section>
+
+            <!-- Today's Thirukkural -->
+            <section class="how-section" style="padding:40px 0 20px;">
+                <div class="container">
+                    <div class="glass-card" style="padding:30px;text-align:center;border-left:4px solid var(--gold);">
+                        <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:14px;">
+                            <span style="font-size:1.8rem;">📜</span>
+                            <h3 style="font-family:'Noto Serif Tamil',serif;font-size:1.1rem;color:var(--gold);" id="kuralSectionTitle">இன்றைய திருக்குறள்</h3>
                         </div>
-                        <div class="hero-stat">
-                            <span class="stat-num" data-count="756">0</span>
-                            <span class="stat-label" data-lang="stat_resolved">தீர்க்கப்பட்டவை</span>
-                        </div>
-                        <div class="hero-stat">
-                            <span class="stat-num" data-count="84">0</span>
-                            <span class="stat-label" data-lang="stat_rate">தீர்வு விகிதம் %</span>
-                        </div>
-                        <div class="hero-stat">
-                            <span class="stat-num" data-count="1.8" data-decimal="true">0</span>
-                            <span class="stat-label" data-lang="stat_avg">சராசரி நாட்கள்</span>
-                        </div>
+                        <p id="kuralText" style="font-family:'Noto Serif Tamil',serif;font-size:1.05rem;color:var(--text-light);line-height:2;margin-bottom:12px;"></p>
+                        <p id="kuralMeaning" style="font-size:0.82rem;color:var(--text-muted);line-height:1.7;margin-bottom:8px;"></p>
+                        <p id="kuralNumber" style="font-size:0.7rem;color:var(--gold);opacity:0.7;"></p>
                     </div>
                 </div>
             </section>
@@ -2054,66 +2085,7 @@ body::before {
                 </div>
             </section>
 
-            <!-- Recent Complaints -->
-            <section class="recent-section">
-                <div class="container">
-                    <div class="section-title-row">
-                        <h2 data-lang="recent_title"><i class="fas fa-list-alt"></i> சமீபத்திய புகார்கள்</h2>
-                        <a href="#" onclick="navigateTo('mycomplaints')" class="view-all" data-lang="recent_viewall">அனைத்தும் காண →</a>
-                    </div>
-                    <div class="complaints-list">
-                        <div class="complaint-card">
-                            <div class="complaint-status status-resolved"><i class="fas fa-check"></i></div>
-                            <div class="complaint-info">
-                                <h4 data-lang="rc1_title">சாலையில் பள்ளம் - East Main Street</h4>
-                                <p data-lang="rc1_desc"><i class="fas fa-map-marker-alt"></i> Thanjavur Fort Area | <i class="fas fa-tag"></i> சாலைகள் | <i class="fas fa-calendar"></i> 2 நாட்கள் முன்</p>
-                            </div>
-                            <span class="status-badge badge-resolved" data-lang="status_resolved">தீர்வு ✓</span>
-                        </div>
-                        <div class="complaint-card">
-                            <div class="complaint-status status-progress"><i class="fas fa-wrench"></i></div>
-                            <div class="complaint-info">
-                                <h4 data-lang="rc2_title">Street Light வேலை செய்யல - Gandhi Nagar 2nd Street</h4>
-                                <p data-lang="rc2_desc"><i class="fas fa-map-marker-alt"></i> Gandhi Nagar | <i class="fas fa-tag"></i> மின்சாரம் | <i class="fas fa-calendar"></i> 1 நாள் முன்</p>
-                            </div>
-                            <span class="status-badge badge-progress" data-lang="status_progress">பணியில்</span>
-                        </div>
-                        <div class="complaint-card">
-                            <div class="complaint-status status-assigned"><i class="fas fa-user-check"></i></div>
-                            <div class="complaint-info">
-                                <h4 data-lang="rc3_title">Drainage overflow - New Bus Stand Area அருகில்</h4>
-                                <p data-lang="rc3_desc"><i class="fas fa-map-marker-alt"></i> New Bus Stand Area | <i class="fas fa-tag"></i> வடிகால் | <i class="fas fa-calendar"></i> 5 மணி நேரம் முன்</p>
-                            </div>
-                            <span class="status-badge badge-assigned" data-lang="status_assigned">ஒதுக்கப்பட்டது</span>
-                        </div>
-                        <div class="complaint-card">
-                            <div class="complaint-status status-new"><i class="fas fa-plus"></i></div>
-                            <div class="complaint-info">
-                                <h4 data-lang="rc4_title">குடிநீர் வரவில்லை - Punnainallur 3 நாட்கள்</h4>
-                                <p data-lang="rc4_desc"><i class="fas fa-map-marker-alt"></i> Punnainallur | <i class="fas fa-tag"></i> குடிநீர் | <i class="fas fa-calendar"></i> 2 மணி நேரம் முன்</p>
-                            </div>
-                            <span class="status-badge badge-new" data-lang="status_new">புதியது</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
 
-            <!-- MLA Section -->
-            <section class="mla-section">
-                <div class="container">
-                    <div class="mla-banner">
-                        <div class="mla-banner-photo">
-                            <img src="vijay.jpg" alt="R. Vijaysaravanan - MLA" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 120 120%22><rect fill=%22%238B0000%22 width=%22120%22 height=%22120%22/><text x=%2260%22 y=%2265%22 text-anchor=%22middle%22 fill=%22%23D4AF37%22 font-size=%2240%22>RVS</text></svg>'">
-                        </div>
-                        <div class="mla-banner-info">
-                            <h3>R. Vijaysaravanan</h3>
-                            <p class="mla-title" data-lang="mla_title_text">🏛️ MLA - Thanjavur Constituency (No. 174)</p>
-                            <p class="mla-party" data-lang="mla_party_text">Tamil Nadu Legislative Assembly | Tamilaga Vettri Kazhagam (TVK)</p>
-                            <p class="mla-quote" data-lang="mla_quote">"மக்கள் சேவையே மகேசன் சேவை. தஞ்சாவூர் தொகுதி மக்களின் அனைத்து குறைகளும் தீர்க்கப்படும்."</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
         </div>
 
         <!-- COMPLAINT PAGE -->
@@ -3573,6 +3545,59 @@ function updateTrustIndex() {
 
 // Auto-fill on page load if logged in
 if (loggedInUser) { setTimeout(autoFillFormFromLogin, 500); }
+
+// ===== DAILY THIRUKKURAL =====
+const THIRUKKURAL_DATA = [
+    { num: 1, kural: "அகர முதல எழுத்தெல்லாம் ஆதி\nபகவன் முதற்றே உலகு.", meaning: "எழுத்துக்கள் அனைத்திற்கும் 'அ' முதலாக இருப்பது போல, உலகிற்கு இறைவன் முதலாக இருக்கிறான்." },
+    { num: 2, kural: "கற்றதனால் ஆய பயனென்கொல் வாலறிவன்\nநற்றாள் தொழாஅர் எனின்.", meaning: "தூய அறிவுடைய இறைவனின் நல்ல திருவடிகளை தொழாவிட்டால், கற்ற கல்வியால் என்ன பயன்?" },
+    { num: 3, kural: "மலர்மிசை ஏகினான் மாணடி சேர்ந்தார்\nநிலமிசை நீடுவாழ் வார்.", meaning: "மலர் போன்ற மனத்தில் எழுந்தருளியவனின் சிறந்த அடிகளை சேர்ந்தவர் இப்பூமியில் நெடுங்காலம் வாழ்வார்." },
+    { num: 31, kural: "சிறப்புஈனும் செல்வமும் ஈனும் அறத்தினூஉங்கு\nஆக்கம் எவனோ உயிர்க்கு.", meaning: "அறம் சிறப்பையும் செல்வத்தையும் தரும்; அறத்தை விட உயிருக்கு நன்மை தருவது வேறு எது?" },
+    { num: 32, kural: "அறத்தினூஉங்கு ஆக்கமும் இல்லை அதனை\nமறத்தலின் ஊங்கில்லை கேடு.", meaning: "அறத்தை விட நன்மை தருவதும் இல்லை; அதை மறப்பதை விட கேடும் இல்லை." },
+    { num: 41, kural: "இல்வாழ்வான் என்பான் இயல்புடைய மூவர்க்கும்\nநல்லாற்றின் நின்ற துணை.", meaning: "இல்லறத்தான் என்பவன் பெற்றோர், மனைவி-மக்கள், உறவினர் ஆகிய மூவருக்கும் நல்ல வழியில் துணையாக நிற்பவன்." },
+    { num: 45, kural: "அன்பும் அறனும் உடைத்தாயின் இல்வாழ்க்கை\nபண்பும் பயனும் அது.", meaning: "அன்பும் அறமும் உடையதாக இருந்தால், அந்த இல்வாழ்க்கையே பண்பும் பயனும் ஆகும்." },
+    { num: 50, kural: "வையத்துள் வாழ்வாங்கு வாழ்பவன் வான்உறையும்\nதெய்வத்துள் வைக்கப் படும்.", meaning: "உலகத்தில் அறவாழ்வு வாழ்பவன் வானுலகில் உள்ள தெய்வங்களுள் ஒருவனாக வைத்து மதிக்கப்படுவான்." },
+    { num: 55, kural: "அன்பிலார் எல்லாம் தமக்குரியர் அன்புடையார்\nஎன்பும் உரியர் பிறர்க்கு.", meaning: "அன்பு இல்லாதவர் எல்லாம் தமக்கே உரியவர்; அன்பு உடையவர் தம் எலும்பையும் பிறருக்கு கொடுப்பர்." },
+    { num: 71, kural: "விருந்து புறத்ததாத் தானுண்டல் சாவா\nமருந்தெனினும் வேண்டற்பாற் றன்று.", meaning: "விருந்தினர் வெளியே இருக்க தான் மட்டும் உண்பது சாவாமருந்தாக இருந்தாலும் விரும்பத்தக்கது அன்று." },
+    { num: 91, kural: "செய்யாமல் செற்றார்க்கும் இன்னாத செய்தபின்\nஉய்யா விழுமம் தரும்.", meaning: "தனக்கு தீமை செய்யாதவர்க்கும் தீமை செய்தால், அது தப்ப முடியாத துன்பத்தை கொடுக்கும்." },
+    { num: 101, kural: "கடன்என்ப நல்லவை எல்லாம் கடன்அறிந்து\nசான்றாண்மை மேற்கொள் பவர்க்கு.", meaning: "கடமை அறிந்து சான்றாண்மையை மேற்கொள்பவர்க்கு நல்ல செயல்கள் எல்லாம் கடமையே." },
+    { num: 111, kural: "அகழ்வாரைத் தாங்கும் நிலம்போலத் தம்மை\nஇகழ்வார்ப் பொறுத்தல் தலை.", meaning: "தன்னை தோண்டுபவரையும் தாங்கும் நிலம் போல, தன்னை இகழ்பவரையும் பொறுப்பதே மேன்மை." },
+    { num: 121, kural: "ஒழுக்கம் விழுப்பம் தரலான் ஒழுக்கம்\nஉயிரினும் ஓம்பப் படும்.", meaning: "ஒழுக்கம் மேன்மையை தருவதால், அது உயிரை விடவும் பாதுகாக்கப்பட வேண்டும்." },
+    { num: 131, kural: "அடக்கம் அமரருள் உய்க்கும் அடங்காமை\nஆரிருள் உய்த்து விடும்.", meaning: "அடக்கம் தேவருலகிற்கு அழைத்துச் செல்லும்; அடங்காமை பேரிருளுக்கு கொண்டு போய்விடும்." },
+    { num: 141, kural: "உடையார்முன் இல்லார்போல் ஏக்கற்றும் கற்றார்\nகடையரே கல்லா தவர்.", meaning: "உடையவர் முன் இல்லாதவர் போல ஏங்கி கற்றாலும், கல்லாதவர் கடையினர் ஆவர்." },
+    { num: 191, kural: "செல்வத்துள் செல்வம் செவிச்செல்வம் அச்செல்வம்\nசெல்வத்துள் எல்லாம் தலை.", meaning: "செல்வங்களுள் கேள்விச்செல்வமே சிறந்தது; அதுவே எல்லா செல்வங்களிலும் தலையானது." },
+    { num: 203, kural: "அறிவுடையார் ஆவ தறிவார் அறிவிலார்\nஅஃதறி கல்லா தவர்.", meaning: "அறிவுடையவர் வரப்போவதை முன்கூட்டியே அறிவார்; அறிவில்லாதவர் அதை அறிய மாட்டார்." },
+    { num: 312, kural: "துறந்தார்க்கும் துவ்வா தவர்க்கும் இறந்தார்க்கும்\nஇல்வாழ்வான் என்பான் துணை.", meaning: "துறவியர்க்கும், வறியவர்க்கும், இறந்தவர்க்கும் இல்லறத்தான் என்பவனே துணை ஆவான்." },
+    { num: 391, kural: "உவப்பத் தலைக்கூடி உள்ளப் பிரிதல்\nஅனைத்தே புலவர் தொழில்.", meaning: "மகிழ்ச்சியாக சந்திக்கச் செய்து, நினைக்கும்போது பிரிக்கச் செய்வது - இதுவே ஊழின் செயல் என்பர் அறிஞர்." },
+    { num: 394, kural: "ஊழிற் பெருவலி யாவுள மற்றொன்று\nசூழினும் தான்முந் துறும்.", meaning: "ஊழை விட பெரிய வலிமை எது இருக்கிறது? வேறு வழி சூழ்ச்சி செய்தாலும் ஊழே முந்தி நிற்கும்." },
+    { num: 401, kural: "அறன்அறிந்து மூத்த அறிவுடையார் கேண்மை\nதிறன்அறிந்து தேர்ந்து கொளல்.", meaning: "அறத்தை அறிந்த, பக்குவமடைந்த, அறிவுடையோரின் நட்பை அதன் சிறப்பை அறிந்து ஆராய்ந்து கொள்ள வேண்டும்." },
+    { num: 531, kural: "பொறியில் வாழ்க்கை எய்தும் புதல்வரைப்\nபெறுதலின் இல்லை உடைமை.", meaning: "நல்ல குணங்களைப் பெற்ற புதல்வர்களைப் பெறுதலைப் போல் சிறந்த செல்வம் வேறு இல்லை." },
+    { num: 611, kural: "ஆள்வினையும் ஆன்ற அறிவும் எனஇரண்டின்\nநீள்வினையால் நீளும் புகழ்.", meaning: "முயற்சியும் நிறைந்த அறிவும் என்ற இரண்டின் நீண்ட செயலால் புகழ் நீளும்." },
+    { num: 801, kural: "நாணாமை நாடாமை நாரின்மை யாதொன்றும்\nபேணாமை பேதை தொழில்.", meaning: "வெட்கப்படாமை, ஆராயாமை, அன்பின்மை, எதையும் போற்றாமை - இவை அறிவிலி செயல்." },
+    { num: 951, kural: "மக்களே போல்வர் கயவர் அவரன்ன\nஒப்பாரி யாங்கண்ட தில்.", meaning: "கயவர் தோற்றத்தில் மக்களைப் போலவே இருப்பார்; அவர்களைப் போன்ற ஒப்புமை வேறு எங்கும் கண்டதில்லை." },
+    { num: 1000, kural: "இன்சொல் இனிதீன்றல் காண்பான் எவன்கொலோ\nவன்சொல் வழங்கு வது.", meaning: "இனிய சொல் இனிய பயனைத் தருவதை காண்பவன், எதற்காக கடுஞ்சொல் பேசுகிறான்?" },
+    { num: 1060, kural: "அருளில்லார்க்கு அவ்வுலகம் இல்லை பொருளில்லார்க்கு\nஇவ்வுலகம் இல்லையா யாங்கு.", meaning: "பொருள் இல்லாதவர்க்கு இவ்வுலக இன்பம் இல்லை என்பது போல, அருள் இல்லாதவர்க்கு மறு உலக இன்பம் இல்லை." },
+    { num: 1330, kural: "ஊடுதல் காமத்திற்கு இன்பம் அதற்கின்பம்\nகூடி முயங்கப் பெறின்.", meaning: "காதலில் ஊடல் கொள்வது இன்பம்; அந்த ஊடலுக்கு இன்பம் கூடி மகிழ்வதால் கிடைக்கும்." }
+];
+
+function loadDailyKural() {
+    const today = new Date();
+    const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
+    const kuralIndex = dayOfYear % THIRUKKURAL_DATA.length;
+    const kural = THIRUKKURAL_DATA[kuralIndex];
+    
+    const kuralEl = document.getElementById('kuralText');
+    const meaningEl = document.getElementById('kuralMeaning');
+    const numEl = document.getElementById('kuralNumber');
+    const titleEl = document.getElementById('kuralSectionTitle');
+    
+    if (kuralEl) kuralEl.textContent = kural.kural;
+    if (meaningEl) meaningEl.textContent = '📖 பொருள்: ' + kural.meaning;
+    if (numEl) numEl.textContent = `— திருக்குறள் ${kural.num} —`;
+    if (titleEl) titleEl.textContent = (typeof currentLang !== 'undefined' && currentLang === 'en') ? "Today's Thirukkural" : 'இன்றைய திருக்குறள்';
+}
+
+// Load on page init
+setTimeout(loadDailyKural, 200);
 
 console.log('🏛️ Citizen Connect Thanjavur | TVK | R. Vijaysaravanan | All Features Loaded');
     </script>

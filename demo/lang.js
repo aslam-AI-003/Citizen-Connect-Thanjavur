@@ -3,7 +3,7 @@
 
 const TRANSLATIONS = {
     // ===== BRAND =====
-    'brand_text': { ta: 'மக்கள் தொடர்பு', en: 'Citizen Connect' },
+    'brand_text': { ta: 'மக்கள் குரல்', en: 'Citizen Connect' },
     'brand_sub': { ta: '| தஞ்சாவூர்', en: '| Thanjavur' },
 
     // ===== NAVBAR =====
@@ -159,7 +159,7 @@ const TRANSLATIONS = {
     'ph_login_mobile': { ta: 'Enter mobile number', en: 'Enter mobile number' },
 
     // ===== FOOTER =====
-    'footer_brand': { ta: '🏛️ Citizen Connect', en: '🏛️ Citizen Connect' },
+    'footer_brand': { ta: '🏛️ மக்கள் குரல்', en: '🏛️ Citizen Connect' },
     'footer_desc': { ta: 'மக்கள் குறை தீர்வு மேடை - தஞ்சாவூர் தொகுதி', en: 'Citizen Grievance Platform - Thanjavur Constituency' },
     'footer_sub': { ta: 'Tamilaga Vettri Kazhagam (TVK) | MLA: R. Vijaysaravanan', en: 'Tamilaga Vettri Kazhagam (TVK) | MLA: R. Vijaysaravanan' },
     'footer_links_title': { ta: 'Quick Links', en: 'Quick Links' },
