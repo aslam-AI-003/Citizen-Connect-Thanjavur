@@ -1,0 +1,507 @@
+/* ===== COMPREHENSIVE MOBILE RESPONSIVE CSS =====
+   Supports: 320px (small phones) to 1024px (tablets)
+   Devices: iPhone SE, iPhone 12/13/14/15, Samsung Galaxy, Redmi, Realme, Vivo, Oppo, OnePlus
+   ===== */
+
+/* ===== GLOBAL MOBILE FIXES ===== */
+* {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+}
+
+html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+input, select, textarea, button {
+    font-size: 16px !important; /* Prevents iOS zoom on focus */
+}
+
+/* ===== TABLET (768px - 1024px) ===== */
+@media (max-width: 1024px) {
+    .hero-content {
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+    }
+    .hero-text h1 { font-size: 2.5rem; }
+    .hero-text h2 { font-size: 2rem; }
+    .hero-stats-bar { grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .dash-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+    .footer-grid { grid-template-columns: 1fr 1fr 1fr; gap: 30px; }
+}
+
+/* ===== MOBILE LANDSCAPE & SMALL TABLETS (576px - 768px) ===== */
+@media (max-width: 768px) {
+    /* Navigation */
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+
+    .nav-links.active {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 70px;
+        right: 0;
+        width: 280px;
+        height: calc(100vh - 70px);
+        background: rgba(13,13,13,0.98);
+        backdrop-filter: blur(20px);
+        padding: 20px;
+        gap: 4px;
+        z-index: 999;
+        border-left: 1px solid var(--border);
+        animation: slideRight 0.3s ease;
+        overflow-y: auto;
+    }
+
+    @keyframes slideRight {
+        from { transform: translateX(100%); }
+        to { transform: translateX(0); }
+    }
+
+    .nav-links.active .nav-link {
+        padding: 14px 18px;
+        font-size: 0.9rem;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    /* Hero */
+    .hero-section {
+        padding: 30px 0 20px;
+        min-height: auto;
+    }
+    .hero-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        text-align: center;
+    }
+    .hero-text h1 { font-size: 1.8rem; line-height: 1.3; }
+    .hero-text h2 { font-size: 1.5rem; }
+    .hero-text p { margin: 0 auto 24px; font-size: 0.9rem; }
+    .hero-divider { margin: 0 auto 20px; }
+    .hero-actions { justify-content: center; flex-wrap: wrap; }
+    .hero-section::after { display: none; }
+
+    .hero-photo-bg {
+        max-width: 280px !important;
+        margin: 0 auto;
+    }
+
+    .mla-photo-frame { width: 180px; height: 180px; }
+
+    /* Stats */
+    .hero-stats-bar {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+    .hero-stat { padding: 16px 12px; }
+    .hero-stat .stat-num { font-size: 1.6rem; }
+
+    /* Steps */
+    .steps-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+    }
+    .steps-grid::before { display: none; }
+
+    /* Complaints */
+    .complaint-card {
+        padding: 14px 16px;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+    .complaint-info h4 { font-size: 0.82rem; }
+    .status-badge { margin-left: auto; }
+
+    /* Dashboard */
+    .dash-grid { grid-template-columns: 1fr; }
+    .dash-stats { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .map-container { flex-direction: column; }
+    .dashboard-header { flex-direction: column; gap: 12px; align-items: flex-start; }
+
+    /* Trust Card */
+    .trust-card { flex-direction: column; text-align: center; padding: 20px; }
+    .trust-metrics { grid-template-columns: 1fr; }
+
+    /* MLA Banner */
+    .mla-banner { flex-direction: column; text-align: center; padding: 24px 16px; }
+    .mla-banner-photo { width: 100px; height: 100px; }
+
+    /* Forms */
+    .category-grid-new { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .complaint-form { padding: 24px 18px; }
+
+    /* Track */
+    .track-search { flex-direction: column; gap: 10px; }
+    .track-details { grid-template-columns: 1fr; }
+
+    /* Wizard */
+    .wizard-actions { flex-direction: column; gap: 10px; }
+    .wizard-actions .btn { width: 100%; justify-content: center; }
+
+    /* Footer */
+    .footer-grid { grid-template-columns: 1fr; gap: 24px; }
+
+    /* Modal */
+    .modal-content { 
+        padding: 24px 18px; 
+        max-width: 95vw;
+        margin: 10px;
+    }
+
+    /* Wizard Progress */
+    .wizard-progress { gap: 4px; }
+    .progress-line { width: 40px; margin: 0 6px; }
+    .progress-circle { width: 36px; height: 36px; font-size: 0.8rem; }
+    .progress-step span { font-size: 0.6rem; }
+
+    /* Location Map */
+    .map-placeholder { padding: 15px; }
+
+    /* Section spacing */
+    .how-section { padding: 50px 0; }
+    .recent-section { padding: 40px 0; }
+    .complaint-form-section { padding: 40px 0; }
+    .dashboard-section { padding: 30px 0 40px; }
+    .updates-section { padding: 40px 0; }
+}
+
+/* ===== MOBILE PORTRAIT (414px - 576px) - iPhone Plus, Samsung A series ===== */
+@media (max-width: 576px) {
+    .container { padding: 0 14px; }
+
+    /* Navbar */
+    .navbar { height: 60px; }
+    .main-content { padding-top: 60px; }
+    .nav-brand .brand-text { font-size: 1rem; }
+    .nav-brand .brand-sub { font-size: 0.72rem; }
+    .nav-brand img { width: 28px; height: 28px; }
+    .btn-login { padding: 7px 12px; font-size: 0.72rem; }
+
+    /* Hero */
+    .hero-text h1 { font-size: 1.6rem; }
+    .hero-text h2 { font-size: 1.3rem; }
+    .hero-text p { font-size: 0.85rem; }
+    .badge-party { font-size: 0.68rem; padding: 6px 12px; }
+
+    .hero-actions .btn { 
+        width: 100%; 
+        justify-content: center;
+        padding: 14px 20px;
+    }
+
+    .hero-photo-bg {
+        max-width: 220px !important;
+    }
+
+    /* Stats */
+    .hero-stats-bar { gap: 8px; }
+    .hero-stat { padding: 12px 8px; }
+    .hero-stat .stat-num { font-size: 1.4rem; }
+    .hero-stat .stat-label { font-size: 0.65rem; }
+
+    /* Steps Grid */
+    .steps-grid { gap: 10px; }
+    .step-card { padding: 20px 12px; }
+    .step-card h4 { font-size: 0.8rem; }
+    .step-card p { font-size: 0.68rem; }
+    .step-icon { width: 46px; height: 46px; font-size: 1.2rem; }
+
+    /* Complaint cards */
+    .complaint-card { 
+        padding: 12px 14px; 
+        gap: 10px;
+    }
+    .complaint-status { width: 36px; height: 36px; border-radius: 10px; font-size: 0.8rem; }
+    .complaint-info h4 { font-size: 0.78rem; }
+    .complaint-info p { font-size: 0.68rem; }
+    .status-badge { font-size: 0.62rem; padding: 4px 8px; }
+
+    /* Section Headers */
+    .section-header h2 { font-size: 1.4rem; }
+    .section-title-row h2 { font-size: 1.1rem; }
+    .section-title-row { flex-direction: column; align-items: flex-start; gap: 8px; }
+
+    /* Form */
+    .complaint-form { padding: 20px 14px; border-radius: 16px; }
+    .form-header h2 { font-size: 1.2rem; }
+    .form-header p { font-size: 0.78rem; }
+    .step-title h3 { font-size: 1rem; }
+    .step-title p { font-size: 0.75rem; }
+    .form-group label { font-size: 0.75rem; }
+
+    .input-icon-wrap input,
+    .input-icon-wrap select {
+        padding: 12px 12px 12px 38px;
+    }
+    .input-icon-wrap > i { left: 12px; font-size: 0.8rem; }
+
+    .phone-input-group input { padding: 12px; }
+    .country-code-badge { padding: 12px 10px; font-size: 0.78rem; }
+
+    /* Category grid */
+    .category-grid-new { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .cat-card-new { padding: 12px 8px; border-radius: 10px; }
+    .cat-card-icon { font-size: 1.3rem; }
+    .cat-card-new span { font-size: 0.65rem; }
+
+    /* Voice */
+    .voice-input-wrapper textarea { font-size: 0.85rem; min-height: 80px; }
+
+    /* Upload */
+    .upload-area { padding: 20px 15px; }
+    .upload-area i { font-size: 1.5rem; }
+    .upload-area p { font-size: 0.78rem; }
+
+    /* Location */
+    .location-input { flex-direction: column; align-items: stretch; gap: 8px; }
+    .btn-location { text-align: center; padding: 12px; width: 100%; }
+    .location-text { text-align: center; font-size: 0.72rem; }
+
+    /* Review summary */
+    .review-summary { padding: 14px; }
+    .review-summary h4 { font-size: 0.82rem; }
+    .review-item { font-size: 0.75rem; }
+    .review-item span { min-width: 60px; }
+
+    /* Track */
+    .track-card { padding: 18px 14px; border-radius: 16px; }
+    .track-header { flex-direction: column; gap: 10px; }
+    .track-header h3 { font-size: 0.9rem; }
+    .track-detail { font-size: 0.75rem; }
+    .tl-content h4 { font-size: 0.8rem; }
+    .tl-content p { font-size: 0.7rem; }
+
+    /* Dashboard */
+    .dash-stats { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .dash-stat-card { padding: 14px 12px; gap: 10px; }
+    .dash-stat-icon { width: 38px; height: 38px; font-size: 0.85rem; }
+    .dash-stat-num { font-size: 1.3rem; }
+    .dash-stat-label { font-size: 0.65rem; }
+
+    .dash-card { padding: 16px 14px; border-radius: 12px; }
+    .dash-card h3 { font-size: 0.85rem; }
+    .bar-label { font-size: 0.68rem; min-width: 80px; }
+    .bar-fill { font-size: 0.62rem; }
+
+    .cat-stat-item { padding: 8px; gap: 8px; }
+    .cat-stat-icon { width: 28px; height: 28px; font-size: 0.7rem; }
+    .cat-stat-info { font-size: 0.72rem; }
+
+    /* Trust Score */
+    .trust-score-circle { width: 100px; height: 100px; }
+    .score-num { font-size: 1.5rem; }
+    .trust-info h3 { font-size: 0.95rem; }
+    .trust-metric { font-size: 0.7rem; padding: 6px 8px; }
+
+    /* Updates */
+    .update-card-inner { padding: 14px; }
+    .update-card-inner h4 { font-size: 0.85rem; }
+    .update-card-inner p { font-size: 0.75rem; }
+    .update-date-badge { font-size: 0.62rem; }
+    .update-tag { font-size: 0.6rem; }
+
+    /* MLA */
+    .mla-info-card h3 { font-size: 1rem; }
+    .mla-info-card .mla-title { font-size: 0.72rem; }
+    .mla-banner-info h3 { font-size: 1.1rem; }
+    .mla-banner-info .mla-quote { font-size: 0.75rem; }
+
+    /* Login Modal */
+    .modal-content { padding: 20px 16px; border-radius: 16px; }
+    .login-header h3 { font-size: 1.1rem; }
+    .login-header p { font-size: 0.75rem; }
+    .otp-input { width: 40px; height: 46px; font-size: 1.2rem; }
+    .otp-inputs { gap: 6px; }
+    .phone-input { padding: 10px 12px; }
+
+    /* Buttons */
+    .btn { padding: 11px 18px; font-size: 0.82rem; }
+    .btn-lg { padding: 14px 24px; font-size: 0.88rem; height: auto; }
+
+    /* Footer */
+    .demo-footer { padding: 30px 0 16px; }
+    .footer-title { font-size: 0.9rem; }
+    .footer-text { font-size: 0.75rem; }
+    .footer-bottom { font-size: 0.65rem; }
+
+    /* Admin badge */
+    .admin-badge { font-size: 0.72rem; padding: 6px 12px; }
+}
+
+/* ===== SMALL PHONES (320px - 414px) - iPhone SE, Redmi Go, Samsung A01 ===== */
+@media (max-width: 414px) {
+    .container { padding: 0 12px; }
+
+    /* Navbar tighter */
+    .nav-brand .brand-text { font-size: 0.9rem; }
+    .nav-brand .brand-sub { display: none; }
+    .nav-brand img { width: 24px; height: 24px; }
+    .btn-login { padding: 6px 10px; }
+    .btn-login span { display: none; }
+    .btn-login i { font-size: 1.1rem; }
+
+    /* Hero even smaller */
+    .hero-text h1 { font-size: 1.4rem; }
+    .hero-text h2 { font-size: 1.15rem; }
+    .hero-text p { font-size: 0.8rem; }
+
+    .hero-photo-bg { max-width: 180px !important; }
+
+    /* Stats compact */
+    .hero-stats-bar { gap: 6px; }
+    .hero-stat { padding: 10px 6px; border-radius: 8px; }
+    .hero-stat .stat-num { font-size: 1.2rem; }
+    .hero-stat .stat-label { font-size: 0.6rem; }
+
+    /* Steps - single column on very small */
+    .steps-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .step-card { padding: 16px 10px; }
+    .step-num { width: 28px; height: 28px; font-size: 0.9rem; }
+    .step-icon { width: 40px; height: 40px; font-size: 1rem; }
+
+    /* Complaint cards */
+    .complaint-card { padding: 10px 12px; }
+    .complaint-status { width: 32px; height: 32px; font-size: 0.7rem; border-radius: 8px; }
+    .complaint-info h4 { font-size: 0.72rem; }
+    .complaint-info p { font-size: 0.62rem; }
+
+    /* Form */
+    .complaint-form { padding: 16px 12px; border-radius: 14px; }
+    .wizard-progress { transform: scale(0.9); }
+    
+    .category-grid-new { grid-template-columns: 1fr 1fr; gap: 6px; }
+    .cat-card-new { padding: 10px 6px; }
+    .cat-card-icon { font-size: 1.1rem; margin-bottom: 4px; }
+    .cat-card-new span { font-size: 0.6rem; }
+
+    /* Dashboard */
+    .dash-stats { grid-template-columns: 1fr 1fr; gap: 6px; }
+    .dash-stat-card { padding: 12px 10px; }
+    .dash-stat-icon { width: 34px; height: 34px; }
+    .dash-stat-num { font-size: 1.2rem; }
+
+    /* OTP inputs */
+    .otp-input { width: 36px; height: 42px; font-size: 1.1rem; border-radius: 8px; }
+    .otp-inputs { gap: 4px; }
+
+    /* Track */
+    .track-card { padding: 14px 12px; }
+    .tl-item { padding: 0 0 16px 22px; }
+
+    /* Weekly chart bars - hide text on small screens */
+    .chart-bars .bar-label { min-width: 70px; font-size: 0.62rem; }
+}
+
+/* ===== EXTRA SMALL (320px) - iPhone SE, very old phones ===== */
+@media (max-width: 360px) {
+    .container { padding: 0 10px; }
+    
+    .hero-text h1 { font-size: 1.2rem; }
+    .hero-text h2 { font-size: 1rem; }
+    
+    .hero-stats-bar { grid-template-columns: 1fr 1fr; }
+    .hero-stat .stat-num { font-size: 1.1rem; }
+    
+    .steps-grid { grid-template-columns: 1fr; gap: 10px; }
+    
+    .complaint-form { padding: 14px 10px; }
+    
+    .otp-input { width: 32px; height: 38px; font-size: 1rem; }
+    
+    .modal-content { padding: 16px 12px; }
+    
+    .btn { padding: 10px 14px; font-size: 0.78rem; }
+    .btn-lg { padding: 12px 20px; }
+}
+
+/* ===== LANDSCAPE MODE FIXES ===== */
+@media (max-height: 500px) and (orientation: landscape) {
+    .hero-section { min-height: auto; padding: 20px 0; }
+    .hero-content { gap: 20px; }
+    .hero-photo-bg { max-width: 150px !important; }
+    .mla-photo-frame { width: 100px; height: 100px; }
+    .modal-content { max-height: 90vh; overflow-y: auto; }
+    .navbar { height: 50px; }
+    .main-content { padding-top: 50px; }
+}
+
+/* ===== PWA / SAFE AREA (Notch phones) ===== */
+@supports (padding: env(safe-area-inset-top)) {
+    .navbar {
+        padding-top: env(safe-area-inset-top);
+        height: calc(70px + env(safe-area-inset-top));
+    }
+    .main-content {
+        padding-top: calc(70px + env(safe-area-inset-top));
+    }
+    .demo-footer {
+        padding-bottom: calc(20px + env(safe-area-inset-bottom));
+    }
+}
+
+/* ===== TOUCH OPTIMIZATIONS ===== */
+@media (hover: none) and (pointer: coarse) {
+    /* Larger touch targets */
+    .nav-link { padding: 12px 16px; min-height: 44px; }
+    .btn { min-height: 44px; }
+    .btn-location { min-height: 48px; }
+    .cat-card-new { min-height: 80px; }
+    .complaint-card { min-height: 60px; }
+    
+    /* Remove hover effects on touch */
+    .complaint-card:hover { transform: none; }
+    .step-card:hover { transform: none; }
+    .hero-stat:hover { transform: none; }
+    .dash-stat-card:hover { transform: none; }
+    
+    /* Better focus states */
+    input:focus, select:focus, textarea:focus {
+        outline: 2px solid var(--gold);
+        outline-offset: 2px;
+    }
+}
+
+/* ===== DARK MODE SCROLLBAR (Mobile Chrome) ===== */
+@media (max-width: 768px) {
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-thumb { background: rgba(212,175,55,0.3); }
+}
+
+/* ===== NOTIFICATION MOBILE FIX ===== */
+@media (max-width: 576px) {
+    /* Notifications full width on mobile */
+    .notification-toast,
+    div[style*="position:fixed"][style*="top:85px"] {
+        right: 10px !important;
+        left: 10px !important;
+        max-width: none !important;
+        font-size: 0.8rem !important;
+    }
+}
+
+/* ===== MAP RESPONSIVE ===== */
+@media (max-width: 576px) {
+    #mapPlaceholder {
+        height: 200px !important;
+        border-radius: 10px !important;
+    }
+    .leaflet-control-zoom { transform: scale(1.2); }
+}
+
+/* ===== ADMIN PAGE RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .admin-badge { 
+        position: static;
+        margin-top: 10px;
+    }
+}
+
+/* ===== PRINT MEDIA (Hide non-essential) ===== */
+@media print {
+    .navbar, .hamburger, .btn-login, .hero-section, 
+    .demo-footer, .modal, .btn-voice { display: none !important; }
+    body { background: white; color: black; }
+    .complaint-form { border: 1px solid #ccc; }
+}
