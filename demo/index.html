@@ -388,6 +388,11 @@ body::before {
     75% { transform: perspective(400px) rotateY(-8deg); }
 }
 
+@keyframes floatHero {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-12px); }
+}
+
 .hero-text .badge-party {
     display: inline-flex;
     align-items: center;
@@ -2018,10 +2023,10 @@ body::before {
                                 </button>
                             </div>
                         </div>
-                        <div class="hero-mla-card">
-                            <div class="hero-photo-bg" style="width:100%;max-width:400px;overflow:hidden;position:relative;border-radius:0;">
-                                <img src="../assets/homepage.png" alt="R. Vijaysaravanan" style="width:100%;height:auto;display:block;mix-blend-mode:lighten;filter:brightness(0.95) contrast(1.1);">
-                                <div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 75% 85% at center 45%, transparent 50%, var(--dark-bg) 90%);"></div>
+                        <div class="hero-mla-card" style="animation:floatHero 5s ease-in-out infinite;">
+                            <div class="hero-photo-bg" style="width:100%;max-width:400px;overflow:hidden;position:relative;border-radius:16px;background:url('../assets/bcktvk.png') center/cover no-repeat;border:1px solid var(--glass-border);box-shadow:0 20px 60px rgba(0,0,0,0.4);">
+                                <img src="../assets/homepage.png" alt="R. Vijaysaravanan" style="width:100%;height:auto;display:block;position:relative;z-index:1;mix-blend-mode:lighten;filter:brightness(0.95) contrast(1.05);">
+                                <div style="position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(ellipse 70% 80% at center 45%, transparent 45%, var(--dark-bg) 88%);"></div>
                             </div>
                             <div class="mla-info-card" style="margin-top:16px;">
                                 <h3>R. Vijaysaravanan</h3>
