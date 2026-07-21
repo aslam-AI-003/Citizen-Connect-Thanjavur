@@ -2768,44 +2768,59 @@ function sendOTP() {
     if (!mi || !mi.value || mi.value.length < 10) { showNotification('சரியான Mobile Number உள்ளிடுங்கள்!', 'error'); return; }
 
     const mobile = mi.value.trim();
+    const phoneNumber = '+91' + mobile;
     
-    // DEMO MODE - Until DLT certificate is approved
-    // TODO: Switch to real OTP (MSG91) after DLT approval
-    // Uncomment the fetch() block below when ready for production
-    
-    confirmationResult = 'DEMO_MODE';
-    document.getElementById('otpSection').style.display = 'block';
-    const otpLabel = document.querySelector('#otpSection label');
-    if (otpLabel) otpLabel.textContent = 'OTP உள்ளிடுங்கள் (Demo: 1234)';
-    showNotification(`📱 OTP sent to +91 ${mobile.substring(0,5)}xxxxx (Demo: 1234)`, 'success');
-    console.log('📱 Demo OTP mode active (use 1234)');
-
-    /* === PRODUCTION MODE - Enable after DLT certificate approval ===
     showNotification(`📱 OTP அனுப்புகிறது +91 ${mobile.substring(0,5)}xxxxx...`, 'info');
-    fetch('/api/send-otp', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ mobile: mobile })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            confirmationResult = 'MSG91_OTP';
+
+    // ===== FIREBASE PHONE AUTH - PRIMARY (Production) =====
+    // No DLT needed, works on all Indian operators, free 10K/month
+    ensureRecaptchaContainer();
+    
+    // Create fresh reCAPTCHA for each attempt
+    if (recaptchaVerifier) {
+        try { recaptchaVerifier.clear(); } catch(e) {}
+        recaptchaVerifier = null;
+    }
+    
+    try {
+        recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+            'size': 'invisible',
+            'callback': (response) => { console.log('✅ reCAPTCHA solved'); },
+            'expired-callback': () => { console.log('⚠️ reCAPTCHA expired'); recaptchaVerifier = null; }
+        });
+    } catch(e) {
+        console.error('❌ reCAPTCHA create error:', e);
+        showNotification('❌ OTP சேவை தற்போது இயங்கவில்லை. சிறிது நேரம் கழித்து முயற்சிக்கவும்.', 'error');
+        return;
+    }
+
+    firebase.auth().signInWithPhoneNumber(phoneNumber, recaptchaVerifier)
+        .then((result) => {
+            confirmationResult = result; // Firebase ConfirmationResult object
             document.getElementById('otpSection').style.display = 'block';
             const otpLabel = document.querySelector('#otpSection label');
             if (otpLabel) otpLabel.textContent = 'SMS-ல் வந்த OTP உள்ளிடுங்கள்';
             showNotification(`✅ OTP sent to +91 ${mobile.substring(0,5)}xxxxx`, 'success');
-            console.log('📱 MSG91 OTP sent successfully');
-        } else {
-            console.error('❌ OTP send failed:', data);
-            showNotification(`❌ OTP அனுப்ப முடியவில்லை: ${data.message || 'Try again'}`, 'error');
-        }
-    })
-    .catch(error => {
-        console.error('❌ OTP send error:', error);
-        showNotification('❌ Network error! Please try again.', 'error');
-    });
-    === END PRODUCTION MODE === */
+            console.log('🔥 Firebase Phone Auth OTP sent successfully');
+        })
+        .catch((error) => {
+            console.error('❌ Firebase Phone Auth error:', error);
+            // Reset reCAPTCHA
+            if (recaptchaVerifier) { try { recaptchaVerifier.clear(); } catch(e) {} recaptchaVerifier = null; }
+            
+            // Production error handling - no demo fallback
+            if (error.code === 'auth/too-many-requests') {
+                showNotification('⚠️ அதிக முயற்சிகள்! சிறிது நேரம் கழித்து முயற்சிக்கவும்.', 'error');
+            } else if (error.code === 'auth/invalid-phone-number') {
+                showNotification('❌ தவறான Mobile Number! சரியான எண் உள்ளிடுங்கள்.', 'error');
+            } else if (error.code === 'auth/quota-exceeded') {
+                showNotification('⚠️ SMS quota exceeded! Please try again later.', 'error');
+            } else if (error.code === 'auth/captcha-check-failed') {
+                showNotification('⚠️ Security check failed! Page-ஐ refresh செய்து முயற்சிக்கவும்.', 'error');
+            } else {
+                showNotification('❌ OTP அனுப்ப இயலவில்லை! மீண்டும் முயற்சிக்கவும்.', 'error');
+            }
+        });
 }
 
 function verifyOTP() {
@@ -2816,45 +2831,30 @@ function verifyOTP() {
     
     const otpInputs = document.querySelectorAll('#otpSection .otp-input');
     const enteredOTP = Array.from(otpInputs).map(i => i.value).join('');
-    if (enteredOTP.length < 4) { showNotification('OTP முழுமையாக உள்ளிடுங்கள்!', 'error'); return; }
+    if (enteredOTP.length < 6) { showNotification('6 இலக்க OTP முழுமையாக உள்ளிடுங்கள்!', 'error'); return; }
 
-    // MSG91 OTP verification
-    if (confirmationResult === 'MSG91_OTP') {
-        showNotification('🔄 Verifying OTP...', 'info');
-        fetch('/api/verify-otp', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ mobile: mobile, otp: enteredOTP })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                console.log('✅ MSG91 OTP verified!');
-                completeLogin(userName, mobile);
-            } else {
-                console.error('❌ OTP verification failed:', data);
-                showNotification('❌ தவறான OTP! சரியான OTP உள்ளிடுங்கள்.', 'error');
-            }
-        })
-        .catch(error => {
-            console.error('❌ OTP verify error:', error);
-            showNotification('❌ Network error! Try again.', 'error');
-        });
-    } else if (confirmationResult && confirmationResult !== 'DEMO_MODE') {
-        // Firebase fallback
-        confirmationResult.confirm(enteredOTP)
-            .then((result) => {
-                console.log('✅ Firebase Phone Auth verified!');
-                completeLogin(userName, mobile);
-            })
-            .catch((error) => {
-                console.error('❌ OTP verification failed:', error);
-                showNotification('❌ தவறான OTP! சரியான OTP உள்ளிடுங்கள்.', 'error');
-            });
-    } else {
-        // Demo mode fallback
-        completeLogin(userName, mobile);
+    // Firebase Phone Auth OTP verification (Production)
+    if (!confirmationResult) {
+        showNotification('❌ OTP session expired! மீண்டும் OTP அனுப்புங்கள்.', 'error');
+        return;
     }
+
+    showNotification('🔄 OTP சரிபார்க்கிறது...', 'info');
+    confirmationResult.confirm(enteredOTP)
+        .then((result) => {
+            console.log('✅ Firebase Phone Auth verified!');
+            completeLogin(userName, mobile);
+        })
+        .catch((error) => {
+            console.error('❌ OTP verification failed:', error);
+            if (error.code === 'auth/invalid-verification-code') {
+                showNotification('❌ தவறான OTP! சரியான OTP உள்ளிடுங்கள்.', 'error');
+            } else if (error.code === 'auth/code-expired') {
+                showNotification('⚠️ OTP காலாவதியானது! மீண்டும் OTP அனுப்புங்கள்.', 'error');
+            } else {
+                showNotification('❌ சரிபார்ப்பு தோல்வி! மீண்டும் முயற்சிக்கவும்.', 'error');
+            }
+        });
 }
 
 function completeLogin(userName, mobile) {
@@ -3425,22 +3425,72 @@ function showAdminLogin() {
 function sendAdminOTP() {
     const mobile = document.getElementById('adminMobile');
     if (!mobile||!mobile.value||mobile.value.length<10) { showNotification('சரியான mobile number!','error'); return; }
-    adminOTP = '1234';
-    document.getElementById('adminStep1').style.display = 'none';
-    document.getElementById('adminStep2').style.display = 'block';
-    document.getElementById('adminMobileDisplay').textContent = '+91 ' + mobile.value.substring(0,5) + 'xxxxx';
-    showNotification(`📱 OTP sent! (Demo: 1234)`, 'success');
-    setTimeout(() => { document.querySelectorAll('.admin-otp-input').forEach((inp, idx, arr) => { inp.addEventListener('input', (e) => { if (e.target.value.length===1&&idx<arr.length-1) arr[idx+1].focus(); }); }); }, 200);
+    
+    const phoneNumber = '+91' + mobile.value.trim();
+    showNotification(`📱 OTP அனுப்புகிறது...`, 'info');
+    
+    ensureRecaptchaContainer();
+    if (recaptchaVerifier) { try { recaptchaVerifier.clear(); } catch(e) {} recaptchaVerifier = null; }
+    
+    try {
+        recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+            'size': 'invisible',
+            'callback': () => { console.log('✅ Admin reCAPTCHA solved'); },
+            'expired-callback': () => { recaptchaVerifier = null; }
+        });
+    } catch(e) {
+        showNotification('❌ OTP சேவை இயங்கவில்லை!', 'error');
+        return;
+    }
+
+    firebase.auth().signInWithPhoneNumber(phoneNumber, recaptchaVerifier)
+        .then((result) => {
+            confirmationResult = result;
+            document.getElementById('adminStep1').style.display = 'none';
+            document.getElementById('adminStep2').style.display = 'block';
+            document.getElementById('adminMobileDisplay').textContent = '+91 ' + mobile.value.substring(0,5) + 'xxxxx';
+            showNotification(`✅ OTP sent to staff mobile!`, 'success');
+            setTimeout(() => { document.querySelectorAll('.admin-otp-input').forEach((inp, idx, arr) => { inp.addEventListener('input', (e) => { if (e.target.value.length===1&&idx<arr.length-1) arr[idx+1].focus(); }); }); }, 200);
+        })
+        .catch((error) => {
+            console.error('Admin OTP error:', error);
+            if (recaptchaVerifier) { try { recaptchaVerifier.clear(); } catch(e) {} recaptchaVerifier = null; }
+            if (error.code === 'auth/too-many-requests') {
+                showNotification('⚠️ அதிக முயற்சிகள்! சிறிது நேரம் கழித்து முயற்சிக்கவும்.', 'error');
+            } else {
+                showNotification('❌ OTP அனுப்ப இயலவில்லை!', 'error');
+            }
+        });
 }
 
 function verifyAdminOTP() {
     const inputs = document.querySelectorAll('.admin-otp-input');
     const entered = Array.from(inputs).map(i => i.value).join('');
-    if (entered === adminOTP) {
-        isAdminLoggedIn = true;
-        document.getElementById('adminLoginModal').remove();
-        showNotification('🔓 Staff Login Successful!', 'success');
-    } else { showNotification('❌ Invalid OTP!', 'error'); }
+    if (entered.length < 4) { showNotification('OTP முழுமையாக உள்ளிடுங்கள்!', 'error'); return; }
+    
+    if (!confirmationResult) {
+        showNotification('❌ OTP session expired! மீண்டும் முயற்சிக்கவும்.', 'error');
+        return;
+    }
+    
+    showNotification('🔄 Verifying...', 'info');
+    confirmationResult.confirm(entered)
+        .then((result) => {
+            isAdminLoggedIn = true;
+            confirmationResult = null;
+            document.getElementById('adminLoginModal').remove();
+            showNotification('🔓 Staff Login Successful!', 'success');
+        })
+        .catch((error) => {
+            console.error('Admin OTP verify error:', error);
+            if (error.code === 'auth/invalid-verification-code') {
+                showNotification('❌ தவறான OTP!', 'error');
+            } else if (error.code === 'auth/code-expired') {
+                showNotification('⚠️ OTP காலாவதியானது!', 'error');
+            } else {
+                showNotification('❌ Verification failed!', 'error');
+            }
+        });
 }
 
 // ===== FEEDBACK/RATING SYSTEM =====
