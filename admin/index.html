@@ -113,16 +113,64 @@
             .admin-topbar { padding: 12px 15px; }
             .admin-topbar h2 { font-size: 0.95rem; }
             .mobile-menu-btn { display: block; }
-            /* Table - card view on mobile */
-            .table-scroll-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -15px; padding: 0 15px; }
-            .admin-table { min-width: 600px; font-size: 0.72rem; }
-            .admin-table th, .admin-table td { padding: 8px 6px; }
-            .admin-table td { white-space: normal; word-break: break-word; }
-            .admin-table td:nth-child(3) { max-width: 140px; } /* Location */
-            .admin-table td:nth-child(4) { max-width: 80px; }  /* Category */
-            .admin-table td:nth-child(5) { max-width: 100px; } /* Description */
-            /* Hide less important columns on mobile */
-            .admin-table th:nth-child(5), .admin-table td:nth-child(5) { display: none; } /* Hide description column */
+
+            /* ===== TABLE - MOBILE CARD VIEW ===== */
+            .admin-table, .admin-table thead, .admin-table tbody, 
+            .admin-table th, .admin-table tr, .admin-table td {
+                display: block;
+            }
+            .admin-table thead { 
+                display: none; /* Hide table headers */
+            }
+            .admin-table tr {
+                background: white;
+                border: 1px solid #e5e7eb;
+                border-radius: 10px;
+                margin-bottom: 12px;
+                padding: 14px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+                position: relative;
+            }
+            .admin-table tr:hover {
+                border-color: var(--admin-primary);
+                box-shadow: 0 4px 12px rgba(220,38,38,0.1);
+            }
+            .admin-table td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 6px 0;
+                border-bottom: 1px solid #f9fafb;
+                font-size: 0.8rem;
+                text-align: right;
+            }
+            .admin-table td:last-child {
+                border-bottom: none;
+                padding-top: 10px;
+                justify-content: flex-start;
+            }
+            .admin-table td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                color: #374151;
+                text-align: left;
+                font-size: 0.72rem;
+                flex-shrink: 0;
+                margin-right: 10px;
+            }
+            /* Make important fields stand out */
+            .admin-table td:first-child {
+                font-weight: 700;
+                color: var(--admin-primary);
+                font-size: 0.82rem;
+            }
+            /* Table scroll wrapper not needed in card view */
+            .table-scroll-wrap, [style*="overflow-x:auto"] {
+                overflow-x: visible !important;
+                margin: 0;
+                padding: 0;
+            }
+
             /* Sidebar overlay */
             .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 99; }
             .sidebar-overlay.active { display: block; }
@@ -154,12 +202,10 @@
             .admin-content { padding: 10px; }
             .admin-card { padding: 14px; border-radius: 10px; }
             .admin-card h3 { font-size: 0.85rem; }
-            /* Show only key table columns */
-            .admin-table { min-width: 500px; font-size: 0.68rem; }
-            .admin-table th, .admin-table td { padding: 7px 5px; }
-            /* Hide more columns on very small phones */
-            .admin-table th:nth-child(5), .admin-table td:nth-child(5),
-            .admin-table th:nth-child(7), .admin-table td:nth-child(7) { display: none; }
+            /* Table card view refinements for small phones */
+            .admin-table tr { padding: 12px; margin-bottom: 10px; }
+            .admin-table td { font-size: 0.75rem; padding: 5px 0; }
+            .admin-table td::before { font-size: 0.68rem; }
             /* Detail modal even smaller */
             .detail-modal-box { padding: 14px; }
             .detail-row .dvalue { font-size: 0.75rem; }
@@ -557,16 +603,16 @@
                     const statusLabel = c.status || 'புதியது';
                     const statusCls = c.statusClass || 'badge-new';
                     return `<tr>
-                        <td><code style="font-size:0.7rem;">${displayId}</code></td>
-                        <td>${c.citizenName || '-'}</td>
-                        <td>${c.mobileNumber ? c.mobileNumber.substring(0,5) + 'xxxxx' : '-'}</td>
-                        <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${c.title || '-'}</td>
-                        <td>${c.area || '-'}</td>
-                        <td>${c.category || '-'}</td>
-                        <td><span class="badge ${statusCls}">${statusLabel}</span></td>
-                        <td>${c.assigned || '-'}</td>
-                        <td>${c.date || '-'}</td>
-                        <td><button onclick="viewDetail('${c.id}')" style="background:none;border:1px solid #e5e7eb;border-radius:6px;padding:4px 8px;cursor:pointer;font-size:0.7rem;"><i class="fas fa-eye"></i></button></td>
+                        <td data-label="ID"><code style="font-size:0.7rem;">${displayId}</code></td>
+                        <td data-label="Citizen">${c.citizenName || '-'}</td>
+                        <td data-label="Mobile">${c.mobileNumber ? c.mobileNumber.substring(0,5) + 'xxxxx' : '-'}</td>
+                        <td data-label="Complaint" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${c.title || '-'}</td>
+                        <td data-label="Area">${c.area || '-'}</td>
+                        <td data-label="Category">${c.category || '-'}</td>
+                        <td data-label="Status"><span class="badge ${statusCls}">${statusLabel}</span></td>
+                        <td data-label="Assigned">${c.assigned || '-'}</td>
+                        <td data-label="Date">${c.date || '-'}</td>
+                        <td data-label="Actions"><button onclick="viewDetail('${c.id}')" style="background:var(--admin-primary);color:white;border:none;border-radius:6px;padding:6px 12px;cursor:pointer;font-size:0.72rem;font-weight:600;"><i class="fas fa-eye"></i> View</button></td>
                     </tr>`;
                 }).join('');
             }
@@ -1226,7 +1272,7 @@
             if (dashBody) {
                 dashBody.innerHTML = sorted.map(c => {
                     const displayId = c.govId || `TVK/TNJ/2026/${(c.id || '').split('-').pop()}`;
-                    return `<tr><td><code style="font-size:0.65rem;">${displayId}</code></td><td>${c.citizenName || '-'}</td><td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${c.title || '-'}</td><td>${c.area || '-'}</td><td>${c.category || '-'}</td><td><span class="badge ${c.statusClass || 'badge-new'}">${c.status || 'புதியது'}</span></td><td>${c.assigned || '-'}</td><td>${c.date || '-'}</td></tr>`;
+                    return `<tr><td data-label="ID"><code style="font-size:0.65rem;">${displayId}</code></td><td data-label="Citizen">${c.citizenName || '-'}</td><td data-label="Complaint" style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${c.title || '-'}</td><td data-label="Area">${c.area || '-'}</td><td data-label="Category">${c.category || '-'}</td><td data-label="Status"><span class="badge ${c.statusClass || 'badge-new'}">${c.status || 'புதியது'}</span></td><td data-label="Assigned">${c.assigned || '-'}</td><td data-label="Date">${c.date || '-'}</td></tr>`;
                 }).join('');
             }
         }
