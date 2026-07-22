@@ -126,8 +126,8 @@ const TRANSLATIONS = {
     'updates_sub': { ta: 'R. Vijaysaravanan - MLA | தஞ்சாவூர் தொகுதி', en: 'R. Vijaysaravanan - MLA | Thanjavur Constituency' },
 
     // ===== DASHBOARD =====
-    'dash_title': { ta: '<i class="fas fa-tachometer-alt"></i> MLA Dashboard', en: '<i class="fas fa-tachometer-alt"></i> MLA Dashboard' },
-    'dash_sub': { ta: 'R. Vijaysaravanan | MLA - Thanjavur', en: 'R. Vijaysaravanan | MLA - Thanjavur' },
+    'dash_title': { ta: '<i class="fas fa-tachometer-alt"></i> தொகுதி நிலை அறிக்கை', en: '<i class="fas fa-tachometer-alt"></i> Constituency Status Report' },
+    'dash_sub': { ta: 'R. Vijaysaravanan | MLA - தஞ்சாவூர் தொகுதி', en: 'R. Vijaysaravanan | MLA - Thanjavur Constituency' },
     'dash_trust_title': { ta: '🏆 மக்கள் நம்பிக்கை Index', en: '🏆 People\'s Trust Index' },
     'dash_trust_sub': { ta: 'People\'s Trust Score', en: 'People\'s Trust Score' },
     'dash_trust_label': { ta: 'நம்பிக்கை', en: 'Trust' },
