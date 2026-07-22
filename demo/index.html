@@ -2445,32 +2445,63 @@ body::before {
     <!-- Login Modal -->
     <div class="modal" id="loginModal">
         <div class="modal-overlay"></div>
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal()">&times;</button>
-            <div class="login-form">
-                <div class="login-header">
-                    <h3 data-lang="login_title">🏛️ Citizen Connect</h3>
-                    <p data-lang="login_sub">புகார் செய்ய Login செய்யுங்கள்</p>
+        <div class="modal-content" style="max-width:440px;padding:0;overflow:hidden;border-radius:20px;background:var(--dark-bg);border:1px solid var(--glass-border);">
+            <button class="modal-close" onclick="closeModal()" style="top:10px;right:10px;z-index:10;">&times;</button>
+            
+            <!-- Header Section with Photos -->
+            <div style="background:linear-gradient(135deg,#1a0000,#2d0a0a);padding:24px 20px 18px;text-align:center;border-bottom:1px solid var(--gold-dim);">
+                <h2 style="font-family:'Noto Serif Tamil',serif;font-size:1.1rem;color:white;margin-bottom:2px;">மக்கள் குறை தீர்வு மேடை</h2>
+                <p style="font-size:0.82rem;color:var(--gold);font-weight:600;margin-bottom:4px;">Citizen Connect Thanjavur</p>
+                <p style="font-size:0.68rem;color:var(--text-muted);">R. Vijaysaravanan | MLA - Thanjavur Constituency</p>
+                
+                <!-- Dual Photo Card -->
+                <div style="display:flex;align-items:center;justify-content:center;gap:20px;margin-top:18px;">
+                    <!-- CM Vijay Photo -->
+                    <div style="text-align:center;">
+                        <div style="width:80px;height:80px;border-radius:50%;border:3px solid var(--primary-light);overflow:hidden;margin:0 auto;box-shadow:0 4px 20px rgba(139,0,0,0.4);">
+                            <img src="../assets/tvk-vijay-it-wing-tamilaga-vettri-kazhagam.jpg.jpg" alt="CM Vijay" style="width:100%;height:100%;object-fit:cover;" onerror="this.src='vijay.jpg'">
+                        </div>
+                        <p style="font-size:0.62rem;color:var(--text-muted);margin-top:6px;">Thalapathy Vijay</p>
+                        <p style="font-size:0.58rem;color:var(--gold-dim);">TVK President</p>
+                    </div>
+                    <!-- MLA Photo -->
+                    <div style="text-align:center;">
+                        <div style="width:80px;height:80px;border-radius:50%;border:3px solid var(--gold);overflow:hidden;margin:0 auto;background:#2d0a0a;box-shadow:0 4px 20px rgba(212,175,55,0.3);">
+                            <img src="../assets/R.vijaysaravanan.png" alt="MLA R.Vijaysaravanan" style="width:100%;height:100%;object-fit:cover;" onerror="this.src='Vijaysaravanan.jpg'">
+                        </div>
+                        <p style="font-size:0.62rem;color:var(--text-muted);margin-top:6px;">R. Vijaysaravanan</p>
+                        <p style="font-size:0.58rem;color:var(--gold-dim);">MLA - Thanjavur</p>
+                    </div>
+                </div>
+                <p style="font-size:0.65rem;color:var(--text-muted);margin-top:12px;opacity:0.7;">Tamilaga Vettri Kazhagam (TVK) | Government of Tamil Nadu</p>
+            </div>
+
+            <!-- Login Form Section -->
+            <div style="padding:22px 28px 26px;">
+                <div style="text-align:center;margin-bottom:18px;">
+                    <div style="width:44px;height:44px;background:linear-gradient(135deg,var(--primary),var(--primary-light));border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;"><i class="fas fa-mobile-alt" style="color:white;font-size:1.1rem;"></i></div>
+                    <h3 style="font-size:0.95rem;color:white;margin:0;">Mobile OTP Login</h3>
+                    <p style="font-size:0.72rem;color:var(--text-muted);margin-top:3px;">புகார் செய்ய Login செய்யுங்கள்</p>
                 </div>
                 <div class="login-body">
-                    <div class="form-group">
-                        <label>உங்கள் பெயர் (Name) <span class="required">*</span></label>
+                    <div class="form-group" style="margin-bottom:14px;">
+                        <label style="font-size:0.75rem;">உங்கள் பெயர் (Name) <span class="required">*</span></label>
                         <div class="input-icon-wrap">
                             <i class="fas fa-user"></i>
                             <input type="text" id="loginName" placeholder="உங்கள் முழு பெயர்">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label>Mobile Number <span class="required">*</span></label>
+                    <div class="form-group" style="margin-bottom:14px;">
+                        <label style="font-size:0.75rem;">Phone Number <span class="required">*</span></label>
                         <div class="phone-input">
                             <span class="country-code">+91</span>
-                            <input type="tel" id="loginMobile" placeholder="Enter mobile number" maxlength="10">
+                            <input type="tel" id="loginMobile" placeholder="98765 43210" maxlength="10">
                         </div>
                     </div>
-                    <button class="btn btn-primary btn-full" onclick="sendOTP()"><i class="fas fa-paper-plane"></i> OTP அனுப்பு</button>
+                    <button class="btn btn-primary btn-full" onclick="sendOTP()" style="background:linear-gradient(135deg,#dc2626,#991b1b);border-radius:10px;padding:14px;font-size:0.88rem;"><i class="fas fa-paper-plane"></i> OTP அனுப்பு / Send OTP</button>
                     <div class="otp-section" id="otpSection" style="display:none;">
-                        <div class="form-group">
-                            <label>SMS-ல் வந்த OTP உள்ளிடுங்கள்</label>
+                        <div class="form-group" style="margin-top:16px;">
+                            <label style="font-size:0.75rem;">SMS-ல் வந்த OTP உள்ளிடுங்கள்</label>
                             <div class="otp-inputs">
                                 <input type="text" maxlength="1" class="otp-input">
                                 <input type="text" maxlength="1" class="otp-input">
@@ -2480,9 +2511,10 @@ body::before {
                                 <input type="text" maxlength="1" class="otp-input">
                             </div>
                         </div>
-                        <button class="btn btn-gold btn-full" onclick="verifyOTP()"><i class="fas fa-lock-open"></i> Verify & Login</button>
+                        <button class="btn btn-gold btn-full" onclick="verifyOTP()" style="border-radius:10px;padding:14px;"><i class="fas fa-lock-open"></i> Verify & Login</button>
                     </div>
                 </div>
+                <p style="text-align:center;font-size:0.6rem;color:var(--text-muted);margin-top:16px;opacity:0.6;">© 2026 Citizen Connect | Tamilaga Vettri Kazhagam (TVK)</p>
             </div>
         </div>
     </div>
