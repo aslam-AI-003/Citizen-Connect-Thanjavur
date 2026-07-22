@@ -2430,24 +2430,32 @@ body::before {
                         </div>
                     </div>
 
-                    <!-- Weekly Graph -->
-                    <div class="dash-card full-width">
-                        <h3 data-lang="dash_weekly_title"><i class="fas fa-chart-line"></i> வாரவாரி தீர்வு</h3>
-                        <div style="padding:20px;">
-                            <div id="dashWeeklyBars" style="display:flex;align-items:flex-end;gap:14px;height:180px;padding:20px 10px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
-                                <p style="color:var(--text-muted);font-size:0.8rem;text-align:center;width:100%;padding:60px 0;">⏳ Loading...</p>
+                    <!-- Quick Stats - This Week / This Month -->
+                    <div class="dash-grid" style="margin-bottom:0;">
+                        <div class="dash-card">
+                            <h3><i class="fas fa-calendar-week" style="color:var(--gold);"></i> <span data-lang="dash_this_week">இந்த வாரம்</span></h3>
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px;">
+                                <div style="background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2);border-radius:12px;padding:16px;text-align:center;">
+                                    <span style="font-family:'Bebas Neue',cursive;font-size:2rem;color:#3b82f6;display:block;line-height:1;" id="dashWeekNew">0</span>
+                                    <span style="font-size:0.72rem;color:var(--text-muted);" data-lang="dash_new_filed">புதிய புகார்</span>
+                                </div>
+                                <div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:12px;padding:16px;text-align:center;">
+                                    <span style="font-family:'Bebas Neue',cursive;font-size:2rem;color:#10B981;display:block;line-height:1;" id="dashWeekResolved">0</span>
+                                    <span style="font-size:0.72rem;color:var(--text-muted);" data-lang="dash_resolved_label">தீர்வு செய்யப்பட்டவை</span>
+                                </div>
                             </div>
-                            <div style="display:flex;gap:14px;padding:10px 10px 0;">
-                                <span style="flex:1;text-align:center;font-size:0.7rem;color:var(--text-muted);">திங்</span>
-                                <span style="flex:1;text-align:center;font-size:0.7rem;color:var(--text-muted);">செவ்</span>
-                                <span style="flex:1;text-align:center;font-size:0.7rem;color:var(--text-muted);">புத</span>
-                                <span style="flex:1;text-align:center;font-size:0.7rem;color:var(--text-muted);">வியா</span>
-                                <span style="flex:1;text-align:center;font-size:0.7rem;color:var(--text-muted);">வெள்</span>
-                                <span style="flex:1;text-align:center;font-size:0.7rem;color:var(--text-muted);">சனி</span>
-                                <span style="flex:1;text-align:center;font-size:0.7rem;color:var(--text-muted);">ஞாயி</span>
-                            </div>
-                            <div style="text-align:center;margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.04);">
-                                <span id="dashWeeklySummary" style="font-size:0.8rem;color:var(--text-muted);">📊 Loading live data...</span>
+                        </div>
+                        <div class="dash-card">
+                            <h3><i class="fas fa-calendar-alt" style="color:var(--gold);"></i> <span data-lang="dash_this_month">இந்த மாதம்</span></h3>
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px;">
+                                <div style="background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.2);border-radius:12px;padding:16px;text-align:center;">
+                                    <span style="font-family:'Bebas Neue',cursive;font-size:2rem;color:#8B5CF6;display:block;line-height:1;" id="dashMonthNew">0</span>
+                                    <span style="font-size:0.72rem;color:var(--text-muted);" data-lang="dash_new_filed">புதிய புகார்</span>
+                                </div>
+                                <div style="background:rgba(212,175,55,0.08);border:1px solid rgba(212,175,55,0.2);border-radius:12px;padding:16px;text-align:center;">
+                                    <span style="font-family:'Bebas Neue',cursive;font-size:2rem;color:var(--gold);display:block;line-height:1;" id="dashMonthResolved">0</span>
+                                    <span style="font-size:0.72rem;color:var(--text-muted);" data-lang="dash_resolved_label">தீர்வு செய்யப்பட்டவை</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -3630,7 +3638,18 @@ async function loadDashboardData() {
     // === AREA-WISE CHART ===
     const areaCounts = {};
     allComplaints.forEach(c => {
-        const area = c.area || 'Unknown';
+        let area = c.area || 'Unknown';
+        // Resolve ward-street IDs to actual names
+        if (area.match(/^ward\d+-street\d+$/)) {
+            const parts = area.match(/^ward(\d+)-street(\d+)$/);
+            if (parts && typeof WARD_STREETS !== 'undefined') {
+                const wardNum = parts[1];
+                const streetIdx = parseInt(parts[2]);
+                if (WARD_STREETS[wardNum] && WARD_STREETS[wardNum].streets[streetIdx]) {
+                    area = WARD_STREETS[wardNum].streets[streetIdx];
+                }
+            }
+        }
         areaCounts[area] = (areaCounts[area] || 0) + 1;
     });
     
@@ -3707,6 +3726,30 @@ async function loadDashboardData() {
     if (summaryEl) {
         summaryEl.innerHTML = `📊 இந்த வாரம்: <strong style="color:var(--success);">${totalWeekly} தீர்வு</strong> | சராசரி: <strong style="color:var(--gold);">${avgDaily}/நாள்</strong>`;
     }
+
+    // === QUICK STATS - THIS WEEK / THIS MONTH ===
+    const startOfWeek = new Date(today);
+    startOfWeek.setDate(today.getDate() - today.getDay());
+    startOfWeek.setHours(0,0,0,0);
+    
+    const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+    
+    const weekNew = allComplaints.filter(c => c.createdAt && new Date(c.createdAt) >= startOfWeek).length;
+    const weekResolved = resolved.filter(c => {
+        const rd = c.resolvedAt || c.updatedAt;
+        return rd && new Date(rd) >= startOfWeek;
+    }).length;
+    
+    const monthNew = allComplaints.filter(c => c.createdAt && new Date(c.createdAt) >= startOfMonth).length;
+    const monthResolved = resolved.filter(c => {
+        const rd = c.resolvedAt || c.updatedAt;
+        return rd && new Date(rd) >= startOfMonth;
+    }).length;
+    
+    if (el('dashWeekNew')) el('dashWeekNew').textContent = weekNew;
+    if (el('dashWeekResolved')) el('dashWeekResolved').textContent = weekResolved;
+    if (el('dashMonthNew')) el('dashMonthNew').textContent = monthNew;
+    if (el('dashMonthResolved')) el('dashMonthResolved').textContent = monthResolved;
 
     dashboardLoaded = true;
     console.log(`✅ Dashboard loaded: ${total} complaints, ${resolved.length} resolved, Trust: ${trustScore}%`);
