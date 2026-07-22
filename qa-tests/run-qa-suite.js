@@ -33,8 +33,8 @@ const fs = require('fs');
 // ===== CONFIGURATION =====
 const CONFIG = {
     // Target URL - Change this to your deployed URL
-    BASE_URL: process.env.QA_URL || 'https://voice-to-minister-papanasam.vercel.app/demo/index.html',
-    ADMIN_URL: process.env.QA_ADMIN_URL || 'https://voice-to-minister-papanasam.vercel.app/admin/index.html',
+    BASE_URL: process.env.QA_URL || 'https://voice-to-mla-thanjavur.vercel.app/demo/index.html',
+    ADMIN_URL: process.env.QA_ADMIN_URL || 'https://voice-to-minister-admin.vercel.app/',
     
     // Test duration per phase (in minutes)
     PHASE_DURATION: {

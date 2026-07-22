@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>QA Report - Citizen Connect Thanjavur</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #0d1117; color: #c9d1d9; padding: 40px; }
+        .header { text-align: center; margin-bottom: 40px; }
+        .header h1 { font-size: 2rem; color: #58a6ff; margin-bottom: 8px; }
+        .header p { color: #8b949e; font-size: 0.9rem; }
+        .stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-bottom: 30px; }
+        .stat-card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 20px; text-align: center; }
+        .stat-card .num { font-size: 2rem; font-weight: 700; }
+        .stat-card .label { font-size: 0.75rem; color: #8b949e; margin-top: 4px; }
+        .num.pass { color: #3fb950; }
+        .num.fail { color: #f85149; }
+        .num.total { color: #58a6ff; }
+        .num.rate { color: #d2a8ff; }
+        .num.time { color: #f0883e; }
+        .phase { background: #161b22; border: 1px solid #30363d; border-radius: 12px; margin-bottom: 20px; overflow: hidden; }
+        .phase-header { padding: 16px 20px; background: #21262d; font-weight: 600; display: flex; justify-content: space-between; }
+        .phase-body { padding: 12px 20px; }
+        .test-row { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid #21262d; }
+        .test-row:last-child { border: none; }
+        .test-status { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; }
+        .test-status.pass { background: rgba(63,185,80,0.15); color: #3fb950; }
+        .test-status.fail { background: rgba(248,81,73,0.15); color: #f85149; }
+        .test-name { flex: 1; font-size: 0.85rem; }
+        .test-details { font-size: 0.75rem; color: #8b949e; max-width: 300px; }
+        .test-time { font-size: 0.72rem; color: #8b949e; min-width: 60px; text-align: right; }
+        .bugs { background: #161b22; border: 1px solid #f8514930; border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+        .bugs h3 { color: #f85149; margin-bottom: 12px; }
+        .bug-item { padding: 8px 12px; background: #f8514910; border-radius: 6px; margin-bottom: 8px; font-size: 0.82rem; }
+        .footer { text-align: center; margin-top: 40px; font-size: 0.75rem; color: #8b949e; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🧪 QA Test Report - Citizen Connect Thanjavur</h1>
+        <p>Generated: 2026-07-22T17:16:25.629Z | Duration: 0.4 minutes | By: Asventechnology</p>
+    </div>
+    
+    <div class="stats">
+        <div class="stat-card"><div class="num total">35</div><div class="label">Total Tests</div></div>
+        <div class="stat-card"><div class="num pass">6</div><div class="label">Passed</div></div>
+        <div class="stat-card"><div class="num fail">29</div><div class="label">Failed</div></div>
+        <div class="stat-card"><div class="num rate">17.1%</div><div class="label">Pass Rate</div></div>
+        <div class="stat-card"><div class="num time">0.4m</div><div class="label">Duration</div></div>
+    </div>
+    
+    
+    <div class="bugs">
+        <h3>🐛 Critical Bugs Found (29)</h3>
+        <div class="bug-item">❌ <strong>Navbar Elements</strong>: Missing: brand=false, links=0, login=false</div><div class="bug-item">❌ <strong>Hero Section Content</strong>: Error: failed to find element matching selector "[data-lang="hero_title"]"</div><div class="bug-item">❌ <strong>Login Modal Opens</strong>: No element found for selector: #loginBtn</div><div class="bug-item">❌ <strong>Login Modal Photos & Text</strong>: Error: failed to find element matching selector "#loginModal"</div><div class="bug-item">❌ <strong>Login Form Fields</strong>: Name=false, Mobile=false, OTPBtn=false</div><div class="bug-item">❌ <strong>Login Validation - Empty Fields</strong>: Error: failed to find element matching selector "#loginName"</div><div class="bug-item">❌ <strong>Login Validation - Short Mobile</strong>: No element found for selector: #loginName</div><div class="bug-item">❌ <strong>Page Navigation - All Pages</strong>: navigateTo is not defined</div><div class="bug-item">❌ <strong>Complaint Form - Step 1 Elements</strong>: navigateTo is not defined</div><div class="bug-item">❌ <strong>Ward Dropdown Populated</strong>: Only 0 options</div><div class="bug-item">❌ <strong>Step 1 → Step 2 Navigation</strong>: Error: failed to find element matching selector "#citizenName"</div><div class="bug-item">❌ <strong>Department Dropdown</strong>: Only 0 options</div><div class="bug-item">❌ <strong>Dept → Grievance Cascade</strong>: No element found for selector: #govDepartment</div><div class="bug-item">❌ <strong>Step 2 → Step 3 Navigation</strong>: Error: failed to find element matching selector "#grievanceType option:nth-child(2)"</div><div class="bug-item">❌ <strong>Review Summary Accuracy</strong>: Error: failed to find element matching selector "#reviewName"</div><div class="bug-item">❌ <strong>Complaint Submission</strong>: Cannot read properties of null (reading 'dispatchEvent')</div><div class="bug-item">❌ <strong>Track Complaint</strong>: closeSuccessModalEnhanced is not defined</div><div class="bug-item">❌ <strong>Dashboard Stats Load</strong>: navigateTo is not defined</div><div class="bug-item">❌ <strong>Language Toggle</strong>: navigateTo is not defined</div><div class="bug-item">❌ <strong>Footer Content</strong>: Error: failed to find element matching selector ".footer-bottom"</div><div class="bug-item">❌ <strong>Thirukkural Daily</strong>: Error: failed to find element matching selector "#kuralText"</div><div class="bug-item">❌ <strong>How It Works Steps</strong>: Found 0 steps</div><div class="bug-item">❌ <strong>My Complaints Search</strong>: navigateTo is not defined</div><div class="bug-item">❌ <strong>Logout Function</strong>: logoutUser is not defined</div><div class="bug-item">❌ <strong>First Contentful Paint</strong>: Could not measure FCP</div><div class="bug-item">❌ <strong>JavaScript Errors</strong>: navigateTo is not defined</div><div class="bug-item">❌ <strong>Mobile Responsive (375px)</strong>: Failed to execute 'getComputedStyle' on 'Window': parameter 1 is not of type 'Element'.</div><div class="bug-item">❌ <strong>Desktop Layout (1920px)</strong>: Container: 1920px</div><div class="bug-item">❌ <strong>CSS Variables</strong>: --primary: ""</div>
+    </div>
+    
+    
+    <div class="phase">
+        <div class="phase-header">
+            <span>📋 E2E Functional Tests</span>
+            <span style="font-size:0.8rem;color:#8b949e;">25 tests</span>
+        </div>
+        <div class="phase-body">
+            
+            <div class="test-row">
+                <div class="test-status pass">✓</div>
+                <div class="test-name">Homepage Load</div>
+                <div class="test-details">Loaded in 995ms</div>
+                <div class="test-time">995ms</div>
+            </div>
+            <div class="test-row">
+                <div class="test-status fail">✗</div>
+                <div class="test-name">Navbar Elements</div>
+                <div class="test-details">Missing: brand=false, links=0, login=false</div>
+                <div class="test-time">20ms</div>
+            </div>
+            <div class="test-row">
+                <div class="test-status fail">✗</div>
+                <div class="test-name">Hero Section Content</div>
+                <div class="test-details">Error: failed to find element matching selector "[data-lang="hero_title"]"</div>
+                <div class="test-time">1ms</div>
+            </div>
+            <div class="test-row">
+                <div class="test-status fail">✗</div>
+                <div class="test-name">Login Modal Opens</div>
+                <div class="test-details">No element found for selector: #loginBtn</div>
+                <div class="test-time">1ms</div>
+            </div>
+            <div class="test-row">
+                <div class="test-status fail">✗</div>
+                <div class="test-name">Login Modal Photos & Text</div>
+                <div class="test-details">Error: failed to find element matching selector "#loginModal"</div>
+                <div class="test-time">4ms</div>
+            </div>
+            <div class="test-row">
+                <div class="test-status fail">✗</div>
+                <div class="test-name">Login Form Fields</div>
+                <div class="test-details">Name=false, Mobile=false, OTPBtn=false</div>
+                <div class="test-time">3ms</div>
+            </div>
+            <div class="test-row">
+                <div class="test-status fail">✗</div>
+                <div class="test-name">Login Validation - Empty Fields</div>
+                <div class="test-details">Error: failed to find element matching selector "#loginName"</div>
+                <div class="test-time">1ms</div>
+            </div>
+            <div class="test-row">
+                <div class="test-status fail">✗</div>
+                <div class="test-name">Login Validation - Short Mobile</div>
+                <div class="test-details">No element found for selector: #loginName</div>
+                <div class="test-time">1ms</div>
+            </div>
+            <div class="test-row">
+                <div class="test-status fail">✗</div>
+                <div class="test-name">Page Navigation - All Pages</div>
+                <div class="test-details">navigateTo is not defined</div>
+                <div class="test-time">1ms</div>
+            </div>
+            <div class="test-row">
+                <div class="test-status fail">✗</div>
+                <div class="test-name">Complaint Form - Step 1 Elements</div>
+                <div class="test-details">navigateTo is not defined</div>
+                <div class="test-time">1ms</div>
+            </div>
+            <div class="test-row">
+                <div class="test-status fail">✗</div>
+                <div class="test-name">Ward Dropdown Populated</div>
+                <div class="test-details">Only 0 options</div>
+                <div class="test-time">3ms</div>
+            </div>
+            <div class="test-row">
+                <div class="test-status fail">✗</div>
+                <div class="test-name">Step 1 → Step 2 Navigation</div>
+                <div class="test-details">Error: failed to find element matching selector "#citizenName"</div>
+                <div class="test-time">2ms</div>
+            </div>
+            <div class="test-row">
+                <div class="test-status fail">✗</div>
+                <div class="test-name">Department Dropdown</div>
+                <div class="test-details">Only 0 options</div>
+                <div class="test-time">2ms</div>
+            </div>
+            <div class="test-row">
+                <div class="test-status fail">✗</div>
+                <div class="test-name">Dept → Grievance Cascade</div>
+                <div class="test-details">No element found for selector: #govDepartment</div>
+                <div class="test-time">1ms</div>
+            </div>
+            <div class="test-row">
+                <div class="test-status fail">✗</div>
+                <div class="test-name">Step 2 → Step 3 Navigation</div>
+                <div class="test-details">Error: failed to find element matching selector "#grievanceType option:nth-child(2)"</div>
+                <div class="test-time">0ms</div>
+            </div>
+            <div class="test-row">
+                <div class="test-status fail">✗</div>
+                <div class="test-name">Review Summary Accuracy</div>
+                <div class="test-details">Error: failed to find element matching selector "#reviewName"</div>
+                <div class="test-time">1ms</div>
+            </div>
+            <div class="test-row">
+                <div class="test-status fail">✗</div>
+                <div class="test-name">Complaint Submission</div>
+                <div class="test-details">Cannot read properties of null (reading 'dispatchEvent')</div>
+                <div class="test-time">1ms</div>
+            </div>
+            <div class="test-row">
+                <div class="test-status fail">✗</div>
+                <div class="test-name">Track Complaint</div>
+                <div class="test-details">closeSuccessModalEnhanced is not defined</div>
+                <div class="test-time">2ms</div>
+            </div>
+            <div class="test-row">
+                <div class="test-status fail">✗</div>
+                <div class="test-name">Dashboard Stats Load</div>
+                <div class="test-details">navigateTo is not defined</div>
+                <div class="test-time">0ms</div>
+            </div>
+            <div class="test-row">
+                <div class="test-status fail">✗</div>
+                <div class="test-name">Language Toggle</div>
+                <div class="test-details">navigateTo is not defined</div>
+                <div class="test-time">1ms</div>
+            </div>
+            <div class="test-row">
+                <div class="test-status fail">✗</div>
+                <div class="test-name">Footer Content</div>
+                <div class="test-details">Error: failed to find element matching selector ".footer-bottom"</div>
+                <div class="test-time">2ms</div>
+            </div>
+            <div class="test-row">
+                <div class="test-status fail">✗</div>
+                <div class="test-name">Thirukkural Daily</div>
+                <div class="test-details">Error: failed to find element matching selector "#kuralText"</div>
+                <div class="test-time">1ms</div>
+            </div>
+            <div class="test-row">
+                <div class="test-status fail">✗</div>
+                <div class="test-name">How It Works Steps</div>
+                <div class="test-details">Found 0 steps</div>
+                <div class="test-time">3ms</div>
+            </div>
+            <div class="test-row">
+                <div class="test-status fail">✗</div>
+                <div class="test-name">My Complaints Search</div>
+                <div class="test-details">navigateTo is not defined</div>
+                <div class="test-time">1ms</div>
+            </div>
+            <div class="test-row">
+                <div class="test-status fail">✗</div>
+                <div class="test-name">Logout Function</div>
+                <div class="test-details">logoutUser is not defined</div>
+                <div class="test-time">0ms</div>
+            </div>
+        </div>
+    </div>
+    <div class="phase">
+        <div class="phase-header">
+            <span>📋 Performance Testing</span>
+            <span style="font-size:0.8rem;color:#8b949e;">5 tests</span>
+        </div>
+        <div class="phase-body">
+            
+            <div class="test-row">
+                <div class="test-status fail">✗</div>
+                <div class="test-name">First Contentful Paint</div>
+                <div class="test-details">Could not measure FCP</div>
+                <div class="test-time">7037ms</div>
+            </div>
+            <div class="test-row">
+                <div class="test-status pass">✓</div>
+                <div class="test-name">DOM Size Check</div>
+                <div class="test-details">19 elements (good)</div>
+                <div class="test-time">3ms</div>
+            </div>
+            <div class="test-row">
+                <div class="test-status fail">✗</div>
+                <div class="test-name">JavaScript Errors</div>
+                <div class="test-details">navigateTo is not defined</div>
+                <div class="test-time">4058ms</div>
+            </div>
+            <div class="test-row">
+                <div class="test-status pass">✓</div>
+                <div class="test-name">Resource Loading Speed</div>
+                <div class="test-details">0 resources loaded, all under 3s</div>
+                <div class="test-time">2ms</div>
+            </div>
+            <div class="test-row">
+                <div class="test-status pass">✓</div>
+                <div class="test-name">Memory Usage</div>
+                <div class="test-details">1.3MB JS heap</div>
+                <div class="test-time">2ms</div>
+            </div>
+        </div>
+    </div>
+    <div class="phase">
+        <div class="phase-header">
+            <span>📋 UI/UX Testing</span>
+            <span style="font-size:0.8rem;color:#8b949e;">5 tests</span>
+        </div>
+        <div class="phase-body">
+            
+            <div class="test-row">
+                <div class="test-status fail">✗</div>
+                <div class="test-name">Mobile Responsive (375px)</div>
+                <div class="test-details">Failed to execute 'getComputedStyle' on 'Window': parameter 1 is not of type 'Element'.</div>
+                <div class="test-time">2122ms</div>
+            </div>
+            <div class="test-row">
+                <div class="test-status pass">✓</div>
+                <div class="test-name">Tablet Responsive (768px)</div>
+                <div class="test-details">No horizontal overflow</div>
+                <div class="test-time">2086ms</div>
+            </div>
+            <div class="test-row">
+                <div class="test-status fail">✗</div>
+                <div class="test-name">Desktop Layout (1920px)</div>
+                <div class="test-details">Container: 1920px</div>
+                <div class="test-time">2067ms</div>
+            </div>
+            <div class="test-row">
+                <div class="test-status pass">✓</div>
+                <div class="test-name">All Images Load</div>
+                <div class="test-details">No broken images</div>
+                <div class="test-time">4063ms</div>
+            </div>
+            <div class="test-row">
+                <div class="test-status fail">✗</div>
+                <div class="test-name">CSS Variables</div>
+                <div class="test-details">--primary: ""</div>
+                <div class="test-time">2067ms</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>🏛️ Citizen Connect Thanjavur | TVK | MLA R. Vijaysaravanan</p>
+        <p>QA Suite by Asventechnology | <a href="https://asventechnology.com" style="color:#58a6ff;">asventechnology.com</a></p>
+    </div>
+</body>
+</html>
