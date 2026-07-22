@@ -2430,34 +2430,11 @@ body::before {
                         </div>
                     </div>
 
-                    <!-- Resolution Meter -->
+                    <!-- Top Pending Issues -->
                     <div class="dash-card full-width" style="margin-bottom:0;">
-                        <h3><i class="fas fa-tasks" style="color:var(--gold);"></i> <span data-lang="dash_resolution_meter">தீர்வு நிலை</span></h3>
-                        <div style="margin-top:16px;">
-                            <!-- Main Progress Bar -->
-                            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-                                <div style="display:flex;align-items:center;gap:8px;">
-                                    <span style="width:10px;height:10px;border-radius:50%;background:var(--primary-light);display:inline-block;"></span>
-                                    <span style="font-size:0.78rem;color:var(--text-muted);" data-lang="dash_meter_filed">பதிவு செய்யப்பட்டவை</span>
-                                    <strong style="color:var(--primary-light);font-family:'Bebas Neue',cursive;font-size:1.3rem;" id="dashMeterFiled">0</strong>
-                                </div>
-                                <div style="display:flex;align-items:center;gap:8px;">
-                                    <strong style="color:var(--success);font-family:'Bebas Neue',cursive;font-size:1.3rem;" id="dashMeterResolved">0</strong>
-                                    <span style="font-size:0.78rem;color:var(--text-muted);" data-lang="dash_meter_resolved">தீர்வு ✓</span>
-                                    <span style="width:10px;height:10px;border-radius:50%;background:var(--success);display:inline-block;"></span>
-                                </div>
-                            </div>
-                            <!-- The Meter Bar -->
-                            <div style="height:28px;background:rgba(139,0,0,0.2);border-radius:14px;overflow:hidden;position:relative;border:1px solid rgba(255,255,255,0.06);">
-                                <div id="dashMeterBar" style="height:100%;background:linear-gradient(90deg,#10B981,#4ade80);border-radius:14px;width:0%;transition:width 1.5s ease;display:flex;align-items:center;justify-content:flex-end;padding-right:10px;">
-                                    <span id="dashMeterPct" style="font-size:0.72rem;font-weight:700;color:white;"></span>
-                                </div>
-                            </div>
-                            <!-- Bottom Info -->
-                            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;">
-                                <span style="font-size:0.75rem;color:var(--warning);font-weight:600;"><i class="fas fa-exclamation-circle"></i> <span id="dashMeterPending">0</span> <span data-lang="dash_meter_remaining">நிலுவையில் உள்ளவை</span></span>
-                                <span style="font-size:0.72rem;color:var(--text-muted);"><i class="fas fa-calendar-alt"></i> <span data-lang="dash_this_month">இந்த மாதம்</span>: <strong style="color:var(--gold);" id="dashMeterMonthNew">0</strong> <span data-lang="dash_new_filed">புதிய புகார்</span></span>
-                            </div>
+                        <h3><i class="fas fa-exclamation-triangle" style="color:var(--warning);"></i> <span data-lang="dash_top_pending">முன்னுரிமை நிலுவை புகார்கள்</span></h3>
+                        <div id="dashTopPending" style="margin-top:12px;display:flex;flex-direction:column;gap:10px;">
+                            <p style="color:var(--text-muted);font-size:0.8rem;text-align:center;padding:20px;">⏳ Loading...</p>
                         </div>
                     </div>
                 </div>
@@ -3747,15 +3724,35 @@ async function loadDashboardData() {
         return rd && new Date(rd) >= startOfMonth;
     }).length;
     
-    // === RESOLUTION METER ===
-    const meterPct = total > 0 ? Math.round((resolved.length / total) * 100) : 0;
-    const meterPending = total - resolved.length;
-    if (el('dashMeterFiled')) el('dashMeterFiled').textContent = total;
-    if (el('dashMeterResolved')) el('dashMeterResolved').textContent = resolved.length;
-    if (el('dashMeterPending')) el('dashMeterPending').textContent = meterPending;
-    if (el('dashMeterMonthNew')) el('dashMeterMonthNew').textContent = monthNew;
-    if (el('dashMeterBar')) el('dashMeterBar').style.width = meterPct + '%';
-    if (el('dashMeterPct')) el('dashMeterPct').textContent = meterPct > 5 ? meterPct + '%' : '';
+    // === TOP PENDING ISSUES ===
+    const pendingComplaints = allComplaints.filter(c => c.statusClass !== 'badge-resolved');
+    // Sort by oldest first (longest pending)
+    pendingComplaints.sort((a, b) => {
+        const dateA = a.createdAt ? new Date(a.createdAt) : new Date(0);
+        const dateB = b.createdAt ? new Date(b.createdAt) : new Date(0);
+        return dateA - dateB;
+    });
+    const top3 = pendingComplaints.slice(0, 3);
+    const topPendingEl = el('dashTopPending');
+    if (topPendingEl) {
+        if (top3.length === 0) {
+            topPendingEl.innerHTML = '<p style="color:var(--success);font-size:0.85rem;text-align:center;padding:20px;">🎉 அனைத்து புகார்களும் தீர்க்கப்பட்டன!</p>';
+        } else {
+            topPendingEl.innerHTML = top3.map(c => {
+                const days = c.createdAt ? Math.floor((today - new Date(c.createdAt)) / (1000*60*60*24)) : '?';
+                const urgency = days > 5 ? '🔴' : days > 2 ? '🟡' : '🟢';
+                const area = c.area || '';
+                return `<div style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:rgba(255,255,255,0.02);border-radius:10px;border:1px solid rgba(255,255,255,0.06);border-left:3px solid ${days > 5 ? 'var(--danger)' : days > 2 ? 'var(--warning)' : 'var(--success)'};">
+                    <span style="font-size:1.2rem;">${urgency}</span>
+                    <div style="flex:1;min-width:0;">
+                        <p style="font-size:0.82rem;color:var(--text-light);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${c.title || 'Untitled'}</p>
+                        <p style="font-size:0.7rem;color:var(--text-muted);">${area} • ${c.status || 'Pending'}</p>
+                    </div>
+                    <span style="font-size:0.72rem;color:${days > 5 ? 'var(--danger)' : 'var(--warning)'};font-weight:700;white-space:nowrap;">${days} நாட்கள்</span>
+                </div>`;
+            }).join('');
+        }
+    }
 
     dashboardLoaded = true;
     console.log(`✅ Dashboard loaded: ${total} complaints, ${resolved.length} resolved, Trust: ${trustScore}%`);
