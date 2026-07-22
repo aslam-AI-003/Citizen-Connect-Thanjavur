@@ -130,15 +130,16 @@ body::before {
 }
 
 .nav-brand .brand-text {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.15rem;
+    font-family: 'Noto Serif Tamil', 'Playfair Display', serif;
+    font-size: 0.92rem;
     font-weight: 700;
     color: white;
+    white-space: nowrap;
 }
 
 .nav-brand .brand-sub {
     color: var(--gold);
-    font-size: 0.85rem;
+    font-size: 0.78rem;
     font-weight: 400;
     margin-left: 4px;
     font-family: 'Inter', sans-serif;
@@ -1895,6 +1896,8 @@ body::before {
 }
 
 @media (max-width: 768px) {
+    .nav-brand .brand-sub { display: none; }
+    .nav-brand .brand-text { font-size: 0.85rem; }
     .nav-links { display: none; }
     .hamburger { display: flex; }
     .nav-links.active {
@@ -1947,6 +1950,8 @@ body::before {
 }
 
 @media (max-width: 480px) {
+    .nav-brand .brand-text { font-size: 0.78rem; }
+    .nav-brand { gap: 8px; }
     .container { padding: 0 16px; }
     .hero-text h1 { font-size: 1.6rem; }
     .hero-text h2 { font-size: 1.3rem; }
