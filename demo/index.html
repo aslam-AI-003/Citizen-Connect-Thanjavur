@@ -3724,8 +3724,9 @@ async function loadDashboardData() {
         return rd && new Date(rd) >= startOfMonth;
     }).length;
     
-    // === TOP PENDING ISSUES ===
-    const pendingComplaints = allComplaints.filter(c => c.statusClass !== 'badge-resolved');
+    // === TOP PENDING ISSUES (Only real DB complaints, skip hardcoded demo) ===
+    const demoIds = ['TVK-2026-00101','TVK-2026-00102','TVK-2026-00100','TVK-2026-00099'];
+    const pendingComplaints = allComplaints.filter(c => c.statusClass !== 'badge-resolved' && !demoIds.includes(c.id));
     // Sort by oldest first (longest pending)
     pendingComplaints.sort((a, b) => {
         const dateA = a.createdAt ? new Date(a.createdAt) : new Date(0);

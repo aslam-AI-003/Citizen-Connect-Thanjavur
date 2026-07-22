@@ -145,6 +145,7 @@ const TRANSLATIONS = {
     'dash_meter_filed': { ta: 'பதிவு செய்யப்பட்டவை', en: 'Filed' },
     'dash_meter_resolved': { ta: 'தீர்வு ✓', en: 'Resolved ✓' },
     'dash_meter_remaining': { ta: 'நிலுவையில் உள்ளவை', en: 'Remaining' },
+    'dash_top_pending': { ta: 'முன்னுரிமை நிலுவை புகார்கள்', en: 'Priority Pending Complaints' },
     'dash_area_title': { ta: '<i class="fas fa-chart-bar"></i> பகுதிவாரி புகார்கள்', en: '<i class="fas fa-chart-bar"></i> Area-wise Complaints' },
     'dash_cat_title': { ta: '<i class="fas fa-chart-pie"></i> வகைவாரி புகார்கள்', en: '<i class="fas fa-chart-pie"></i> Category-wise Complaints' },
     'dash_weekly_title': { ta: '<i class="fas fa-chart-line"></i> வாரவாரி தீர்வு', en: '<i class="fas fa-chart-line"></i> Weekly Resolution Graph' },
