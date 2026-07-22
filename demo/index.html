@@ -3043,7 +3043,7 @@ const wardVolunteers = { 'Thanjavur Fort Area':[{name:'Mr. Senthil',phone:'98765
 let currentAssignComplaintId = null;
 function openAssignModal(cid) { const c=complaintsDB[cid]; if(!c){showNotification('Not found!','error');return;} currentAssignComplaintId=cid; document.getElementById('assignComplaintInfo').textContent=`${c.govId||cid} - ${c.title}`; document.getElementById('assignArea').value=c.area; const vs=document.getElementById('volunteerSelect'); vs.innerHTML='<option value="">--Select--</option>'; (wardVolunteers[c.area]||[]).forEach((v,i)=>{const o=document.createElement('option');o.value=i;o.textContent=`${v.name} (${v.role})`;vs.appendChild(o);}); document.getElementById('assignModal').classList.add('active'); }
 function closeAssignModal() { document.getElementById('assignModal').classList.remove('active'); }
-function confirmAssignment() { const vs=document.getElementById('volunteerSelect'); if(!vs.value){showNotification('Volunteer தேர்வு செய்யுங்கள்!','error');return;} const c=complaintsDB[currentAssignComplaintId]; const vols=wardVolunteers[c.area]||[]; const v=vols[parseInt(vs.value)]; c.assigned=`${v.name} (${v.role})`; c.status='ஒதுக்கப்பட்டது'; c.statusClass='badge-assigned'; closeAssignModal(); showNotification(`✅ ${v.name}-க்கு ஒதுக்கப்பட்டது!`,'success'); }
+function confirmAssignment() { const vs=document.getElementById('volunteerSelect'); if(!vs.value){showNotification('Volunteer தேர்வு செய்யுங்கள்!','error');return;} const c=complaintsDB[currentAssignComplaintId]; const vols=wardVolunteers[c.area]||[]; const v=vols[parseInt(vs.value)]; const ps=document.getElementById('prioritySelect'); c.assigned=`${v.name} (${v.role})`; c.status='ஒதுக்கப்பட்டது'; c.statusClass='badge-assigned'; c.priority=ps?ps.value:'normal'; if(window.VoiceToMinister_DB)VoiceToMinister_DB.updateComplaint(currentAssignComplaintId,{assigned:c.assigned,status:c.status,statusClass:c.statusClass,priority:c.priority}); closeAssignModal(); showNotification(`✅ ${v.name}-க்கு ஒதுக்கப்பட்டது! Priority: ${c.priority}`,'success'); }
 
 // ===== FILE UPLOAD =====
 const uploadArea=document.getElementById('uploadArea'),fileInput=document.getElementById('fileInput'),uploadPreview=document.getElementById('uploadPreview');
@@ -3724,11 +3724,19 @@ async function loadDashboardData() {
         return rd && new Date(rd) >= startOfMonth;
     }).length;
     
-    // === TOP PENDING ISSUES (Only real DB complaints, skip hardcoded demo) ===
+    // === TOP PENDING ISSUES (Admin-set priority only) ===
     const demoIds = ['TVK-2026-00101','TVK-2026-00102','TVK-2026-00100','TVK-2026-00099'];
-    const pendingComplaints = allComplaints.filter(c => c.statusClass !== 'badge-resolved' && !demoIds.includes(c.id));
-    // Sort by oldest first (longest pending)
+    const priorityOrder = { 'urgent': 0, 'high': 1, 'normal': 2 };
+    const pendingComplaints = allComplaints.filter(c => 
+        c.statusClass !== 'badge-resolved' && 
+        !demoIds.includes(c.id) && 
+        c.priority && c.priority !== 'normal'
+    );
+    // Sort by priority level (urgent first), then oldest
     pendingComplaints.sort((a, b) => {
+        const pa = priorityOrder[a.priority] || 2;
+        const pb = priorityOrder[b.priority] || 2;
+        if (pa !== pb) return pa - pb;
         const dateA = a.createdAt ? new Date(a.createdAt) : new Date(0);
         const dateB = b.createdAt ? new Date(b.createdAt) : new Date(0);
         return dateA - dateB;

@@ -746,6 +746,12 @@
                             <option value="">-- Select Volunteer --</option>
                             ${volOptions}
                         </select>
+                        <label style="font-size:0.72rem;font-weight:600;color:#374151;display:block;margin:6px 0 4px;">🎯 Priority (Public Dashboard-ல் காண்பிக்க):</label>
+                        <select id="modalPrioritySelect" style="width:100%;padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:0.8rem;margin-bottom:8px;">
+                            <option value="normal">🟢 Normal</option>
+                            <option value="high">🟡 High Priority</option>
+                            <option value="urgent">🔴 Urgent</option>
+                        </select>
                         <button onclick="assignVolunteerToComplaint('${id}')" style="width:100%;padding:8px;background:linear-gradient(135deg,#2563eb,#1d4ed8);color:white;border:none;border-radius:8px;font-size:0.8rem;cursor:pointer;font-weight:600;">
                             <i class="fas fa-user-check"></i> Assign & Update
                         </button>
@@ -775,7 +781,10 @@
             const selectedVol = volSelect.value;
             if (!selectedVol) { alert('Please select a volunteer!'); return; }
 
+            const prioritySelect = document.getElementById('modalPrioritySelect');
+            const selectedPriority = prioritySelect ? prioritySelect.value : 'normal';
             complaintsDB[complaintId].assigned = selectedVol;
+            complaintsDB[complaintId].priority = selectedPriority;
             if (complaintsDB[complaintId].statusClass === 'badge-new') {
                 complaintsDB[complaintId].status = 'ஒதுக்கப்பட்டது';
                 complaintsDB[complaintId].statusClass = 'badge-assigned';
@@ -813,12 +822,13 @@
                 if (typeof db !== 'undefined') {
                     await db.collection('vtm_ppn_complaints').doc(complaintId).update({
                         assigned: selectedVol,
+                        priority: selectedPriority,
                         status: complaintsDB[complaintId].status,
                         statusClass: complaintsDB[complaintId].statusClass,
                         timeline: timeline,
                         updatedAt: new Date().toISOString()
                     });
-                    console.log('✅ Volunteer assigned in Firebase:', complaintId, selectedVol);
+                    console.log('✅ Volunteer assigned in Firebase:', complaintId, selectedVol, 'Priority:', selectedPriority);
                 }
             } catch (e) { console.log('Firebase assign error:', e); }
 
