@@ -3739,7 +3739,8 @@ async function loadDashboardData() {
             topPendingEl.innerHTML = '<p style="color:var(--success);font-size:0.85rem;text-align:center;padding:20px;">🎉 அனைத்து புகார்களும் தீர்க்கப்பட்டன!</p>';
         } else {
             topPendingEl.innerHTML = top3.map(c => {
-                const days = c.createdAt ? Math.floor((today - new Date(c.createdAt)) / (1000*60*60*24)) : '?';
+                const createdDate = c.createdAt ? new Date(c.createdAt) : (c.date ? new Date(c.date) : null);
+                const days = createdDate ? Math.max(0, Math.floor((today - createdDate) / (1000*60*60*24))) : 1;
                 const urgency = days > 5 ? '🔴' : days > 2 ? '🟡' : '🟢';
                 const area = c.area || '';
                 return `<div style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:rgba(255,255,255,0.02);border-radius:10px;border:1px solid rgba(255,255,255,0.06);border-left:3px solid ${days > 5 ? 'var(--danger)' : days > 2 ? 'var(--warning)' : 'var(--success)'};">
