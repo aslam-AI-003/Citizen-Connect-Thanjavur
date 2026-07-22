@@ -3749,7 +3749,7 @@ async function loadDashboardData() {
                         <p style="font-size:0.82rem;color:var(--text-light);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${c.title || 'Untitled'}</p>
                         <p style="font-size:0.7rem;color:var(--text-muted);">${area} • ${c.status || 'Pending'}</p>
                     </div>
-                    <span style="font-size:0.72rem;color:${days > 5 ? 'var(--danger)' : 'var(--warning)'};font-weight:700;white-space:nowrap;">${days} நாட்கள்</span>
+                    <a href="#" onclick="navigateTo('track');document.getElementById('trackInput').value='${c.id}';setTimeout(searchComplaint,300);return false;" style="font-size:0.72rem;color:var(--gold);font-weight:600;white-space:nowrap;text-decoration:none;padding:6px 12px;border:1px solid var(--gold-dim);border-radius:6px;transition:all 0.3s ease;">Track →</a>
                 </div>`;
             }).join('');
         }
