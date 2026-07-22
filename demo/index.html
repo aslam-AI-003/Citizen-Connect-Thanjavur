@@ -2430,32 +2430,33 @@ body::before {
                         </div>
                     </div>
 
-                    <!-- Quick Stats - This Week / This Month -->
-                    <div class="dash-grid" style="margin-bottom:0;">
-                        <div class="dash-card">
-                            <h3><i class="fas fa-calendar-week" style="color:var(--gold);"></i> <span data-lang="dash_this_week">இந்த வாரம்</span></h3>
-                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px;">
-                                <div style="background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2);border-radius:12px;padding:16px;text-align:center;">
-                                    <span style="font-family:'Bebas Neue',cursive;font-size:2rem;color:#3b82f6;display:block;line-height:1;" id="dashWeekNew">0</span>
-                                    <span style="font-size:0.72rem;color:var(--text-muted);" data-lang="dash_new_filed">புதிய புகார்</span>
+                    <!-- Resolution Meter -->
+                    <div class="dash-card full-width" style="margin-bottom:0;">
+                        <h3><i class="fas fa-tasks" style="color:var(--gold);"></i> <span data-lang="dash_resolution_meter">தீர்வு நிலை</span></h3>
+                        <div style="margin-top:16px;">
+                            <!-- Main Progress Bar -->
+                            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                                <div style="display:flex;align-items:center;gap:8px;">
+                                    <span style="width:10px;height:10px;border-radius:50%;background:var(--primary-light);display:inline-block;"></span>
+                                    <span style="font-size:0.78rem;color:var(--text-muted);" data-lang="dash_meter_filed">பதிவு செய்யப்பட்டவை</span>
+                                    <strong style="color:var(--primary-light);font-family:'Bebas Neue',cursive;font-size:1.3rem;" id="dashMeterFiled">0</strong>
                                 </div>
-                                <div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:12px;padding:16px;text-align:center;">
-                                    <span style="font-family:'Bebas Neue',cursive;font-size:2rem;color:#10B981;display:block;line-height:1;" id="dashWeekResolved">0</span>
-                                    <span style="font-size:0.72rem;color:var(--text-muted);" data-lang="dash_resolved_label">தீர்வு செய்யப்பட்டவை</span>
+                                <div style="display:flex;align-items:center;gap:8px;">
+                                    <strong style="color:var(--success);font-family:'Bebas Neue',cursive;font-size:1.3rem;" id="dashMeterResolved">0</strong>
+                                    <span style="font-size:0.78rem;color:var(--text-muted);" data-lang="dash_meter_resolved">தீர்வு ✓</span>
+                                    <span style="width:10px;height:10px;border-radius:50%;background:var(--success);display:inline-block;"></span>
                                 </div>
                             </div>
-                        </div>
-                        <div class="dash-card">
-                            <h3><i class="fas fa-calendar-alt" style="color:var(--gold);"></i> <span data-lang="dash_this_month">இந்த மாதம்</span></h3>
-                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px;">
-                                <div style="background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.2);border-radius:12px;padding:16px;text-align:center;">
-                                    <span style="font-family:'Bebas Neue',cursive;font-size:2rem;color:#8B5CF6;display:block;line-height:1;" id="dashMonthNew">0</span>
-                                    <span style="font-size:0.72rem;color:var(--text-muted);" data-lang="dash_new_filed">புதிய புகார்</span>
+                            <!-- The Meter Bar -->
+                            <div style="height:28px;background:rgba(139,0,0,0.2);border-radius:14px;overflow:hidden;position:relative;border:1px solid rgba(255,255,255,0.06);">
+                                <div id="dashMeterBar" style="height:100%;background:linear-gradient(90deg,#10B981,#4ade80);border-radius:14px;width:0%;transition:width 1.5s ease;display:flex;align-items:center;justify-content:flex-end;padding-right:10px;">
+                                    <span id="dashMeterPct" style="font-size:0.72rem;font-weight:700;color:white;"></span>
                                 </div>
-                                <div style="background:rgba(212,175,55,0.08);border:1px solid rgba(212,175,55,0.2);border-radius:12px;padding:16px;text-align:center;">
-                                    <span style="font-family:'Bebas Neue',cursive;font-size:2rem;color:var(--gold);display:block;line-height:1;" id="dashMonthResolved">0</span>
-                                    <span style="font-size:0.72rem;color:var(--text-muted);" data-lang="dash_resolved_label">தீர்வு செய்யப்பட்டவை</span>
-                                </div>
+                            </div>
+                            <!-- Bottom Info -->
+                            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;">
+                                <span style="font-size:0.75rem;color:var(--warning);font-weight:600;"><i class="fas fa-exclamation-circle"></i> <span id="dashMeterPending">0</span> <span data-lang="dash_meter_remaining">நிலுவையில் உள்ளவை</span></span>
+                                <span style="font-size:0.72rem;color:var(--text-muted);"><i class="fas fa-calendar-alt"></i> <span data-lang="dash_this_month">இந்த மாதம்</span>: <strong style="color:var(--gold);" id="dashMeterMonthNew">0</strong> <span data-lang="dash_new_filed">புதிய புகார்</span></span>
                             </div>
                         </div>
                     </div>
@@ -3746,10 +3747,15 @@ async function loadDashboardData() {
         return rd && new Date(rd) >= startOfMonth;
     }).length;
     
-    if (el('dashWeekNew')) el('dashWeekNew').textContent = weekNew;
-    if (el('dashWeekResolved')) el('dashWeekResolved').textContent = weekResolved;
-    if (el('dashMonthNew')) el('dashMonthNew').textContent = monthNew;
-    if (el('dashMonthResolved')) el('dashMonthResolved').textContent = monthResolved;
+    // === RESOLUTION METER ===
+    const meterPct = total > 0 ? Math.round((resolved.length / total) * 100) : 0;
+    const meterPending = total - resolved.length;
+    if (el('dashMeterFiled')) el('dashMeterFiled').textContent = total;
+    if (el('dashMeterResolved')) el('dashMeterResolved').textContent = resolved.length;
+    if (el('dashMeterPending')) el('dashMeterPending').textContent = meterPending;
+    if (el('dashMeterMonthNew')) el('dashMeterMonthNew').textContent = monthNew;
+    if (el('dashMeterBar')) el('dashMeterBar').style.width = meterPct + '%';
+    if (el('dashMeterPct')) el('dashMeterPct').textContent = meterPct > 5 ? meterPct + '%' : '';
 
     dashboardLoaded = true;
     console.log(`✅ Dashboard loaded: ${total} complaints, ${resolved.length} resolved, Trust: ${trustScore}%`);
