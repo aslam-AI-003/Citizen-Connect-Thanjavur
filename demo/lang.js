@@ -122,14 +122,14 @@ const TRANSLATIONS = {
     'mycomp_resolved': { ta: 'தீர்வு', en: 'Resolved' },
 
     // ===== UPDATES PAGE =====
-    'updates_title': { ta: '<i class="fas fa-newspaper"></i> MLA Updates & அறிவிப்புகள்', en: '<i class="fas fa-newspaper"></i> MLA Updates & Announcements' },
-    'updates_sub': { ta: 'R. Vijaysaravanan - MLA | தஞ்சாவூர் தொகுதி', en: 'R. Vijaysaravanan - MLA | Thanjavur Constituency' },
+    'updates_title': { ta: '<i class="fas fa-newspaper"></i> அறிவிப்புகள்', en: '<i class="fas fa-newspaper"></i> Updates & Announcements' },
+    'updates_sub': { ta: 'ஆர். விஜய்சரவணன் - சட்டமன்ற உறுப்பினர் | தஞ்சாவூர் தொகுதி', en: 'R. Vijaysaravanan - MLA | Thanjavur Constituency' },
 
     // ===== DASHBOARD =====
     'dash_title': { ta: '<i class="fas fa-tachometer-alt"></i> தொகுதி நிலை அறிக்கை', en: '<i class="fas fa-tachometer-alt"></i> Constituency Status Report' },
     'dash_sub': { ta: 'R. Vijaysaravanan | MLA - தஞ்சாவூர் தொகுதி', en: 'R. Vijaysaravanan | MLA - Thanjavur Constituency' },
-    'dash_trust_title': { ta: '🏆 மக்கள் நம்பிக்கை Index', en: '🏆 People\'s Trust Index' },
-    'dash_trust_sub': { ta: 'People\'s Trust Score', en: 'People\'s Trust Score' },
+    'dash_trust_title': { ta: '🏆 மக்கள் நம்பிக்கை குறியீடு', en: '🏆 People\'s Trust Index' },
+    'dash_trust_sub': { ta: 'மக்கள் நம்பிக்கை மதிப்பெண்', en: 'People\'s Trust Score' },
     'dash_trust_label': { ta: 'நம்பிக்கை', en: 'Trust' },
     'dash_stat_total': { ta: 'மொத்தம்', en: 'Total' },
     'dash_stat_today': { ta: 'இன்று புதிய', en: 'New Today' },
@@ -137,9 +137,9 @@ const TRANSLATIONS = {
     'dash_stat_today_res': { ta: 'இன்று தீர்வு', en: 'Resolved Today' },
     'dash_stat_pending': { ta: 'நிலுவை', en: 'Pending' },
     'dash_stat_inprogress': { ta: 'பணியில்', en: 'In Progress' },
-    'dash_area_title': { ta: '<i class="fas fa-chart-bar"></i> Area-wise புகார்கள்', en: '<i class="fas fa-chart-bar"></i> Area-wise Complaints' },
-    'dash_cat_title': { ta: '<i class="fas fa-chart-pie"></i> Category-wise', en: '<i class="fas fa-chart-pie"></i> Category-wise' },
-    'dash_weekly_title': { ta: '<i class="fas fa-chart-line"></i> Weekly Resolution - வாரவாரி தீர்வு', en: '<i class="fas fa-chart-line"></i> Weekly Resolution Graph' },
+    'dash_area_title': { ta: '<i class="fas fa-chart-bar"></i> பகுதிவாரி புகார்கள்', en: '<i class="fas fa-chart-bar"></i> Area-wise Complaints' },
+    'dash_cat_title': { ta: '<i class="fas fa-chart-pie"></i> வகைவாரி புகார்கள்', en: '<i class="fas fa-chart-pie"></i> Category-wise Complaints' },
+    'dash_weekly_title': { ta: '<i class="fas fa-chart-line"></i> வாரவாரி தீர்வு', en: '<i class="fas fa-chart-line"></i> Weekly Resolution Graph' },
 
     // ===== SUCCESS MODAL =====
     'success_heading': { ta: '✅ புகார் வெற்றிகரமாக பதிவு செய்யப்பட்டது!', en: '✅ Complaint Registered Successfully!' },
@@ -163,12 +163,12 @@ const TRANSLATIONS = {
     'footer_brand': { ta: '🏛️ மக்கள் குறை தீர்வு மேடை', en: '🏛️ Citizen Connect' },
     'footer_desc': { ta: 'மக்கள் குறை தீர்வு மேடை - தஞ்சாவூர் தொகுதி', en: 'Citizen Grievance Platform - Thanjavur Constituency' },
     'footer_sub': { ta: 'Tamilaga Vettri Kazhagam | MLA: R. Vijaysaravanan', en: 'Tamilaga Vettri Kazhagam | MLA: R. Vijaysaravanan' },
-    'footer_links_title': { ta: 'Quick Links', en: 'Quick Links' },
+    'footer_links_title': { ta: 'முக்கிய இணைப்புகள்', en: 'Quick Links' },
     'footer_contact_title': { ta: 'தொடர்பு', en: 'Contact' },
     'footer_link_home': { ta: 'முகப்பு', en: 'Home' },
     'footer_link_complaint': { ta: 'புகார் செய்', en: 'File Complaint' },
     'footer_link_track': { ta: 'நிலை காண', en: 'Track Status' },
-    'footer_link_updates': { ta: 'Updates', en: 'Updates' },
+    'footer_link_updates': { ta: 'அறிவிப்புகள்', en: 'Updates' },
     'footer_copyright': { ta: '© 2026 Citizen Connect Thanjavur | R. Vijaysaravanan - MLA, Thanjavur Constituency  ', en: '© 2026 Citizen Connect Thanjavur | R. Vijaysaravanan - MLA, Thanjavur Constituency  ' },
 
     // ===== RECENT COMPLAINTS =====
