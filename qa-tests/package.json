@@ -1,0 +1,24 @@
+{
+  "name": "citizen-connect-qa-suite",
+  "version": "1.0.0",
+  "description": "Full 10-Hour QA Testing Suite for Citizen Connect Thanjavur",
+  "scripts": {
+    "test": "node run-qa-suite.js",
+    "test:e2e": "node run-qa-suite.js --phase=e2e",
+    "test:load": "node run-qa-suite.js --phase=load",
+    "test:performance": "node run-qa-suite.js --phase=performance",
+    "test:stress": "node run-qa-suite.js --phase=stress",
+    "test:security": "node run-qa-suite.js --phase=security",
+    "test:quick": "node run-qa-suite.js --phase=quick",
+    "report": "node generate-report.js"
+  },
+  "dependencies": {
+    "puppeteer": "^21.0.0",
+    "artillery": "^2.0.0",
+    "lighthouse": "^11.0.0",
+    "chalk": "^4.1.2",
+    "ora": "^5.4.1"
+  },
+  "author": "Asventechnology",
+  "license": "ISC"
+}
