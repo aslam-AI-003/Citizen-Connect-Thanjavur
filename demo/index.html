@@ -120,7 +120,10 @@ body::before {
 .nav-brand {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
+    flex-shrink: 0;
+    max-width: 280px;
+    overflow: hidden;
 }
 
 .nav-brand img {
@@ -131,18 +134,16 @@ body::before {
 
 .nav-brand .brand-text {
     font-family: 'Noto Serif Tamil', 'Playfair Display', serif;
-    font-size: 0.92rem;
+    font-size: 0.88rem;
     font-weight: 700;
     color: white;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .nav-brand .brand-sub {
-    color: var(--gold);
-    font-size: 0.78rem;
-    font-weight: 400;
-    margin-left: 4px;
-    font-family: 'Inter', sans-serif;
+    display: none;
 }
 
 .nav-links {
@@ -154,12 +155,13 @@ body::before {
 .nav-link {
     color: var(--text-muted);
     text-decoration: none;
-    padding: 10px 18px;
+    padding: 8px 12px;
     border-radius: 8px;
-    font-size: 0.82rem;
+    font-size: 0.75rem;
     font-weight: 500;
     transition: all 0.3s ease;
     position: relative;
+    white-space: nowrap;
 }
 
 .nav-link:hover {
@@ -216,6 +218,7 @@ body::before {
     gap: 5px;
     cursor: pointer;
     padding: 5px;
+    flex-shrink: 0;
 }
 
 .hamburger span {
@@ -1896,10 +1899,12 @@ body::before {
 }
 
 @media (max-width: 768px) {
-    .nav-brand .brand-sub { display: none; }
-    .nav-brand .brand-text { font-size: 0.85rem; }
-    .nav-links { display: none; }
-    .hamburger { display: flex; }
+    .nav-brand { max-width: 55vw; }
+    .nav-brand .brand-text { font-size: 0.82rem; }
+    .nav-links { display: none !important; }
+    .hamburger { display: flex !important; }
+    .nav-right { gap: 8px; }
+    .btn-login { padding: 7px 10px !important; font-size: 0.7rem !important; }
     .nav-links.active {
         display: flex;
         flex-direction: column;
@@ -1950,9 +1955,10 @@ body::before {
 }
 
 @media (max-width: 480px) {
-    .nav-brand .brand-text { font-size: 0.78rem; }
-    .nav-brand { gap: 8px; }
+    .nav-brand { max-width: 50vw; gap: 8px; }
+    .nav-brand .brand-text { font-size: 0.75rem; }
     .container { padding: 0 16px; }
+    .btn-login span { display: none; }
     .hero-text h1 { font-size: 1.6rem; }
     .hero-text h2 { font-size: 1.3rem; }
     .hero-stats-bar { gap: 10px; }
