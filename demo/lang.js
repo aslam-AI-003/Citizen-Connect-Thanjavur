@@ -3,7 +3,7 @@
 
 const TRANSLATIONS = {
     // ===== BRAND =====
-    'brand_text': { ta: 'மக்கள் குரல்', en: 'Citizen Connect' },
+    'brand_text': { ta: 'மக்கள் குறை தீர்வு மேடை', en: 'Citizen Connect' },
     'brand_sub': { ta: '| தஞ்சாவூர்', en: '| Thanjavur' },
 
     // ===== NAVBAR =====
@@ -15,7 +15,7 @@ const TRANSLATIONS = {
 
     // ===== HERO SECTION =====
     'hero_badge': { ta: '🏛️ TAMILAGA VETTRI KAZHAGAM', en: '🏛️ TAMILAGA VETTRI KAZHAGAM' },
-    'hero_title': { ta: 'மக்கள் குரல்', en: "People's Voice" },
+    'hero_title': { ta: 'மக்கள் குறை தீர்வு மேடை', en: "Citizen Grievance Platform" },
     'hero_subtitle': { ta: 'தஞ்சாவூர் தொகுதி', en: 'Thanjavur Constituency' },
     'hero_desc': { ta: 'தஞ்சாவூர் தொகுதியின் ஒவ்வொரு குரலும் MLA அலுவலகம் வரை நேரடியாக சேரும். புகார் செய்யுங்கள், நிலையை track செய்யுங்கள்.', en: 'Every voice from Thanjavur constituency directly reaches the MLA office. File complaints, track status in real-time.' },
     'hero_btn_complaint': { ta: '<i class="fas fa-plus-circle"></i> புகார் பதிவு செய்', en: '<i class="fas fa-plus-circle"></i> File Complaint' },
@@ -159,7 +159,7 @@ const TRANSLATIONS = {
     'ph_login_mobile': { ta: 'Enter mobile number', en: 'Enter mobile number' },
 
     // ===== FOOTER =====
-    'footer_brand': { ta: '🏛️ மக்கள் குரல்', en: '🏛️ Citizen Connect' },
+    'footer_brand': { ta: '🏛️ மக்கள் குறை தீர்வு மேடை', en: '🏛️ Citizen Connect' },
     'footer_desc': { ta: 'மக்கள் குறை தீர்வு மேடை - தஞ்சாவூர் தொகுதி', en: 'Citizen Grievance Platform - Thanjavur Constituency' },
     'footer_sub': { ta: 'Tamilaga Vettri Kazhagam (TVK) | MLA: R. Vijaysaravanan', en: 'Tamilaga Vettri Kazhagam (TVK) | MLA: R. Vijaysaravanan' },
     'footer_links_title': { ta: 'Quick Links', en: 'Quick Links' },
