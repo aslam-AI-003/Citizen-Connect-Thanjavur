@@ -399,7 +399,20 @@ const LocationModule = (function() {
             if (map) {
                 map.setView([THANJAVUR_CENTER.lat, THANJAVUR_CENTER.lng], 14);
             }
-            showNotification('⚠️ GPS கிடைக்கவில்லை - Map-ல் pin வைத்து இடம் குறிக்கவும்', 'info');
+
+            // error.code === 1 is the standard Geolocation API code for PERMISSION_DENIED.
+            // Our own synthetic timeout/unsupported errors are plain Error objects with no .code,
+            // so they safely fall through to the generic message below.
+            if (error && error.code === 1) {
+                const locationText = document.getElementById('locationText');
+                if (locationText) {
+                    locationText.textContent = '⚠️ இந்த சைட்டுக்கு Location அனுமதி Block ஆகியுள்ளது';
+                    locationText.style.color = 'var(--warning)';
+                }
+                showNotification('📍 Location அனுமதி Block ஆகியுள்ளது! Browser Settings → Site Settings → Location-ல் Allow செய்து மீண்டும் முயற்சிக்கவும். அல்லது Map-ல் pin வைத்து இடம் குறிக்கவும்.', 'error');
+            } else {
+                showNotification('⚠️ GPS கிடைக்கவில்லை - Map-ல் pin வைத்து இடம் குறிக்கவும்', 'info');
+            }
         }
     }
 

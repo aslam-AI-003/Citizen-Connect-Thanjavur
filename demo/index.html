@@ -2324,8 +2324,8 @@ body::before {
                                     <div class="upload-area" id="uploadArea">
                                         <i class="fas fa-cloud-upload-alt"></i>
                                         <p>Click to upload or drag & drop</p>
-                                        <span>JPG, PNG, MP4 (Max 10MB)</span>
-                                        <input type="file" id="fileInput" accept="image/*,video/*" hidden>
+                                        <span>JPG, PNG (Max 10MB)</span>
+                                        <input type="file" id="fileInput" accept="image/*" hidden>
                                     </div>
                                     <div class="upload-preview" id="uploadPreview"></div>
                                 </div>
@@ -3199,7 +3199,7 @@ if (uploadArea) { uploadArea.addEventListener('click',()=>fileInput.click()); fi
     if (dataUrl.length > MAX_IMAGE_BASE64_BYTES) { showNotification('படம் மிகப் பெரியது! சிறிய படத்தை தேர்வு செய்யுங்கள்.','error'); return; }
     const p=document.createElement('div');p.style.cssText='width:80px;height:80px;border-radius:8px;overflow:hidden;position:relative;margin-top:10px;border:1px solid var(--gold-dim);';p.innerHTML=`<img src="${dataUrl}" style="width:100%;height:100%;object-fit:cover;"><button onclick="this.parentElement.remove()" style="position:absolute;top:2px;right:2px;width:20px;height:20px;border-radius:50%;background:var(--danger);color:white;border:none;cursor:pointer;">&times;</button>`;uploadPreview.appendChild(p);
     showNotification('File uploaded!','success');
-}).catch(err => { console.error(err); showNotification('படத்தை செயலாக்க முடியவில்லை!','error'); });}else{uploadPreview.innerHTML=`<p style="margin-top:10px;font-size:0.8rem;color:var(--gold);">📎 ${escapeHTML(f.name)}</p>`;showNotification('File uploaded!','success');}});}); }
+}).catch(err => { console.error(err); showNotification('படத்தை செயலாக்க முடியவில்லை!','error'); });}else{showNotification('Video attachment இப்போது support இல்லை. படம் மட்டும் upload செய்யுங்கள் அல்லது விவரத்தை description-ல் எழுதுங்கள்.','error');}});}); }
 
 // ===== LOCATION (Enhanced - Leaflet + OpenStreetMap) =====
 const getLocationBtn=document.getElementById('getLocation');
@@ -3287,13 +3287,16 @@ const govDepartments = {
 function populateDepartmentDropdown() {
     const deptSelect = document.getElementById('govDepartment');
     if (!deptSelect) return;
-    deptSelect.innerHTML = '<option value="">-- அரசு துறையை தேர்வு செய்யுங்கள் --</option>';
+    const lang = (typeof currentLang !== 'undefined') ? currentLang : 'ta';
+    const savedValue = deptSelect.value;
+    deptSelect.innerHTML = lang === 'en' ? '<option value="">-- Select Government Department --</option>' : '<option value="">-- அரசு துறையை தேர்வு செய்யுங்கள் --</option>';
     Object.entries(govDepartments).forEach(([code, dept]) => {
         const option = document.createElement('option');
         option.value = code;
-        option.textContent = `${dept.nameTA} (${code})`;
+        option.textContent = `${lang === 'en' ? dept.name : dept.nameTA} (${code})`;
         deptSelect.appendChild(option);
     });
+    if (savedValue) deptSelect.value = savedValue;
 }
 
 function onDepartmentChange() {
@@ -3302,7 +3305,9 @@ function onDepartmentChange() {
     const selectedDept = deptSelect.value;
     const otherDeptGroup = document.getElementById('otherDeptGroup');
     if (otherDeptGroup) otherDeptGroup.style.display = (selectedDept === 'OTHER') ? 'block' : 'none';
-    grievanceSelect.innerHTML = '<option value="">-- குறையின் வகையை தேர்வு செய்யுங்கள் --</option>';
+    const lang = (typeof currentLang !== 'undefined') ? currentLang : 'ta';
+    const savedGrievance = grievanceSelect.value;
+    grievanceSelect.innerHTML = lang === 'en' ? '<option value="">-- Select Grievance Type --</option>' : '<option value="">-- குறையின் வகையை தேர்வு செய்யுங்கள் --</option>';
     if (!selectedDept) { grievanceSelect.disabled = true; return; }
     const dept = govDepartments[selectedDept];
     if (dept && dept.grievances) {
@@ -3313,6 +3318,7 @@ function onDepartmentChange() {
             grievanceSelect.appendChild(option);
         });
         grievanceSelect.disabled = false;
+        if (savedGrievance) grievanceSelect.value = savedGrievance;
     }
 }
 
