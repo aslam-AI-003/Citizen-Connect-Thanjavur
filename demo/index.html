@@ -3108,12 +3108,16 @@ if (complaintForm) {
 
             const nc = {id:lastComplaintId,govId:govId,title:title+(areaNames[area]?' - '+areaNames[area]:''),description:desc||'',category:categoryNames[catVal]||catVal,area:areaNames[area]||area,citizenName:cn,mobileNumber:mn,assigned:'-',date:ds,status:'புதியது',statusClass:'badge-new',createdAt:now.toISOString(),location:gpsData,address:fullAddress,imageData:imageData,hasVoiceNote:!!inlinePlayer,voiceAudioData:voiceAudioBase64,timeline:[{text:'புகார் பதிவு செய்யப்பட்டது',time:`${ds} - ${ts}`,state:'completed'},{text:'ஆய்வு செய்யப்படுகிறது',time:'நிலுவையில்...',state:'active'},{text:'துறைக்கு ஒதுக்கப்படும்',time:'நிலுவையில்...',state:''},{text:'பணி தொடங்கப்படும்',time:'நிலுவையில்...',state:''},{text:'தீர்வு & உறுதிப்படுத்தல்',time:'நிலுவையில்...',state:''}]};
             complaintsDB[lastComplaintId] = nc;
-            if (window.VoiceToMinister_DB) { await VoiceToMinister_DB.saveComplaint(nc); }
+            const saved = window.VoiceToMinister_DB ? await VoiceToMinister_DB.saveComplaint(nc) : true;
             document.getElementById('generatedComplaintId').textContent = govId;
             sb.innerHTML = '<i class="fas fa-paper-plane"></i> புகார் சமர்ப்பி'; sb.disabled = false;
-            document.getElementById('successModal').classList.add('active');
-            complaintForm.reset(); document.querySelectorAll('.cat-card-new').forEach(c=>c.classList.remove('selected'));
-            currentStep = 1; updateWizardUI();
+            if (saved) {
+                document.getElementById('successModal').classList.add('active');
+                complaintForm.reset(); document.querySelectorAll('.cat-card-new').forEach(c=>c.classList.remove('selected'));
+                currentStep = 1; updateWizardUI();
+            } else {
+                showNotification('புகார் சேமிக்க முடியவில்லை! இணைப்பை சரிபார்த்து மீண்டும் முயற்சிக்கவும் (படம்/voice note அளவை குறைக்கவும்).','error');
+            }
         } catch (err) { console.error(err); showNotification('பிழை!','error'); sb.innerHTML = '<i class="fas fa-paper-plane"></i> புகார் சமர்ப்பி'; sb.disabled = false; }
     });
 }
@@ -3165,8 +3169,37 @@ function closeAssignModal() { document.getElementById('assignModal').classList.r
 function confirmAssignment() { const vs=document.getElementById('volunteerSelect'); if(!vs.value){showNotification('Volunteer தேர்வு செய்யுங்கள்!','error');return;} const c=complaintsDB[currentAssignComplaintId]; const vols=wardVolunteers[c.area]||[]; const v=vols[parseInt(vs.value)]; const ps=document.getElementById('prioritySelect'); c.assigned=`${v.name} (${v.role})`; c.status='ஒதுக்கப்பட்டது'; c.statusClass='badge-assigned'; c.priority=ps?ps.value:'normal'; if(window.VoiceToMinister_DB)VoiceToMinister_DB.updateComplaint(currentAssignComplaintId,{assigned:c.assigned,status:c.status,statusClass:c.statusClass,priority:c.priority}); closeAssignModal(); showNotification(`✅ ${v.name}-க்கு ஒதுக்கப்பட்டது! Priority: ${c.priority}`,'success'); }
 
 // ===== FILE UPLOAD =====
+// Resize + recompress an image file so its base64 form stays well under Firestore's 1MB document limit.
+function compressImageFile(file, maxDim = 1280, quality = 0.7) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            const img = new Image();
+            img.onload = () => {
+                let { width, height } = img;
+                if (width > maxDim || height > maxDim) {
+                    if (width > height) { height = Math.round(height * (maxDim / width)); width = maxDim; }
+                    else { width = Math.round(width * (maxDim / height)); height = maxDim; }
+                }
+                const canvas = document.createElement('canvas');
+                canvas.width = width; canvas.height = height;
+                canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+                resolve(canvas.toDataURL('image/jpeg', quality));
+            };
+            img.onerror = () => reject(new Error('படம் load செய்ய முடியவில்லை'));
+            img.src = ev.target.result;
+        };
+        reader.onerror = () => reject(new Error('கோப்பு படிக்க முடியவில்லை'));
+        reader.readAsDataURL(file);
+    });
+}
+const MAX_IMAGE_BASE64_BYTES = 900000; // stay comfortably under Firestore's 1MB per-document cap
 const uploadArea=document.getElementById('uploadArea'),fileInput=document.getElementById('fileInput'),uploadPreview=document.getElementById('uploadPreview');
-if (uploadArea) { uploadArea.addEventListener('click',()=>fileInput.click()); fileInput.addEventListener('change',(e)=>{Array.from(e.target.files).forEach(f=>{if(f.type.startsWith('image/')){const r=new FileReader();r.onload=(ev)=>{const p=document.createElement('div');p.style.cssText='width:80px;height:80px;border-radius:8px;overflow:hidden;position:relative;margin-top:10px;border:1px solid var(--gold-dim);';p.innerHTML=`<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover;"><button onclick="this.parentElement.remove()" style="position:absolute;top:2px;right:2px;width:20px;height:20px;border-radius:50%;background:var(--danger);color:white;border:none;cursor:pointer;">&times;</button>`;uploadPreview.appendChild(p);};r.readAsDataURL(f);}else{uploadPreview.innerHTML=`<p style="margin-top:10px;font-size:0.8rem;color:var(--gold);">📎 ${escapeHTML(f.name)}</p>`;}});showNotification('File uploaded!','success');}); }
+if (uploadArea) { uploadArea.addEventListener('click',()=>fileInput.click()); fileInput.addEventListener('change',(e)=>{Array.from(e.target.files).forEach(f=>{if(f.type.startsWith('image/')){compressImageFile(f).then(dataUrl => {
+    if (dataUrl.length > MAX_IMAGE_BASE64_BYTES) { showNotification('படம் மிகப் பெரியது! சிறிய படத்தை தேர்வு செய்யுங்கள்.','error'); return; }
+    const p=document.createElement('div');p.style.cssText='width:80px;height:80px;border-radius:8px;overflow:hidden;position:relative;margin-top:10px;border:1px solid var(--gold-dim);';p.innerHTML=`<img src="${dataUrl}" style="width:100%;height:100%;object-fit:cover;"><button onclick="this.parentElement.remove()" style="position:absolute;top:2px;right:2px;width:20px;height:20px;border-radius:50%;background:var(--danger);color:white;border:none;cursor:pointer;">&times;</button>`;uploadPreview.appendChild(p);
+    showNotification('File uploaded!','success');
+}).catch(err => { console.error(err); showNotification('படத்தை செயலாக்க முடியவில்லை!','error'); });}else{uploadPreview.innerHTML=`<p style="margin-top:10px;font-size:0.8rem;color:var(--gold);">📎 ${escapeHTML(f.name)}</p>`;showNotification('File uploaded!','success');}});}); }
 
 // ===== LOCATION (Enhanced - Leaflet + OpenStreetMap) =====
 const getLocationBtn=document.getElementById('getLocation');

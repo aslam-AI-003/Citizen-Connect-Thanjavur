@@ -126,9 +126,15 @@ const LocationModule = (function() {
     }
 
     // Get current GPS position
+    // Some mobile browsers/WebViews silently ignore the native `timeout` option below and
+    // never fire either callback, leaving the UI stuck on its loading spinner forever.
+    // Guard with our own Promise.race timeout so the UI always recovers.
     function getCurrentLocation() {
-        return new Promise((resolve, reject) => {
+        const state = { settled: false };
+
+        const gpsPromise = new Promise((resolve, reject) => {
             if (!navigator.geolocation) {
+                state.settled = true;
                 reject(new Error('Geolocation not supported'));
                 return;
             }
@@ -138,11 +144,15 @@ const LocationModule = (function() {
 
             navigator.geolocation.getCurrentPosition(
                 (position) => {
+                    if (state.settled) return; // a forced timeout already resolved this attempt
+                    state.settled = true;
                     const { latitude, longitude, accuracy } = position.coords;
                     currentCoords = { lat: latitude, lng: longitude, accuracy: accuracy };
                     resolve(currentCoords);
                 },
                 (error) => {
+                    if (state.settled) return;
+                    state.settled = true;
                     console.warn('GPS error:', error.message);
                     reject(error);
                 },
@@ -153,6 +163,17 @@ const LocationModule = (function() {
                 }
             );
         });
+
+        let timeoutId;
+        const timeoutPromise = new Promise((_, reject) => {
+            timeoutId = setTimeout(() => {
+                if (state.settled) return;
+                state.settled = true;
+                reject(new Error('Location request timed out'));
+            }, 12000);
+        });
+
+        return Promise.race([gpsPromise, timeoutPromise]).finally(() => clearTimeout(timeoutId));
     }
 
     // Update location on map and UI
