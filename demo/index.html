@@ -2445,61 +2445,61 @@ body::before {
     <!-- Login Modal -->
     <div class="modal" id="loginModal">
         <div class="modal-overlay"></div>
-        <div class="modal-content" style="max-width:440px;padding:0;overflow:hidden;border-radius:20px;background:var(--dark-bg);border:1px solid var(--glass-border);">
+        <div class="modal-content login-modal-content" style="max-width:440px;padding:0;border-radius:20px;background:var(--dark-bg);border:1px solid var(--glass-border);">
             <button class="modal-close" onclick="closeModal()" style="top:10px;right:10px;z-index:10;">&times;</button>
             
-            <!-- Header Section with Photos -->
-            <div style="background:linear-gradient(135deg,#1a0000,#2d0a0a);padding:24px 20px 18px;text-align:center;border-bottom:1px solid var(--gold-dim);">
-                <h2 style="font-family:'Noto Serif Tamil',serif;font-size:1.1rem;color:white;margin-bottom:2px;">மக்கள் குறை தீர்வு மேடை</h2>
-                <p style="font-size:0.82rem;color:var(--gold);font-weight:600;margin-bottom:4px;">Citizen Connect Thanjavur</p>
+            <!-- Header Section with Photos (Compact for all devices) -->
+            <div class="login-modal-header">
+                <h2 class="login-modal-title">மக்கள் குறை தீர்வு மேடை</h2>
+                <p class="login-modal-subtitle">Citizen Connect Thanjavur</p>
                 
-                <!-- Dual Photo Card -->
-                <div style="display:flex;align-items:flex-start;justify-content:center;gap:30px;margin-top:18px;">
+                <!-- Dual Photo Card - Compact -->
+                <div class="login-photos-row">
                     <!-- CM Vijay Photo -->
-                    <div style="text-align:center;width:120px;">
-                        <div style="width:80px;height:80px;border-radius:50%;border:3px solid var(--primary-light);overflow:hidden;margin:0 auto;box-shadow:0 4px 20px rgba(139,0,0,0.4);">
-                            <img src="../assets/tvk-vijay-it-wing-tamilaga-vettri-kazhagam.jpg.jpg" alt="CM Vijay" style="width:100%;height:100%;object-fit:cover;" onerror="this.src='vijay.jpg'">
+                    <div class="login-photo-card">
+                        <div class="login-photo-frame cm-frame">
+                            <img src="../assets/tvk-vijay-it-wing-tamilaga-vettri-kazhagam.jpg.jpg" alt="CM Vijay" onerror="this.src='vijay.jpg'">
                         </div>
-                        <p style="font-size:0.62rem;color:#F5D76E;margin-top:8px;font-weight:600;">Chief Minister of Tamil Nadu</p>
-                        <p style="font-size:0.6rem;color:#FFFFFF;font-weight:500;">C. Joseph Vijay</p>
+                        <p class="login-photo-title">Chief Minister of Tamil Nadu</p>
+                        <p class="login-photo-name">C. Joseph Vijay</p>
                     </div>
                     <!-- MLA Photo -->
-                    <div style="text-align:center;width:120px;">
-                        <div style="width:80px;height:80px;border-radius:50%;border:3px solid var(--gold);overflow:hidden;margin:0 auto;background:#2d0a0a;box-shadow:0 4px 20px rgba(212,175,55,0.3);">
-                            <img src="../assets/R.vijaysaravanan.png" alt="MLA R.Vijaysaravanan" style="width:100%;height:100%;object-fit:cover;" onerror="this.src='Vijaysaravanan.jpg'">
+                    <div class="login-photo-card">
+                        <div class="login-photo-frame mla-frame">
+                            <img src="../assets/R.vijaysaravanan.png" alt="MLA R.Vijaysaravanan" onerror="this.src='Vijaysaravanan.jpg'">
                         </div>
-                        <p style="font-size:0.62rem;color:#F5D76E;margin-top:8px;font-weight:600;">MLA - Thanjavur</p>
-                        <p style="font-size:0.6rem;color:#FFFFFF;font-weight:500;">R. Vijaysaravanan</p>
+                        <p class="login-photo-title">MLA - Thanjavur</p>
+                        <p class="login-photo-name">R. Vijaysaravanan</p>
                     </div>
                 </div>
-                <p style="font-size:0.65rem;color:var(--text-muted);margin-top:12px;opacity:0.7;">Tamilaga Vettri Kazhagam | Government of Tamil Nadu</p>
+                <p class="login-modal-org">Tamilaga Vettri Kazhagam | Government of Tamil Nadu</p>
             </div>
 
             <!-- Login Form Section -->
-            <div style="padding:22px 28px 26px;">
-                <div style="text-align:center;margin-bottom:18px;">
-                    <div style="width:44px;height:44px;background:linear-gradient(135deg,var(--primary),var(--primary-light));border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;"><i class="fas fa-mobile-alt" style="color:white;font-size:1.1rem;"></i></div>
-                    <h3 style="font-size:0.95rem;color:white;margin:0;">Mobile OTP Login</h3>
-                    <p style="font-size:0.72rem;color:var(--text-muted);margin-top:3px;">புகார் செய்ய Login செய்யுங்கள்</p>
+            <div class="login-modal-form-section">
+                <div style="text-align:center;margin-bottom:14px;">
+                    <div class="login-icon-circle"><i class="fas fa-mobile-alt" style="color:white;font-size:1rem;"></i></div>
+                    <h3 class="login-form-title">Mobile OTP Login</h3>
+                    <p class="login-form-subtitle">புகார் செய்ய Login செய்யுங்கள்</p>
                 </div>
                 <div class="login-body">
-                    <div class="form-group" style="margin-bottom:14px;">
+                    <div class="form-group" style="margin-bottom:12px;">
                         <label style="font-size:0.75rem;">உங்கள் பெயர் (Name) <span class="required">*</span></label>
                         <div class="input-icon-wrap">
                             <i class="fas fa-user"></i>
                             <input type="text" id="loginName" placeholder="உங்கள் முழு பெயர்">
                         </div>
                     </div>
-                    <div class="form-group" style="margin-bottom:14px;">
+                    <div class="form-group" style="margin-bottom:12px;">
                         <label style="font-size:0.75rem;">Phone Number <span class="required">*</span></label>
                         <div class="phone-input">
                             <span class="country-code">+91</span>
                             <input type="tel" id="loginMobile" placeholder="98765 43210" maxlength="10">
                         </div>
                     </div>
-                    <button class="btn btn-primary btn-full" onclick="sendOTP()" style="background:linear-gradient(135deg,#dc2626,#991b1b);border-radius:10px;padding:14px;font-size:0.88rem;"><i class="fas fa-paper-plane"></i> OTP அனுப்பு / Send OTP</button>
+                    <button class="btn btn-primary btn-full" onclick="sendOTP()" style="background:linear-gradient(135deg,#dc2626,#991b1b);border-radius:10px;padding:12px;font-size:0.88rem;"><i class="fas fa-paper-plane"></i> OTP அனுப்பு / Send OTP</button>
                     <div class="otp-section" id="otpSection" style="display:none;">
-                        <div class="form-group" style="margin-top:16px;">
+                        <div class="form-group" style="margin-top:14px;">
                             <label style="font-size:0.75rem;">SMS-ல் வந்த OTP உள்ளிடுங்கள்</label>
                             <div class="otp-inputs">
                                 <input type="text" maxlength="1" class="otp-input">
@@ -2510,10 +2510,10 @@ body::before {
                                 <input type="text" maxlength="1" class="otp-input">
                             </div>
                         </div>
-                        <button class="btn btn-gold btn-full" onclick="verifyOTP()" style="border-radius:10px;padding:14px;"><i class="fas fa-lock-open"></i> Verify & Login</button>
+                        <button class="btn btn-gold btn-full" onclick="verifyOTP()" style="border-radius:10px;padding:12px;"><i class="fas fa-lock-open"></i> Verify & Login</button>
                     </div>
                 </div>
-                <p style="text-align:center;font-size:0.6rem;color:var(--text-muted);margin-top:16px;opacity:0.6;">© 2026 Citizen Connect | Tamilaga Vettri Kazhagam</p>
+                <p style="text-align:center;font-size:0.6rem;color:var(--text-muted);margin-top:12px;opacity:0.6;">© 2026 Citizen Connect | Tamilaga Vettri Kazhagam</p>
             </div>
         </div>
     </div>
@@ -2808,6 +2808,11 @@ function sendOTP() {
             document.getElementById('otpSection').style.display = 'block';
             const otpLabel = document.querySelector('#otpSection label');
             if (otpLabel) otpLabel.textContent = 'SMS-ல் வந்த OTP உள்ளிடுங்கள்';
+            // Auto-scroll to OTP section so it's visible on all devices
+            setTimeout(() => {
+                const otpEl = document.getElementById('otpSection');
+                if (otpEl) otpEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 200);
             showNotification(`✅ OTP sent to +91 ${mobile.substring(0,5)}xxxxx`, 'success');
             console.log('🔥 Firebase Phone Auth OTP sent successfully');
         })
