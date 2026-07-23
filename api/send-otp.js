@@ -1,4 +1,23 @@
 // Vercel Serverless Function - Send OTP via MSG91
+
+// In-memory rate limit: max 3 send-OTP requests per mobile number per 10 minutes.
+// Persists across warm invocations on the same serverless instance (best-effort, not distributed).
+const RATE_LIMIT_MAX = 3;
+const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
+const sendAttempts = new Map();
+
+function isRateLimited(mobile) {
+    const now = Date.now();
+    const attempts = (sendAttempts.get(mobile) || []).filter(t => now - t < RATE_LIMIT_WINDOW_MS);
+    if (attempts.length >= RATE_LIMIT_MAX) {
+        sendAttempts.set(mobile, attempts);
+        return true;
+    }
+    attempts.push(now);
+    sendAttempts.set(mobile, attempts);
+    return false;
+}
+
 export default async function handler(req, res) {
     // CORS headers
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -18,6 +37,13 @@ export default async function handler(req, res) {
 
         if (!mobile || mobile.length < 10) {
             return res.status(400).json({ error: 'Invalid mobile number' });
+        }
+
+        if (isRateLimited(mobile)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Too many OTP requests. Please wait a few minutes and try again.'
+            });
         }
 
         // MSG91 Send OTP API

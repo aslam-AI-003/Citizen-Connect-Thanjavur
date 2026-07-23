@@ -1,5 +1,11 @@
 // ===== VOICE TO MINISTER - PAPANASAM - FULL SCRIPT =====
 
+// ===== HTML ESCAPING HELPER — prevents stored XSS via unescaped user-controlled fields =====
+function escapeHTML(str) {
+    if (str === null || str === undefined) return '';
+    return String(str).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
 // ===== PAGE NAVIGATION =====
 function navigateTo(page) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -87,7 +93,7 @@ function updateLoginUI() {
         return;
     }
     const displayName = loggedInUser.name.length > 8 ? loggedInUser.name.substring(0, 8) + '..' : loggedInUser.name;
-    loginBtn.innerHTML = `<i class="fas fa-user-circle"></i><span>${displayName} ▾</span>`;
+    loginBtn.innerHTML = `<i class="fas fa-user-circle"></i><span>${escapeHTML(displayName)} ▾</span>`;
     loginBtn.style.background = 'var(--primary)'; loginBtn.style.color = 'white'; loginBtn.style.border = 'none'; loginBtn.style.borderRadius = '8px'; loginBtn.style.padding = '8px 14px';
 }
 
@@ -104,7 +110,7 @@ function toggleProfileDropdown() {
         <div style="background:linear-gradient(135deg,#0d6b3a,#094d2a);padding:16px;color:white;">
             <div style="display:flex;align-items:center;gap:10px;">
                 <div style="width:40px;height:40px;background:rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;">👤</div>
-                <div><h4 style="margin:0;font-size:0.9rem;">${loggedInUser.name}</h4><p style="margin:0;font-size:0.7rem;opacity:0.8;">+91 ${loggedInUser.mobile}</p></div>
+                <div><h4 style="margin:0;font-size:0.9rem;">${escapeHTML(loggedInUser.name)}</h4><p style="margin:0;font-size:0.7rem;opacity:0.8;">+91 ${escapeHTML(loggedInUser.mobile)}</p></div>
             </div>
         </div>
         <div style="padding:8px;">
@@ -205,7 +211,7 @@ function showNotification(message, type = 'info') {
     const colors = { success: '#10b981', error: '#ef4444', info: '#3b82f6' };
     const icons = { success: '✓', error: '✗', info: 'ℹ' };
     notification.style.background = colors[type] || colors.info;
-    notification.innerHTML = `<span style="font-size:1.1rem;">${icons[type] || icons.info}</span> ${message}`;
+    notification.innerHTML = `<span style="font-size:1.1rem;">${icons[type] || icons.info}</span> ${escapeHTML(message)}`;
     document.body.appendChild(notification);
     setTimeout(() => { notification.style.animation = 'slideOut 0.3s ease'; setTimeout(() => notification.remove(), 300); }, 3000);
 }
@@ -336,12 +342,12 @@ function searchComplaint() {
         if (complaint) {
             const displayId = complaint.govId || `TVK/TNJ/2026/${complaint.id.split('-').pop()}`;
             input.value = displayId;
-            let timelineHTML = (complaint.timeline || []).map(item => `<div class="tl-item ${item.state}"><div class="tl-dot"></div><div class="tl-content"><h4>${item.text}</h4><p>${item.time}</p></div></div>`).join('');
-            result.innerHTML = `<div class="track-card"><div class="track-header"><div><h3>Complaint ${displayId}</h3><p>${complaint.title}</p></div><span class="status-badge ${complaint.statusClass}">${complaint.status}</span></div><div class="track-details"><div class="track-detail"><span class="label">வகை:</span><span class="value">${complaint.category}</span></div><div class="track-detail"><span class="label">பகுதி:</span><span class="value">${complaint.area}</span></div><div class="track-detail"><span class="label">ஒதுக்கப்பட்டவர்:</span><span class="value">${complaint.assigned}</span></div><div class="track-detail"><span class="label">பதிவு நாள்:</span><span class="value">${complaint.date}</span></div></div><div class="track-timeline">${timelineHTML}</div></div>`;
+            let timelineHTML = (complaint.timeline || []).map(item => `<div class="tl-item ${escapeHTML(item.state)}"><div class="tl-dot"></div><div class="tl-content"><h4>${escapeHTML(item.text)}</h4><p>${escapeHTML(item.time)}</p></div></div>`).join('');
+            result.innerHTML = `<div class="track-card"><div class="track-header"><div><h3>Complaint ${escapeHTML(displayId)}</h3><p>${escapeHTML(complaint.title)}</p></div><span class="status-badge ${escapeHTML(complaint.statusClass)}">${escapeHTML(complaint.status)}</span></div><div class="track-details"><div class="track-detail"><span class="label">வகை:</span><span class="value">${escapeHTML(complaint.category)}</span></div><div class="track-detail"><span class="label">பகுதி:</span><span class="value">${escapeHTML(complaint.area)}</span></div><div class="track-detail"><span class="label">ஒதுக்கப்பட்டவர்:</span><span class="value">${escapeHTML(complaint.assigned)}</span></div><div class="track-detail"><span class="label">பதிவு நாள்:</span><span class="value">${escapeHTML(complaint.date)}</span></div></div><div class="track-timeline">${timelineHTML}</div></div>`;
             result.style.opacity = '1';
             showNotification('புகார் விவரங்கள் கிடைத்தது!', 'success');
         } else {
-            result.innerHTML = `<div class="track-card" style="text-align:center;padding:40px;"><i class="fas fa-search" style="font-size:2.5rem;color:var(--gray);margin-bottom:15px;"></i><h3 style="color:var(--gray);">புகார் கிடைக்கவில்லை</h3><p style="color:var(--gray);font-size:0.9rem;">ID "${input.value}" க்கான புகார் இல்லை.</p></div>`;
+            result.innerHTML = `<div class="track-card" style="text-align:center;padding:40px;"><i class="fas fa-search" style="font-size:2.5rem;color:var(--gray);margin-bottom:15px;"></i><h3 style="color:var(--gray);">புகார் கிடைக்கவில்லை</h3><p style="color:var(--gray);font-size:0.9rem;">ID "${escapeHTML(input.value)}" க்கான புகார் இல்லை.</p></div>`;
             result.style.opacity = '1';
             showNotification('புகார் கிடைக்கவில்லை', 'error');
         }
@@ -399,7 +405,7 @@ function loadCitizenComplaints() {
         document.getElementById('citizenTotal').textContent = matched.length;
         document.getElementById('citizenPending').textContent = matched.filter(c => c.statusClass !== 'badge-resolved').length;
         document.getElementById('citizenResolved').textContent = matched.filter(c => c.statusClass === 'badge-resolved').length;
-        listSection.innerHTML = matched.map(c => `<div class="complaint-card" style="cursor:pointer;" onclick="navigateTo('track');document.getElementById('trackInput').value='${c.id}';setTimeout(searchComplaint,300);"><div class="complaint-status ${c.statusClass === 'badge-resolved' ? 'status-resolved' : c.statusClass === 'badge-progress' ? 'status-progress' : 'status-new'}"><i class="fas ${c.statusClass === 'badge-resolved' ? 'fa-check' : 'fa-clock'}"></i></div><div class="complaint-info"><h4>${c.title}</h4><p>${c.area} | ${c.date} | <strong>${c.govId || c.id}</strong></p></div><span class="status-badge ${c.statusClass}">${c.status}</span></div>`).join('');
+        listSection.innerHTML = matched.map(c => `<div class="complaint-card" style="cursor:pointer;" onclick="navigateTo('track');document.getElementById('trackInput').value='${escapeHTML(c.id)}';setTimeout(searchComplaint,300);"><div class="complaint-status ${c.statusClass === 'badge-resolved' ? 'status-resolved' : c.statusClass === 'badge-progress' ? 'status-progress' : 'status-new'}"><i class="fas ${c.statusClass === 'badge-resolved' ? 'fa-check' : 'fa-clock'}"></i></div><div class="complaint-info"><h4>${escapeHTML(c.title)}</h4><p>${escapeHTML(c.area)} | ${escapeHTML(c.date)} | <strong>${escapeHTML(c.govId || c.id)}</strong></p></div><span class="status-badge ${escapeHTML(c.statusClass)}">${escapeHTML(c.status)}</span></div>`).join('');
         showNotification(`${matched.length} புகார்கள் கிடைத்தது!`, 'success');
     } else { statsSection.style.display = 'none'; listSection.innerHTML = '<div style="text-align:center;padding:40px;color:var(--gray);"><p>புகார்கள் கிடைக்கவில்லை</p></div>'; }
 }
@@ -411,7 +417,7 @@ function postUpdate() {
     const tag = document.getElementById('updateTag').value, title = document.getElementById('updateTitle').value, content = document.getElementById('updateContent').value;
     if (!title || !content) { showNotification('தலைப்பு மற்றும் விளக்கம் தேவை!', 'error'); return; }
     const ug = document.querySelector('.updates-grid');
-    if (ug) { const nu = document.createElement('div'); nu.className = 'update-card'; nu.innerHTML = `<div class="update-date"><span class="day">${new Date().getDate()}</span><span class="month">${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][new Date().getMonth()]}</span></div><div class="update-content"><span class="update-tag">${tag}</span><h4>${title}</h4><p>${content}</p></div>`; ug.insertBefore(nu, ug.firstChild); }
+    if (ug) { const nu = document.createElement('div'); nu.className = 'update-card'; nu.innerHTML = `<div class="update-date"><span class="day">${new Date().getDate()}</span><span class="month">${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][new Date().getMonth()]}</span></div><div class="update-content"><span class="update-tag">${escapeHTML(tag)}</span><h4>${escapeHTML(title)}</h4><p>${escapeHTML(content)}</p></div>`; ug.insertBefore(nu, ug.firstChild); }
     closeUpdateModal(); showNotification('📢 Update Post செய்யப்பட்டது!', 'success');
     document.getElementById('updateTitle').value = ''; document.getElementById('updateContent').value = '';
 }
@@ -427,7 +433,7 @@ if (uploadArea) {
                 reader.onload = (ev) => { const p = document.createElement('div'); p.style.cssText = 'width:80px;height:80px;border-radius:8px;overflow:hidden;position:relative;margin-top:10px;'; p.innerHTML = `<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover;"><button onclick="this.parentElement.remove()" style="position:absolute;top:2px;right:2px;width:20px;height:20px;border-radius:50%;background:red;color:white;border:none;cursor:pointer;">&times;</button>`; uploadPreview.appendChild(p); };
                 reader.readAsDataURL(file);
             } else {
-                uploadPreview.innerHTML = `<p style="margin-top:10px;font-size:0.8rem;color:var(--primary);">📎 ${file.name}</p>`;
+                uploadPreview.innerHTML = `<p style="margin-top:10px;font-size:0.8rem;color:var(--primary);">📎 ${escapeHTML(file.name)}</p>`;
             }
         });
         showNotification('File uploaded!', 'success');

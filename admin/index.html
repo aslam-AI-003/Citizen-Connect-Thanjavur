@@ -559,6 +559,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
     <script src="firebase-db.js"></script>
+    <script src="escape-html.js"></script>
 
     <script>
         // ===== COMPLAINTS DATA (loaded from Firebase - same as public site) =====
@@ -632,15 +633,15 @@
                     const statusLabel = c.status || 'புதியது';
                     const statusCls = c.statusClass || 'badge-new';
                     return `<tr>
-                        <td data-label="ID"><code style="font-size:0.7rem;">${displayId}</code></td>
-                        <td data-label="Citizen">${c.citizenName || '-'}</td>
-                        <td data-label="Mobile">${c.mobileNumber ? c.mobileNumber.substring(0,5) + 'xxxxx' : '-'}</td>
-                        <td data-label="Complaint" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${c.title || '-'}</td>
-                        <td data-label="Area">${c.area || '-'}</td>
-                        <td data-label="Category">${c.category || '-'}</td>
-                        <td data-label="Status"><span class="badge ${statusCls}">${statusLabel}</span></td>
-                        <td data-label="Assigned">${c.assigned || '-'}</td>
-                        <td data-label="Date">${c.date || '-'}</td>
+                        <td data-label="ID"><code style="font-size:0.7rem;">${escapeHTML(displayId)}</code></td>
+                        <td data-label="Citizen">${escapeHTML(c.citizenName || '-')}</td>
+                        <td data-label="Mobile">${c.mobileNumber ? escapeHTML(c.mobileNumber.substring(0,5)) + 'xxxxx' : '-'}</td>
+                        <td data-label="Complaint" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHTML(c.title || '-')}</td>
+                        <td data-label="Area">${escapeHTML(c.area || '-')}</td>
+                        <td data-label="Category">${escapeHTML(c.category || '-')}</td>
+                        <td data-label="Status"><span class="badge ${statusCls}">${escapeHTML(statusLabel)}</span></td>
+                        <td data-label="Assigned">${escapeHTML(c.assigned || '-')}</td>
+                        <td data-label="Date">${escapeHTML(c.date || '-')}</td>
                         <td data-label="Actions"><button onclick="viewDetail('${c.id}')" style="background:var(--admin-primary);color:white;border:none;border-radius:6px;padding:6px 12px;cursor:pointer;font-size:0.72rem;font-weight:600;"><i class="fas fa-eye"></i> View</button></td>
                     </tr>`;
                 }).join('');
@@ -673,13 +674,13 @@
             });
             let volOptions = '';
             if (areaVolunteers.length > 0) {
-                volOptions += `<optgroup label="📍 ${c.area} Area Volunteers">`;
-                volOptions += areaVolunteers.map(v => `<option value="${v.name} (${v.role})" ${(c.assigned || '').includes(v.name.split(' ').pop()) ? 'selected' : ''}>${v.name} - ${v.ward} (${v.role})</option>`).join('');
+                volOptions += `<optgroup label="📍 ${escapeHTML(c.area)} Area Volunteers">`;
+                volOptions += areaVolunteers.map(v => `<option value="${escapeHTML(v.name)} (${escapeHTML(v.role)})" ${(c.assigned || '').includes(v.name.split(' ').pop()) ? 'selected' : ''}>${escapeHTML(v.name)} - ${escapeHTML(v.ward)} (${escapeHTML(v.role)})</option>`).join('');
                 volOptions += `</optgroup>`;
             }
             if (otherVolunteers.length > 0) {
                 volOptions += `<optgroup label="🌐 Other Area Volunteers">`;
-                volOptions += otherVolunteers.map(v => `<option value="${v.name} (${v.role})">${v.name} - ${v.area} (${v.role})</option>`).join('');
+                volOptions += otherVolunteers.map(v => `<option value="${escapeHTML(v.name)} (${escapeHTML(v.role)})">${escapeHTML(v.name)} - ${escapeHTML(v.area)} (${escapeHTML(v.role)})</option>`).join('');
                 volOptions += `</optgroup>`;
             }
 
@@ -703,19 +704,19 @@
                         <button onclick="document.getElementById('complaintDetailModal').remove()" style="background:none;border:none;font-size:1.3rem;cursor:pointer;color:#999;">&times;</button>
                     </div>
                     <div style="background:#fef2f2;padding:12px;border-radius:10px;margin-bottom:15px;text-align:center;">
-                        <code style="font-size:0.9rem;font-weight:700;color:var(--admin-primary);">${displayId}</code>
-                        <span class="badge ${statusCls}" style="margin-left:10px;">${statusLabel}</span>
+                        <code style="font-size:0.9rem;font-weight:700;color:var(--admin-primary);">${escapeHTML(displayId)}</code>
+                        <span class="badge ${statusCls}" style="margin-left:10px;">${escapeHTML(statusLabel)}</span>
                     </div>
-                    <div class="detail-row"><span class="dlabel">📝 Complaint</span><span class="dvalue">${c.title || '-'}</span></div>
-                    <div class="detail-row"><span class="dlabel">📍 Area</span><span class="dvalue">${c.area || '-'}</span></div>
-                    <div class="detail-row"><span class="dlabel">🏷️ Category</span><span class="dvalue">${c.category || '-'}</span></div>
-                    <div class="detail-row"><span class="dlabel">👤 Citizen</span><span class="dvalue">${c.citizenName || '-'}</span></div>
-                    <div class="detail-row"><span class="dlabel">📱 Mobile</span><span class="dvalue">${c.mobileNumber || '-'}</span></div>
-                    <div class="detail-row"><span class="dlabel">🔧 Assigned To</span><span class="dvalue">${c.assigned || 'Not assigned'}</span></div>
-                    <div class="detail-row"><span class="dlabel">📅 Date</span><span class="dvalue">${c.date || '-'}</span></div>
-                    ${c.location && c.location !== 'இடம் குறிப்பிடப்படவில்லை' ? `<div class="detail-row"><span class="dlabel">📌 GPS Location</span><span class="dvalue" style="color:#3b82f6;font-weight:600;">${c.location}</span></div>` : ''}
-                    ${c.address ? `<div class="detail-row"><span class="dlabel">🏠 Street/Address</span><span class="dvalue">${c.address}</span></div>` : ''}
-                    ${c.description ? `<div class="detail-row"><span class="dlabel">📄 Description</span><span class="dvalue" style="white-space:pre-wrap;font-size:0.75rem;">${c.description}</span></div>` : ''}
+                    <div class="detail-row"><span class="dlabel">📝 Complaint</span><span class="dvalue">${escapeHTML(c.title || '-')}</span></div>
+                    <div class="detail-row"><span class="dlabel">📍 Area</span><span class="dvalue">${escapeHTML(c.area || '-')}</span></div>
+                    <div class="detail-row"><span class="dlabel">🏷️ Category</span><span class="dvalue">${escapeHTML(c.category || '-')}</span></div>
+                    <div class="detail-row"><span class="dlabel">👤 Citizen</span><span class="dvalue">${escapeHTML(c.citizenName || '-')}</span></div>
+                    <div class="detail-row"><span class="dlabel">📱 Mobile</span><span class="dvalue">${escapeHTML(c.mobileNumber || '-')}</span></div>
+                    <div class="detail-row"><span class="dlabel">🔧 Assigned To</span><span class="dvalue">${escapeHTML(c.assigned || 'Not assigned')}</span></div>
+                    <div class="detail-row"><span class="dlabel">📅 Date</span><span class="dvalue">${escapeHTML(c.date || '-')}</span></div>
+                    ${c.location && c.location !== 'இடம் குறிப்பிடப்படவில்லை' ? `<div class="detail-row"><span class="dlabel">📌 GPS Location</span><span class="dvalue" style="color:#3b82f6;font-weight:600;">${escapeHTML(c.location)}</span></div>` : ''}
+                    ${c.address ? `<div class="detail-row"><span class="dlabel">🏠 Street/Address</span><span class="dvalue">${escapeHTML(c.address)}</span></div>` : ''}
+                    ${c.description ? `<div class="detail-row"><span class="dlabel">📄 Description</span><span class="dvalue" style="white-space:pre-wrap;font-size:0.75rem;">${escapeHTML(c.description)}</span></div>` : ''}
                     
                     ${c.hasVoiceNote ? `
                     <div style="margin-top:12px;padding:12px;background:#ecfdf5;border:1px solid #a7f3d0;border-radius:10px;">
@@ -934,7 +935,7 @@
                 document.querySelectorAll('.admin-section').forEach(s => s.style.display = 'none');
                 const sec = document.getElementById('sec-' + link.dataset.section);
                 if (sec) sec.style.display = 'block';
-                document.querySelector('.admin-topbar h2').innerHTML = `<i class="${link.querySelector('i').className}"></i> ${link.textContent.trim()}`;
+                document.querySelector('.admin-topbar h2').innerHTML = `<i class="${link.querySelector('i').className}"></i> ${escapeHTML(link.textContent.trim())}`;
                 if (link.dataset.section === 'complaints') loadFromFirebase();
                 if (link.dataset.section === 'volunteers') renderVolunteers();
                 if (link.dataset.section === 'dashboard') updateDashboardLive();
@@ -1023,7 +1024,7 @@
             if (!currentStaffUser) return;
             const topbarUser = document.getElementById('staffUserDisplay');
             if (topbarUser) {
-                topbarUser.innerHTML = `👤 <strong>${currentStaffUser.name}</strong> <span style="font-size:0.65rem;background:#d1fae5;color:#059669;padding:2px 6px;border-radius:4px;margin-left:5px;">${currentStaffUser.role}</span>`;
+                topbarUser.innerHTML = `👤 <strong>${escapeHTML(currentStaffUser.name)}</strong> <span style="font-size:0.65rem;background:#d1fae5;color:#059669;padding:2px 6px;border-radius:4px;margin-left:5px;">${escapeHTML(currentStaffUser.role)}</span>`;
             }
             // Update mobile user bar
             const initials = (currentStaffUser.name || 'AU').split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
@@ -1093,7 +1094,7 @@
             // Update UI
             const newItem = document.createElement('div');
             newItem.style.cssText = 'padding:12px;border:1px solid #f3f4f6;border-radius:8px;margin-bottom:10px;';
-            newItem.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;"><span style="font-size:0.7rem;background:#fef3c7;color:#d97706;padding:2px 8px;border-radius:4px;">${tag}</span><span style="font-size:0.7rem;color:#999;">${dateStr}</span></div><h4 style="font-size:0.85rem;margin:5px 0;">${title}</h4><p style="font-size:0.75rem;color:#666;">${content}</p>`;
+            newItem.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;"><span style="font-size:0.7rem;background:#fef3c7;color:#d97706;padding:2px 8px;border-radius:4px;">${escapeHTML(tag)}</span><span style="font-size:0.7rem;color:#999;">${escapeHTML(dateStr)}</span></div><h4 style="font-size:0.85rem;margin:5px 0;">${escapeHTML(title)}</h4><p style="font-size:0.75rem;color:#666;">${escapeHTML(content)}</p>`;
             const list = document.getElementById('adminUpdatesList');
             list.insertBefore(newItem, list.firstChild);
             document.getElementById('adminUpdateTitle').value = '';
@@ -1128,8 +1129,8 @@
             container.innerHTML = volunteersData.map(vol => {
                 const resolvedCount = vol.resolved.length;
                 return `<div class="vol-card" style="cursor:pointer;" onclick="showVolunteerResolved(${vol.id})">
-                    <div class="vol-avatar">${vol.initials}</div>
-                    <div class="vol-info"><h4>${vol.name}</h4><p>${vol.ward} - ${vol.area} | ${vol.role}</p></div>
+                    <div class="vol-avatar">${escapeHTML(vol.initials)}</div>
+                    <div class="vol-info"><h4>${escapeHTML(vol.name)}</h4><p>${escapeHTML(vol.ward)} - ${escapeHTML(vol.area)} | ${escapeHTML(vol.role)}</p></div>
                     <div class="vol-stats"><div class="num">${resolvedCount}</div><div class="lbl">Resolved</div></div>
                 </div>`;
             }).join('');
@@ -1161,11 +1162,11 @@
                     const resolveBtn = isResolved ? '' : `<button onclick="markResolvedFromVolunteer('${c.id}')" style="margin-top:6px;padding:5px 10px;background:#059669;color:white;border:none;border-radius:6px;font-size:0.7rem;cursor:pointer;font-weight:600;"><i class="fas fa-check"></i> Mark Resolved</button>`;
                     return `<div style="padding:10px;border:1px solid ${isResolved ? '#bbf7d0' : '#f3f4f6'};border-radius:8px;margin-bottom:8px;background:${isResolved ? '#f0fdf4' : 'white'};">
                         <div style="display:flex;justify-content:space-between;align-items:center;">
-                            <code style="font-size:0.7rem;color:var(--admin-primary);">${displayId}</code>
-                            <span class="badge ${c.statusClass || 'badge-new'}" style="font-size:0.65rem;">${c.status || 'புதியது'}</span>
+                            <code style="font-size:0.7rem;color:var(--admin-primary);">${escapeHTML(displayId)}</code>
+                            <span class="badge ${c.statusClass || 'badge-new'}" style="font-size:0.65rem;">${escapeHTML(c.status || 'புதியது')}</span>
                         </div>
-                        <p style="font-size:0.8rem;font-weight:600;margin:5px 0 2px;">${c.title || '-'}</p>
-                        <p style="font-size:0.7rem;color:#666;">${c.area} | ${c.category} | ${c.date}</p>
+                        <p style="font-size:0.8rem;font-weight:600;margin:5px 0 2px;">${escapeHTML(c.title || '-')}</p>
+                        <p style="font-size:0.7rem;color:#666;">${escapeHTML(c.area)} | ${escapeHTML(c.category)} | ${escapeHTML(c.date)}</p>
                         ${resolveBtn}
                     </div>`;
                 }).join('');
@@ -1176,7 +1177,7 @@
             modal.innerHTML = `
                 <div class="detail-modal-box">
                     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;">
-                        <h3 style="margin:0;"><i class="fas fa-user"></i> ${vol.name}</h3>
+                        <h3 style="margin:0;"><i class="fas fa-user"></i> ${escapeHTML(vol.name)}</h3>
                         <button onclick="document.getElementById('complaintDetailModal').remove()" style="background:none;border:none;font-size:1.3rem;cursor:pointer;color:#999;">&times;</button>
                     </div>
                     <div style="background:#fef2f2;padding:10px;border-radius:8px;margin-bottom:15px;display:flex;gap:15px;justify-content:center;">
@@ -1184,7 +1185,7 @@
                         <div style="text-align:center;"><span style="font-size:1.3rem;font-weight:800;color:#059669;">${assigned.filter(c => c.statusClass === 'badge-resolved').length}</span><p style="font-size:0.65rem;color:#666;">Resolved</p></div>
                         <div style="text-align:center;"><span style="font-size:1.3rem;font-weight:800;color:#d97706;">${assigned.filter(c => c.statusClass !== 'badge-resolved').length}</span><p style="font-size:0.65rem;color:#666;">Pending</p></div>
                     </div>
-                    <p style="font-size:0.75rem;color:#666;margin-bottom:10px;">${vol.ward} - ${vol.area} | ${vol.role}</p>
+                    <p style="font-size:0.75rem;color:#666;margin-bottom:10px;">${escapeHTML(vol.ward)} - ${escapeHTML(vol.area)} | ${escapeHTML(vol.role)}</p>
                     <h4 style="font-size:0.85rem;margin-bottom:10px;">📋 Assigned Complaints:</h4>
                     ${complaintsHTML}
                     <button onclick="document.getElementById('complaintDetailModal').remove()" style="width:100%;margin-top:10px;padding:10px;background:#f3f4f6;border:none;border-radius:8px;cursor:pointer;font-size:0.8rem;">Close</button>
@@ -1290,7 +1291,7 @@
                 areaContainer.innerHTML = sortedAreas.map((item, i) => {
                     const pct = Math.round((item[1] / maxArea) * 100);
                     const color = areaColors[i % areaColors.length];
-                    return `<div class="chart-item"><span class="label">${item[0]}</span><div class="bar"><div class="bar-fill" style="width:${pct}%;background:${color};">${item[1]}</div></div></div>`;
+                    return `<div class="chart-item"><span class="label">${escapeHTML(item[0])}</span><div class="bar"><div class="bar-fill" style="width:${pct}%;background:${color};">${item[1]}</div></div></div>`;
                 }).join('') || '<p style="color:#999;font-size:0.8rem;">No data</p>';
             }
 
@@ -1305,7 +1306,7 @@
                 catContainer.innerHTML = sortedCats.map((item, i) => {
                     const pct = Math.round((item[1] / maxCat) * 100);
                     const color = catColors[i % catColors.length];
-                    return `<div class="chart-item"><span class="label">${item[0]}</span><div class="bar"><div class="bar-fill" style="width:${pct}%;background:${color};">${item[1]}</div></div></div>`;
+                    return `<div class="chart-item"><span class="label">${escapeHTML(item[0])}</span><div class="bar"><div class="bar-fill" style="width:${pct}%;background:${color};">${item[1]}</div></div></div>`;
                 }).join('') || '<p style="color:#999;font-size:0.8rem;">No data</p>';
             }
 
@@ -1319,7 +1320,7 @@
             if (dashBody) {
                 dashBody.innerHTML = sorted.map(c => {
                     const displayId = c.govId || `TVK/TNJ/2026/${(c.id || '').split('-').pop()}`;
-                    return `<tr><td data-label="ID"><code style="font-size:0.65rem;">${displayId}</code></td><td data-label="Citizen">${c.citizenName || '-'}</td><td data-label="Complaint" style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${c.title || '-'}</td><td data-label="Area">${c.area || '-'}</td><td data-label="Category">${c.category || '-'}</td><td data-label="Status"><span class="badge ${c.statusClass || 'badge-new'}">${c.status || 'புதியது'}</span></td><td data-label="Assigned">${c.assigned || '-'}</td><td data-label="Date">${c.date || '-'}</td></tr>`;
+                    return `<tr><td data-label="ID"><code style="font-size:0.65rem;">${escapeHTML(displayId)}</code></td><td data-label="Citizen">${escapeHTML(c.citizenName || '-')}</td><td data-label="Complaint" style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHTML(c.title || '-')}</td><td data-label="Area">${escapeHTML(c.area || '-')}</td><td data-label="Category">${escapeHTML(c.category || '-')}</td><td data-label="Status"><span class="badge ${c.statusClass || 'badge-new'}">${escapeHTML(c.status || 'புதியது')}</span></td><td data-label="Assigned">${escapeHTML(c.assigned || '-')}</td><td data-label="Date">${escapeHTML(c.date || '-')}</td></tr>`;
                 }).join('');
             }
         }
