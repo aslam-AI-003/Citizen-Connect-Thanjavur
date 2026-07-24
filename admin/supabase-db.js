@@ -2,7 +2,7 @@
 // Production Database + Storage + Auth
 
 const SUPABASE_URL = 'https://utxghpplgjoquqrrhqom.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV0eGdocHBsZ2pvcXVxcnJocW9tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQxOTAxMDUsImV4cCI6MjA5OTc2NjEwNX0.d9SUs-FqIHOohiBr6yCPCZPfzOEkUYJ5ciMwf7VaKaI';
+const SUPABASE_ANON_KEY = 'sb_publishable_nJz2wczIJTRJ1caLqoVg7g_pYxziBhC';
 
 // Initialize Supabase Client
 let supabaseClient = null;
