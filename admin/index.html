@@ -251,7 +251,6 @@
                 <input type="text" id="loginUsername" placeholder="👤 Username" autocomplete="username">
                 <input type="password" id="loginPassword" placeholder="🔑 Password" autocomplete="current-password">
                 <button class="btn-login" onclick="staffLogin()"><i class="fas fa-lock-open"></i> Login</button>
-                <p style="font-size:0.7rem;color:#999;margin-top:15px;">Demo: <code>admin</code> / <code>admin123</code></p>
                 <div style="margin-top:18px;padding-top:15px;border-top:1px solid #e5e7eb;">
                     <p style="font-size:0.8rem;color:#374151;margin-bottom:8px;">New staff member?</p>
                     <button onclick="showRegisterView()" style="background:none;border:2px solid var(--admin-primary);color:var(--admin-primary);width:100%;padding:10px;border-radius:10px;font-size:0.85rem;font-weight:600;cursor:pointer;"><i class="fas fa-user-plus"></i> Register Here</button>
@@ -284,7 +283,7 @@
                 <div style="border-top:1px solid #e5e7eb;padding-top:12px;margin-top:5px;">
                     <p style="font-size:0.75rem;color:#666;margin-bottom:10px;">🔑 Create Login Credentials</p>
                     <input type="text" id="regUsername" placeholder="Username (e.g., staff_aslam)" style="margin-bottom:10px;" autocomplete="off">
-                    <input type="password" id="regPassword" placeholder="Password (min 4 chars)" style="margin-bottom:10px;">
+                    <input type="password" id="regPassword" placeholder="Password (min 8 chars, letters + numbers)" style="margin-bottom:10px;">
                     <input type="password" id="regConfirmPassword" placeholder="Confirm Password" style="margin-bottom:12px;">
                 </div>
                 <button class="btn-login" onclick="staffRegister()"><i class="fas fa-user-plus"></i> Register & Create Account</button>
@@ -327,7 +326,7 @@
                 <button class="mobile-menu-btn" onclick="toggleMobileSidebar()"><i class="fas fa-bars"></i></button>
                 <h2><i class="fas fa-tachometer-alt"></i> MLA Dashboard</h2>
                 <div class="topbar-right">
-                    <div class="notif-bell" onclick="alert('3 new notifications')"><i class="fas fa-bell"></i><span class="badge">3</span></div>
+                    <div class="notif-bell" onclick="goToNotifications()"><i class="fas fa-bell"></i><span class="badge hidden" id="notifBellBadge">0</span></div>
                     <span id="staffUserDisplay" class="desktop-user" style="font-size:0.8rem;color:#666;">👤 Staff User</span>
                 </div>
             </div>
@@ -406,13 +405,6 @@
                             </select>
                             <select id="filterArea" onchange="renderComplaints()" style="padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:0.8rem;">
                                 <option value="all">All Areas</option>
-                                <option value="Thanjavur Fort Area">Thanjavur Fort Area</option>
-                                <option value="Gandhi Nagar">Gandhi Nagar</option>
-                                <option value="New Bus Stand Area">New Bus Stand Area</option>
-                                <option value="Punnainallur">Punnainallur</option>
-                                <option value="Anna Nagar">Anna Nagar</option>
-                                <option value="Karanthai">Karanthai</option>
-                                <option value="East Main Street">East Main Street</option>
                             </select>
                             <button class="btn-login" onclick="loadFromFirebase()" style="padding:8px 16px;font-size:0.8rem;border-radius:8px;">
                                 <i class="fas fa-sync"></i> Refresh
@@ -444,10 +436,12 @@
                         <h3><i class="fas fa-user-plus"></i> Add New Volunteer</h3>
                         <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;">
                             <div style="flex:1;min-width:150px;"><label style="font-size:0.7rem;font-weight:600;display:block;margin-bottom:4px;">Name</label><input type="text" id="newVolName" placeholder="Volunteer Name" style="width:100%;padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:0.8rem;box-sizing:border-box;"></div>
-                            <div style="flex:1;min-width:120px;"><label style="font-size:0.7rem;font-weight:600;display:block;margin-bottom:4px;">Area</label><select id="newVolArea" style="width:100%;padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:0.8rem;"><option>Thanjavur Fort Area</option><option>Gandhi Nagar</option><option>New Bus Stand Area</option><option>Punnainallur</option><option>Anna Nagar</option><option>Karanthai</option><option>East Main Street</option></select></div>
+                            <div style="flex:1;min-width:140px;"><label style="font-size:0.7rem;font-weight:600;display:block;margin-bottom:4px;">Mobile Number</label><input type="tel" id="newVolMobile" placeholder="10-digit mobile" maxlength="10" inputmode="numeric" style="width:100%;padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:0.8rem;box-sizing:border-box;"></div>
+                            <div style="flex:1;min-width:140px;"><label style="font-size:0.7rem;font-weight:600;display:block;margin-bottom:4px;">TVK Member ID</label><input type="text" id="newVolMemberId" placeholder="TVK Member ID" style="width:100%;padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:0.8rem;box-sizing:border-box;"></div>
+                            <div style="flex:1;min-width:120px;"><label style="font-size:0.7rem;font-weight:600;display:block;margin-bottom:4px;">Area</label><select id="newVolArea" style="width:100%;padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:0.8rem;"><option value="">-- Select Area --</option></select></div>
                             <div style="flex:0.5;min-width:80px;"><label style="font-size:0.7rem;font-weight:600;display:block;margin-bottom:4px;">Ward</label><input type="text" id="newVolWard" placeholder="Ward 1" style="width:100%;padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:0.8rem;box-sizing:border-box;"></div>
                             <div style="flex:0.5;min-width:100px;"><label style="font-size:0.7rem;font-weight:600;display:block;margin-bottom:4px;">Role</label><select id="newVolRole" style="width:100%;padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:0.8rem;"><option>Coordinator</option><option>Volunteer</option></select></div>
-                            <button onclick="addNewVolunteer()" style="padding:8px 16px;background:linear-gradient(135deg,var(--admin-primary),var(--admin-primary-dark));color:white;border:none;border-radius:8px;font-size:0.8rem;cursor:pointer;font-weight:600;"><i class="fas fa-plus"></i> Add</button>
+                            <button onclick="addNewVolunteer()" style="padding:8px 16px;background:linear-gradient(135deg,var(--admin-primary),var(--admin-primary-dark));color:white;border:none;border-radius:8px;font-size:0.8rem;cursor:pointer;font-weight:600;white-space:nowrap;"><i class="fas fa-plus"></i> Add</button>
                         </div>
                     </div>
                     <!-- Volunteer List -->
@@ -521,29 +515,13 @@
                 <!-- SECTION: Notifications -->
                 <div class="admin-section" id="sec-notifications" style="display:none;">
                     <div class="admin-card full-width" style="margin-bottom:20px;">
-                        <h3><i class="fas fa-bell"></i> Recent Notifications</h3>
-                        <div id="notificationsList">
-                            <div style="display:flex;align-items:start;gap:12px;padding:14px;border-left:3px solid var(--admin-primary);background:#fef2f2;border-radius:0 8px 8px 0;margin-bottom:10px;">
-                                <div style="width:36px;height:36px;background:#d1fae5;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;">🚨</div>
-                                <div style="flex:1;"><h4 style="font-size:0.85rem;margin:0 0 3px;">New Complaint Received</h4><p style="font-size:0.75rem;color:#666;margin:0;">குடிநீர் வரவில்லை - Punnainallur | ID: TVK/TNJ/2026/00125</p><span style="font-size:0.65rem;color:#999;">2 mins ago</span></div>
-                            </div>
-                            <div style="display:flex;align-items:start;gap:12px;padding:14px;border-left:3px solid #2563eb;background:#eff6ff;border-radius:0 8px 8px 0;margin-bottom:10px;">
-                                <div style="width:36px;height:36px;background:#dbeafe;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;">👤</div>
-                                <div style="flex:1;"><h4 style="font-size:0.85rem;margin:0 0 3px;">Volunteer Assigned</h4><p style="font-size:0.75rem;color:#666;margin:0;">Mr. Murugan assigned to Complaint #00123 - Gandhi Nagar</p><span style="font-size:0.65rem;color:#999;">15 mins ago</span></div>
-                            </div>
-                            <div style="display:flex;align-items:start;gap:12px;padding:14px;border-left:3px solid #059669;background:#ecfdf5;border-radius:0 8px 8px 0;margin-bottom:10px;">
-                                <div style="width:36px;height:36px;background:#d1fae5;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;">✅</div>
-                                <div style="flex:1;"><h4 style="font-size:0.85rem;margin:0 0 3px;">Complaint Resolved</h4><p style="font-size:0.75rem;color:#666;margin:0;">Drainage overflow - New Bus Stand Area Bus Stand marked as resolved</p><span style="font-size:0.65rem;color:#999;">1 hour ago</span></div>
-                            </div>
-                            <div style="display:flex;align-items:start;gap:12px;padding:14px;border-left:3px solid #f59e0b;background:#fffbeb;border-radius:0 8px 8px 0;margin-bottom:10px;">
-                                <div style="width:36px;height:36px;background:#fef3c7;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;">⚠️</div>
-                                <div style="flex:1;"><h4 style="font-size:0.85rem;margin:0 0 3px;">Escalation Alert</h4><p style="font-size:0.75rem;color:#666;margin:0;">Complaint #00120 pending > 48hrs - Auto-escalated to Minister</p><span style="font-size:0.65rem;color:#999;">3 hours ago</span></div>
-                            </div>
-                            <div style="display:flex;align-items:start;gap:12px;padding:14px;border-left:3px solid #7c3aed;background:#f5f3ff;border-radius:0 8px 8px 0;margin-bottom:10px;">
-                                <div style="width:36px;height:36px;background:#ede9fe;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;">⭐</div>
-                                <div style="flex:1;"><h4 style="font-size:0.85rem;margin:0 0 3px;">Citizen Feedback</h4><p style="font-size:0.75rem;color:#666;margin:0;">5/5 ⭐ Rating received for Complaint #00122 - "மிக அருமை!"</p><span style="font-size:0.65rem;color:#999;">5 hours ago</span></div>
-                            </div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+                            <h3 style="margin:0;"><i class="fas fa-bell"></i> Recent Notifications</h3>
+                            <button onclick="markAllNotificationsReadUI()" style="background:none;border:1px solid #e5e7eb;color:#666;border-radius:6px;padding:6px 12px;font-size:0.72rem;cursor:pointer;">
+                                <i class="fas fa-check-double"></i> Mark all read
+                            </button>
                         </div>
+                        <div id="notificationsList"><p style="text-align:center;color:#999;padding:30px;">Loading notifications...</p></div>
                     </div>
                 </div>
 
@@ -565,6 +543,41 @@
         // ===== COMPLAINTS DATA (loaded from Firebase - same as public site) =====
         let complaintsDB = {};
 
+        // ===== DYNAMIC AREA LIST =====
+        // Fallback defaults shown before any complaint data has loaded yet.
+        // Once complaintsDB has data, the real area list is built from every
+        // distinct area actually seen in complaints — so new areas (e.g.
+        // "Papanasam Town", "ward4-street1") show up automatically instead
+        // of needing this list hand-edited every time citizens report from
+        // a new area.
+        const DEFAULT_AREAS = ['Thanjavur Fort Area', 'Gandhi Nagar', 'New Bus Stand Area', 'Punnainallur', 'Anna Nagar', 'Karanthai', 'East Main Street'];
+
+        function getKnownAreas() {
+            const fromComplaints = Object.values(complaintsDB).map(c => c.area).filter(Boolean);
+            const merged = new Set([...DEFAULT_AREAS, ...fromComplaints]);
+            return Array.from(merged).sort((a, b) => a.localeCompare(b));
+        }
+
+        function updateAreaDropdowns() {
+            const areas = getKnownAreas();
+
+            const filterArea = document.getElementById('filterArea');
+            if (filterArea) {
+                const prevValue = filterArea.value;
+                filterArea.innerHTML = '<option value="all">All Areas</option>' +
+                    areas.map(a => `<option value="${escapeHTML(a)}">${escapeHTML(a)}</option>`).join('');
+                if (areas.includes(prevValue) || prevValue === 'all') filterArea.value = prevValue;
+            }
+
+            const volArea = document.getElementById('newVolArea');
+            if (volArea) {
+                const prevValue = volArea.value;
+                volArea.innerHTML = '<option value="">-- Select Area --</option>' +
+                    areas.map(a => `<option value="${escapeHTML(a)}">${escapeHTML(a)}</option>`).join('');
+                if (areas.includes(prevValue)) volArea.value = prevValue;
+            }
+        }
+
         // ===== LOAD FROM FIREBASE =====
         async function loadFromFirebase() {
             try {
@@ -585,6 +598,45 @@
         }
 
         // ===== REAL-TIME LISTENER =====
+        // Complaints currently live in Firebase (not Supabase), so this
+        // listener also detects new/escalated complaints and writes a
+        // notification into Supabase's `notifications` table itself — see
+        // detectAndNotifyComplaintChanges() below and
+        // supabase-notifications-firebase-source.sql for why.
+        let lastSeenComplaintsSnapshot = null;
+
+        function detectAndNotifyComplaintChanges(updatedComplaints) {
+            if (!window.CitizenConnect_DB || !CitizenConnect_DB.isConnected()) return;
+            const previous = lastSeenComplaintsSnapshot;
+            lastSeenComplaintsSnapshot = updatedComplaints;
+            if (!previous) return; // first load — don't fire notifications for existing history
+
+            Object.keys(updatedComplaints).forEach(async (id) => {
+                const c = updatedComplaints[id];
+                const prevC = previous[id];
+
+                if (!prevC) {
+                    // Genuinely new complaint (wasn't in the previous snapshot at all)
+                    const created = await CitizenConnect_DB.createNotificationIfNew(
+                        'new_complaint',
+                        'New Complaint Received',
+                        `${c.title || 'New complaint'} — ${c.area || 'Area not specified'} | ID: ${c.govId || c.id}`,
+                        c.id
+                    );
+                    if (created) loadNotifications();
+                } else if (prevC.statusClass !== 'badge-escalated' && c.statusClass === 'badge-escalated') {
+                    // Existing complaint that just became escalated
+                    const created = await CitizenConnect_DB.createNotificationIfNew(
+                        'escalated',
+                        'Escalation Alert',
+                        `Complaint ${c.govId || c.id} escalated — needs urgent attention`,
+                        c.id
+                    );
+                    if (created) loadNotifications();
+                }
+            });
+        }
+
         function setupRealtimeListener() {
             try {
                 if (window.VoiceToMinister_DB) {
@@ -594,6 +646,7 @@
                         updateDashboardLive();
                         document.getElementById('lastRefresh').textContent = 'Live updated: ' + new Date().toLocaleTimeString();
                         console.log('🔄 Admin: Real-time update -', Object.keys(updatedComplaints).length, 'complaints');
+                        detectAndNotifyComplaintChanges(updatedComplaints);
                     });
                 } else if (typeof db !== 'undefined') {
                     db.collection('vtm_ppn_complaints').onSnapshot((snapshot) => {
@@ -602,13 +655,122 @@
                         renderComplaints();
                         updateDashboardLive();
                         document.getElementById('lastRefresh').textContent = 'Live updated: ' + new Date().toLocaleTimeString();
+                        detectAndNotifyComplaintChanges(complaintsDB);
                     });
                 }
             } catch (e) { console.log('Real-time listener error:', e); }
         }
 
+        // ===== NOTIFICATIONS SYSTEM =====
+        // Icon + background color per notification type. Falls back to a
+        // generic bell for any type not listed here (forward-compatible
+        // with new trigger types added later).
+        const NOTIF_STYLE = {
+            new_complaint:  { icon: '🚨', bg: '#d1fae5', border: 'var(--admin-primary)', panelBg: '#fef2f2' },
+            escalated:      { icon: '⚠️', bg: '#fef3c7', border: '#f59e0b',              panelBg: '#fffbeb' },
+            assigned:       { icon: '👤', bg: '#dbeafe', border: '#2563eb',              panelBg: '#eff6ff' },
+            resolved:       { icon: '✅', bg: '#d1fae5', border: '#059669',              panelBg: '#ecfdf5' },
+            feedback:       { icon: '⭐', bg: '#ede9fe', border: '#7c3aed',              panelBg: '#f5f3ff' },
+            default:        { icon: '🔔', bg: '#f3f4f6', border: '#9ca3af',              panelBg: '#f9fafb' }
+        };
+
+        function timeAgo(isoString) {
+            const diffMs = Date.now() - new Date(isoString).getTime();
+            const mins = Math.floor(diffMs / 60000);
+            if (mins < 1) return 'just now';
+            if (mins < 60) return mins + ' min' + (mins === 1 ? '' : 's') + ' ago';
+            const hrs = Math.floor(mins / 60);
+            if (hrs < 24) return hrs + ' hour' + (hrs === 1 ? '' : 's') + ' ago';
+            const days = Math.floor(hrs / 24);
+            return days + ' day' + (days === 1 ? '' : 's') + ' ago';
+        }
+
+        function renderNotificationBadge(count) {
+            const badge = document.getElementById('notifBellBadge');
+            if (!badge) return;
+            if (count > 0) {
+                badge.textContent = count > 99 ? '99+' : String(count);
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+
+        function renderNotificationsList(items) {
+            const list = document.getElementById('notificationsList');
+            if (!list) return;
+            if (!items || items.length === 0) {
+                list.innerHTML = '<p style="text-align:center;color:#999;padding:30px;"><i class="fas fa-inbox" style="font-size:1.5rem;display:block;margin-bottom:8px;"></i>No notifications yet</p>';
+                return;
+            }
+            list.innerHTML = items.map(n => {
+                const style = NOTIF_STYLE[n.type] || NOTIF_STYLE.default;
+                const unreadDot = n.is_read ? '' : '<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--admin-primary);margin-left:6px;"></span>';
+                return `<div onclick="markNotificationReadUI(${n.id})" style="cursor:pointer;display:flex;align-items:start;gap:12px;padding:14px;background:${n.is_read ? '#fff' : style.panelBg};border:1px solid #f3f4f6;border-left:3px solid ${style.border};border-radius:0 8px 8px 0;margin-bottom:10px;">
+                    <div style="width:36px;height:36px;background:${style.bg};border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;flex-shrink:0;">${style.icon}</div>
+                    <div style="flex:1;min-width:0;">
+                        <h4 style="font-size:0.85rem;margin:0 0 3px;">${escapeHTML(n.title)}${unreadDot}</h4>
+                        <p style="font-size:0.75rem;color:#666;margin:0;word-break:break-word;">${escapeHTML(n.message)}</p>
+                        <span style="font-size:0.65rem;color:#999;">${timeAgo(n.created_at)}</span>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        async function loadNotifications() {
+            if (!window.CitizenConnect_DB || !CitizenConnect_DB.isConnected()) return;
+            const [items, unreadCount] = await Promise.all([
+                CitizenConnect_DB.getNotifications(20),
+                CitizenConnect_DB.getUnreadNotificationCount()
+            ]);
+            renderNotificationsList(items);
+            renderNotificationBadge(unreadCount);
+        }
+
+        async function markNotificationReadUI(id) {
+            await CitizenConnect_DB.markNotificationRead(id);
+            loadNotifications();
+        }
+
+        async function markAllNotificationsReadUI() {
+            await CitizenConnect_DB.markAllNotificationsRead();
+            loadNotifications();
+        }
+
+        function goToNotifications() {
+            document.querySelector('[data-section="notifications"]').click();
+        }
+
+        // Browser push alert: pops a real OS-level notification the instant a
+        // new complaint arrives, even if staff aren't looking at this tab.
+        function requestPushPermissionIfNeeded() {
+            if (!('Notification' in window)) return;
+            if (Notification.permission === 'default') {
+                Notification.requestPermission();
+            }
+        }
+
+        function showPushAlert(notif) {
+            if (!('Notification' in window) || Notification.permission !== 'granted') return;
+            const n = new Notification(notif.title || 'New notification', {
+                body: notif.message || '',
+                icon: 'vijay.jpg',
+                tag: 'ccadmin-notif-' + notif.id
+            });
+            n.onclick = () => { window.focus(); goToNotifications(); n.close(); };
+        }
+
+        function setupNotificationsRealtimeListener() {
+            if (!window.CitizenConnect_DB || !CitizenConnect_DB.isConnected()) return;
+            CitizenConnect_DB.onNewNotification((notif) => {
+                loadNotifications();
+                showPushAlert(notif);
+            });
+        }
+
         // ===== RENDER COMPLAINTS TABLE =====
         function renderComplaints() {
+            updateAreaDropdowns();
             const statusFilter = document.getElementById('filterStatus') ? document.getElementById('filterStatus').value : 'all';
             const areaFilter = document.getElementById('filterArea') ? document.getElementById('filterArea').value : 'all';
 
@@ -631,7 +793,7 @@
                 tbody.innerHTML = all.map(c => {
                     const displayId = c.govId || `TVK/TNJ/2026/${(c.id || '').split('-').pop()}`;
                     const statusLabel = c.status || 'புதியது';
-                    const statusCls = c.statusClass || 'badge-new';
+                    const statusCls = escapeHTML(c.statusClass || 'badge-new');
                     return `<tr>
                         <td data-label="ID"><code style="font-size:0.7rem;">${escapeHTML(displayId)}</code></td>
                         <td data-label="Citizen">${escapeHTML(c.citizenName || '-')}</td>
@@ -642,7 +804,7 @@
                         <td data-label="Status"><span class="badge ${statusCls}">${escapeHTML(statusLabel)}</span></td>
                         <td data-label="Assigned">${escapeHTML(c.assigned || '-')}</td>
                         <td data-label="Date">${escapeHTML(c.date || '-')}</td>
-                        <td data-label="Actions"><button onclick="viewDetail('${c.id}')" style="background:var(--admin-primary);color:white;border:none;border-radius:6px;padding:6px 12px;cursor:pointer;font-size:0.72rem;font-weight:600;"><i class="fas fa-eye"></i> View</button></td>
+                        <td data-label="Actions"><button onclick="viewDetail('${escapeHTML(c.id)}')" style="background:var(--admin-primary);color:white;border:none;border-radius:6px;padding:6px 12px;cursor:pointer;font-size:0.72rem;font-weight:600;"><i class="fas fa-eye"></i> View</button></td>
                     </tr>`;
                 }).join('');
             }
@@ -659,8 +821,9 @@
             const c = complaintsDB[id];
             if (!c) return;
             const displayId = c.govId || `TVK/TNJ/2026/${(c.id || '').split('-').pop()}`;
-            const statusCls = c.statusClass || 'badge-new';
+            const statusCls = escapeHTML(c.statusClass || 'badge-new');
             const statusLabel = c.status || 'புதியது';
+            const safeId = escapeForInlineHandler(id);
             const existing = document.getElementById('complaintDetailModal');
             if (existing) existing.remove();
 
@@ -721,25 +884,25 @@
                     ${c.hasVoiceNote ? `
                     <div style="margin-top:12px;padding:12px;background:#ecfdf5;border:1px solid #a7f3d0;border-radius:10px;">
                         <div style="display:flex;align-items:center;gap:10px;">
-                            <button onclick="playAdminVoice('${id}')" style="width:40px;height:40px;border-radius:50%;background:#10b981;border:none;color:white;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;" id="adminPlayBtn_${id}">
+                            <button onclick="playAdminVoice('${safeId}')" style="width:40px;height:40px;border-radius:50%;background:#10b981;border:none;color:white;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;" id="adminPlayBtn_${escapeHTML(id)}">
                                 <i class="fas fa-play"></i>
                             </button>
                             <div style="flex:1;">
                                 <p style="font-size:0.78rem;font-weight:600;color:#059669;margin:0;">🎤 Voice Note Attached</p>
                                 <p style="font-size:0.68rem;color:#6b7280;margin:2px 0 0;">${c.voiceAudioData ? 'Click ▶ to play' : 'Audio recorded by citizen'}</p>
-                                ${c.voiceAudioData ? `<audio id="adminAudio_${id}" src="${c.voiceAudioData}" preload="none"></audio>` : ''}
+                                ${c.voiceAudioData ? `<audio id="adminAudio_${escapeHTML(id)}" src="${escapeHTML(safeDataUrl(c.voiceAudioData, 'audio'))}" preload="none"></audio>` : ''}
                             </div>
                         </div>
                     </div>` : ''}
-                    
+
                     ${c.imageData ? `
                     <div style="margin-top:12px;">
                         <p style="font-size:0.75rem;font-weight:600;color:#374151;margin-bottom:6px;">📷 Attached Photo:</p>
                         <div style="border-radius:10px;overflow:hidden;border:1px solid #e5e7eb;max-width:250px;">
-                            <img src="${c.imageData}" style="width:100%;height:auto;display:block;" alt="Complaint Photo">
+                            <img src="${escapeHTML(safeDataUrl(c.imageData, 'image'))}" style="width:100%;height:auto;display:block;" alt="Complaint Photo">
                         </div>
                     </div>` : ''}
-                    
+
                     <!-- ASSIGN VOLUNTEER SECTION -->
                     <div style="margin-top:18px;padding:15px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;">
                         <h4 style="font-size:0.85rem;margin:0 0 10px;color:#1d4ed8;"><i class="fas fa-user-plus"></i> Assign Volunteer</h4>
@@ -753,7 +916,7 @@
                             <option value="high">🟡 High Priority</option>
                             <option value="urgent">🔴 Urgent</option>
                         </select>
-                        <button onclick="assignVolunteerToComplaint('${id}')" style="width:100%;padding:8px;background:linear-gradient(135deg,#2563eb,#1d4ed8);color:white;border:none;border-radius:8px;font-size:0.8rem;cursor:pointer;font-weight:600;">
+                        <button onclick="assignVolunteerToComplaint('${safeId}')" style="width:100%;padding:8px;background:linear-gradient(135deg,#2563eb,#1d4ed8);color:white;border:none;border-radius:8px;font-size:0.8rem;cursor:pointer;font-weight:600;">
                             <i class="fas fa-user-check"></i> Assign & Update
                         </button>
                     </div>
@@ -764,7 +927,7 @@
                         <select id="modalChangeStatus" style="width:100%;padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:0.8rem;margin-bottom:8px;">
                             ${statusOpts}
                         </select>
-                        <button onclick="changeComplaintStatus('${id}')" style="width:100%;padding:8px;background:linear-gradient(135deg,#059669,#047857);color:white;border:none;border-radius:8px;font-size:0.8rem;cursor:pointer;font-weight:600;">
+                        <button onclick="changeComplaintStatus('${safeId}')" style="width:100%;padding:8px;background:linear-gradient(135deg,#059669,#047857);color:white;border:none;border-radius:8px;font-size:0.8rem;cursor:pointer;font-weight:600;">
                             <i class="fas fa-sync-alt"></i> Update Status
                         </button>
                     </div>
@@ -937,24 +1100,56 @@
                 if (sec) sec.style.display = 'block';
                 document.querySelector('.admin-topbar h2').innerHTML = `<i class="${link.querySelector('i').className}"></i> ${escapeHTML(link.textContent.trim())}`;
                 if (link.dataset.section === 'complaints') loadFromFirebase();
-                if (link.dataset.section === 'volunteers') renderVolunteers();
+                if (link.dataset.section === 'volunteers') { renderVolunteers(); updateAreaDropdowns(); }
                 if (link.dataset.section === 'dashboard') updateDashboardLive();
+                if (link.dataset.section === 'notifications') loadNotifications();
             });
         });
+
+        // ===== PASSWORD HASHING (Web Crypto SHA-256 + per-account random salt) =====
+        // Not a substitute for a real backend + bcrypt/argon2, but ensures passwords are
+        // never stored or transmitted in plaintext from this client.
+        function randomSaltHex(bytes = 16) {
+            const arr = new Uint8Array(bytes);
+            crypto.getRandomValues(arr);
+            return Array.from(arr).map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+        async function hashPassword(password, salt) {
+            const enc = new TextEncoder().encode(salt + ':' + password);
+            const digest = await crypto.subtle.digest('SHA-256', enc);
+            return Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+        async function makeCredential(password) {
+            const salt = randomSaltHex();
+            const hash = await hashPassword(password, salt);
+            return { salt, hash };
+        }
+        async function verifyCredential(password, salt, hash) {
+            if (!salt || !hash) return false; // no legacy plaintext fallback — must re-register
+            const computed = await hashPassword(password, salt);
+            return computed === hash;
+        }
+        function isStrongPassword(pw) {
+            return typeof pw === 'string' && pw.length >= 8 && /[A-Za-z]/.test(pw) && /[0-9]/.test(pw);
+        }
 
         // ===== STAFF LOGIN SYSTEM =====
         let currentStaffUser = JSON.parse(localStorage.getItem('vtm_ppn_admin_staff') || 'null');
         let staffAccounts = JSON.parse(localStorage.getItem('vtm_ppn_staff_accounts') || '{}');
 
-        if (!staffAccounts['admin']) {
-            staffAccounts['admin'] = { username: 'admin', password: 'admin123', name: 'Admin User', mobile: '9999999999', role: 'Office Manager', area: 'All Areas', staffId: 'STAFF-001', registeredAt: '2026-01-01' };
-            localStorage.setItem('vtm_ppn_staff_accounts', JSON.stringify(staffAccounts));
+        async function ensureSeedAdmin() {
+            if (!staffAccounts['admin']) {
+                const { salt, hash } = await makeCredential('admin123');
+                staffAccounts['admin'] = { username: 'admin', salt, hash, name: 'Admin User', mobile: '9999999999', role: 'Office Manager', area: 'All Areas', staffId: 'STAFF-001', registeredAt: '2026-01-01', mustChangePassword: true };
+                localStorage.setItem('vtm_ppn_staff_accounts', JSON.stringify(staffAccounts));
+            }
         }
+        ensureSeedAdmin();
 
         if (currentStaffUser) {
             document.getElementById('adminLoginOverlay').style.display = 'none';
             document.getElementById('adminLayout').style.display = 'flex';
-            setTimeout(() => { updateStaffTopbar(); loadFromFirebase(); loadVolunteersFromFirebase(); setupRealtimeListener(); }, 300);
+            setTimeout(() => { updateStaffTopbar(); loadFromFirebase(); loadVolunteersFromFirebase(); setupRealtimeListener(); loadNotifications(); setupNotificationsRealtimeListener(); requestPushPermissionIfNeeded(); }, 300);
         }
 
         function showRegisterView() {
@@ -966,23 +1161,44 @@
             document.getElementById('loginFormView').classList.remove('hidden');
         }
 
-        function staffLogin() {
+        async function staffLogin() {
             const username = document.getElementById('loginUsername').value.trim().toLowerCase();
             const password = document.getElementById('loginPassword').value;
             if (!username || !password) { alert('Username and Password required!'); return; }
             const account = staffAccounts[username];
             if (!account) { alert('❌ Account not found! Please register first.'); return; }
-            if (account.password !== password) { alert('❌ Wrong password! Try again.'); document.getElementById('loginPassword').value = ''; return; }
+
+            let ok = false;
+            if (account.salt && account.hash) {
+                ok = await verifyCredential(password, account.salt, account.hash);
+            } else if (account.password) {
+                // Legacy plaintext account from before this fix — verify once, then migrate to a hash and drop the plaintext field.
+                ok = account.password === password;
+                if (ok) {
+                    const { salt, hash } = await makeCredential(password);
+                    account.salt = salt; account.hash = hash;
+                    delete account.password;
+                    staffAccounts[username] = account;
+                    localStorage.setItem('vtm_ppn_staff_accounts', JSON.stringify(staffAccounts));
+                }
+            }
+            if (!ok) { alert('❌ Wrong password! Try again.'); document.getElementById('loginPassword').value = ''; return; }
+
             currentStaffUser = { ...account, lastLogin: new Date().toISOString() };
+            delete currentStaffUser.salt; delete currentStaffUser.hash; delete currentStaffUser.password;
             localStorage.setItem('vtm_ppn_admin_staff', JSON.stringify(currentStaffUser));
             document.getElementById('adminLoginOverlay').style.display = 'none';
             document.getElementById('adminLayout').style.display = 'flex';
             updateStaffTopbar();
-            setTimeout(() => { loadFromFirebase(); loadVolunteersFromFirebase(); }, 500);
-            alert(`👋 Welcome back, ${account.name}!`);
+            setTimeout(() => { loadFromFirebase(); loadVolunteersFromFirebase(); setupRealtimeListener(); loadNotifications(); setupNotificationsRealtimeListener(); requestPushPermissionIfNeeded(); }, 500);
+            if (account.mustChangePassword) {
+                alert(`👋 Welcome, ${account.name}! ⚠️ You are using the default seed password — please register a personal account and stop using the shared "admin" login.`);
+            } else {
+                alert(`👋 Welcome back, ${account.name}!`);
+            }
         }
 
-        function staffRegister() {
+        async function staffRegister() {
             const name = document.getElementById('regName').value.trim();
             const mobile = document.getElementById('regMobile').value.trim();
             const role = document.getElementById('regRole').value;
@@ -997,26 +1213,29 @@
             if (!area) { alert('Please select your area!'); return; }
             if (!username || username.length < 3) { alert('Username must be at least 3 characters!'); return; }
             if (staffAccounts[username]) { alert('❌ Username already exists! Choose different one.'); return; }
-            if (!password || password.length < 4) { alert('Password must be at least 4 characters!'); return; }
+            if (!isStrongPassword(password)) { alert('Password must be at least 8 characters and include both letters and numbers!'); return; }
             if (password !== confirmPassword) { alert('❌ Passwords do not match!'); return; }
 
             const staffId = 'STAFF-' + String(Object.keys(staffAccounts).length + 1).padStart(3, '0');
-            const newAccount = { username, password, name, mobile, role, area, staffId, registeredAt: new Date().toISOString() };
+            const { salt, hash } = await makeCredential(password);
+            const newAccount = { username, salt, hash, name, mobile, role, area, staffId, registeredAt: new Date().toISOString() };
             staffAccounts[username] = newAccount;
             localStorage.setItem('vtm_ppn_staff_accounts', JSON.stringify(staffAccounts));
 
             try {
                 if (typeof db !== 'undefined') {
-                    db.collection('vtm_ppn_staff').doc(username).set({ ...newAccount, password: '***' });
+                    // Never send the password hash/salt off-device — Firestore copy is for directory info only.
+                    db.collection('vtm_ppn_staff').doc(username).set({ username, name, mobile, role, area, staffId, registeredAt: newAccount.registeredAt });
                 }
             } catch(e) { console.log('Staff Firebase save error:', e); }
 
             currentStaffUser = { ...newAccount, lastLogin: new Date().toISOString() };
+            delete currentStaffUser.salt; delete currentStaffUser.hash;
             localStorage.setItem('vtm_ppn_admin_staff', JSON.stringify(currentStaffUser));
             document.getElementById('adminLoginOverlay').style.display = 'none';
             document.getElementById('adminLayout').style.display = 'flex';
             updateStaffTopbar();
-            setTimeout(() => { loadFromFirebase(); loadVolunteersFromFirebase(); }, 500);
+            setTimeout(() => { loadFromFirebase(); loadVolunteersFromFirebase(); setupRealtimeListener(); loadNotifications(); setupNotificationsRealtimeListener(); requestPushPermissionIfNeeded(); }, 500);
             alert(`✅ Registration Successful!\n\nWelcome, ${name}!\nStaff ID: ${staffId}\nUsername: ${username}\n\nUse these credentials to login next time.`);
         }
 
@@ -1105,13 +1324,13 @@
 
         // ===== VOLUNTEER MANAGEMENT SYSTEM =====
         let volunteersData = [
-            { id: 1, name: 'Mr. Senthil Kumar', initials: 'SK', area: 'Thanjavur Fort Area', ward: 'Ward 5', role: 'Coordinator', resolved: ['TNJ-2026-00121'], resolvedTitles: ['சாலையில் பள்ளம் - East Main Street'] },
-            { id: 2, name: 'Mr. Murugan', initials: 'MR', area: 'Gandhi Nagar', ward: 'Ward 8', role: 'Coordinator', resolved: ['TNJ-2026-00122'], resolvedTitles: ['Street Light வேலை செய்யல - Gandhi Nagar 3rd Cross'] },
-            { id: 3, name: 'Mr. Rajesh', initials: 'RJ', area: 'New Bus Stand Area', ward: 'Ward 12', role: 'Coordinator', resolved: ['TNJ-2026-00123'], resolvedTitles: ['Drainage overflow - New Bus Stand Area Bus Stand அருகில்'] },
-            { id: 4, name: 'Mr. Selvam', initials: 'SV', area: 'Punnainallur', ward: 'Ward 3', role: 'Coordinator', resolved: [], resolvedTitles: [] },
-            { id: 5, name: 'Mrs. Kavitha', initials: 'KV', area: 'Anna Nagar', ward: 'Ward 15', role: 'Coordinator', resolved: [], resolvedTitles: [] },
-            { id: 6, name: 'Mr. Ganesh', initials: 'GN', area: 'Karanthai', ward: 'Ward 9', role: 'Coordinator', resolved: [], resolvedTitles: [] },
-            { id: 7, name: 'Mrs. Lakshmi', initials: 'LK', area: 'East Main Street', ward: 'Ward 7', role: 'Coordinator', resolved: [], resolvedTitles: [] }
+            { id: 1, name: 'Mr. Senthil Kumar', initials: 'SK', mobile: '-', memberId: '-', area: 'Thanjavur Fort Area', ward: 'Ward 5', role: 'Coordinator', resolved: ['TNJ-2026-00121'], resolvedTitles: ['சாலையில் பள்ளம் - East Main Street'] },
+            { id: 2, name: 'Mr. Murugan', initials: 'MR', mobile: '-', memberId: '-', area: 'Gandhi Nagar', ward: 'Ward 8', role: 'Coordinator', resolved: ['TNJ-2026-00122'], resolvedTitles: ['Street Light வேலை செய்யல - Gandhi Nagar 3rd Cross'] },
+            { id: 3, name: 'Mr. Rajesh', initials: 'RJ', mobile: '-', memberId: '-', area: 'New Bus Stand Area', ward: 'Ward 12', role: 'Coordinator', resolved: ['TNJ-2026-00123'], resolvedTitles: ['Drainage overflow - New Bus Stand Area Bus Stand அருகில்'] },
+            { id: 4, name: 'Mr. Selvam', initials: 'SV', mobile: '-', memberId: '-', area: 'Punnainallur', ward: 'Ward 3', role: 'Coordinator', resolved: [], resolvedTitles: [] },
+            { id: 5, name: 'Mrs. Kavitha', initials: 'KV', mobile: '-', memberId: '-', area: 'Anna Nagar', ward: 'Ward 15', role: 'Coordinator', resolved: [], resolvedTitles: [] },
+            { id: 6, name: 'Mr. Ganesh', initials: 'GN', mobile: '-', memberId: '-', area: 'Karanthai', ward: 'Ward 9', role: 'Coordinator', resolved: [], resolvedTitles: [] },
+            { id: 7, name: 'Mrs. Lakshmi', initials: 'LK', mobile: '-', memberId: '-', area: 'East Main Street', ward: 'Ward 7', role: 'Coordinator', resolved: [], resolvedTitles: [] }
         ];
 
         function renderVolunteers() {
@@ -1130,7 +1349,7 @@
                 const resolvedCount = vol.resolved.length;
                 return `<div class="vol-card" style="cursor:pointer;" onclick="showVolunteerResolved(${vol.id})">
                     <div class="vol-avatar">${escapeHTML(vol.initials)}</div>
-                    <div class="vol-info"><h4>${escapeHTML(vol.name)}</h4><p>${escapeHTML(vol.ward)} - ${escapeHTML(vol.area)} | ${escapeHTML(vol.role)}</p></div>
+                    <div class="vol-info"><h4>${escapeHTML(vol.name)}</h4><p>${escapeHTML(vol.ward)} - ${escapeHTML(vol.area)} | ${escapeHTML(vol.role)}</p><p style="font-size:0.65rem;color:#999;margin-top:2px;">📱 ${escapeHTML(vol.mobile) || '-'} &nbsp;|&nbsp; 🪪 ${escapeHTML(vol.memberId) || '-'}</p></div>
                     <div class="vol-stats"><div class="num">${resolvedCount}</div><div class="lbl">Resolved</div></div>
                 </div>`;
             }).join('');
@@ -1159,11 +1378,11 @@
                 complaintsHTML = assigned.map(c => {
                     const displayId = c.govId || `TVK/TNJ/2026/${(c.id || '').split('-').pop()}`;
                     const isResolved = c.statusClass === 'badge-resolved';
-                    const resolveBtn = isResolved ? '' : `<button onclick="markResolvedFromVolunteer('${c.id}')" style="margin-top:6px;padding:5px 10px;background:#059669;color:white;border:none;border-radius:6px;font-size:0.7rem;cursor:pointer;font-weight:600;"><i class="fas fa-check"></i> Mark Resolved</button>`;
+                    const resolveBtn = isResolved ? '' : `<button onclick="markResolvedFromVolunteer('${escapeForInlineHandler(c.id)}')" style="margin-top:6px;padding:5px 10px;background:#059669;color:white;border:none;border-radius:6px;font-size:0.7rem;cursor:pointer;font-weight:600;"><i class="fas fa-check"></i> Mark Resolved</button>`;
                     return `<div style="padding:10px;border:1px solid ${isResolved ? '#bbf7d0' : '#f3f4f6'};border-radius:8px;margin-bottom:8px;background:${isResolved ? '#f0fdf4' : 'white'};">
                         <div style="display:flex;justify-content:space-between;align-items:center;">
                             <code style="font-size:0.7rem;color:var(--admin-primary);">${escapeHTML(displayId)}</code>
-                            <span class="badge ${c.statusClass || 'badge-new'}" style="font-size:0.65rem;">${escapeHTML(c.status || 'புதியது')}</span>
+                            <span class="badge ${escapeHTML(c.statusClass || 'badge-new')}" style="font-size:0.65rem;">${escapeHTML(c.status || 'புதியது')}</span>
                         </div>
                         <p style="font-size:0.8rem;font-weight:600;margin:5px 0 2px;">${escapeHTML(c.title || '-')}</p>
                         <p style="font-size:0.7rem;color:#666;">${escapeHTML(c.area)} | ${escapeHTML(c.category)} | ${escapeHTML(c.date)}</p>
@@ -1185,7 +1404,8 @@
                         <div style="text-align:center;"><span style="font-size:1.3rem;font-weight:800;color:#059669;">${assigned.filter(c => c.statusClass === 'badge-resolved').length}</span><p style="font-size:0.65rem;color:#666;">Resolved</p></div>
                         <div style="text-align:center;"><span style="font-size:1.3rem;font-weight:800;color:#d97706;">${assigned.filter(c => c.statusClass !== 'badge-resolved').length}</span><p style="font-size:0.65rem;color:#666;">Pending</p></div>
                     </div>
-                    <p style="font-size:0.75rem;color:#666;margin-bottom:10px;">${escapeHTML(vol.ward)} - ${escapeHTML(vol.area)} | ${escapeHTML(vol.role)}</p>
+                    <p style="font-size:0.75rem;color:#666;margin-bottom:4px;">${escapeHTML(vol.ward)} - ${escapeHTML(vol.area)} | ${escapeHTML(vol.role)}</p>
+                    <p style="font-size:0.72rem;color:#666;margin-bottom:10px;">📱 ${escapeHTML(vol.mobile) || '-'} &nbsp;|&nbsp; 🪪 TVK ID: ${escapeHTML(vol.memberId) || '-'}</p>
                     <h4 style="font-size:0.85rem;margin-bottom:10px;">📋 Assigned Complaints:</h4>
                     ${complaintsHTML}
                     <button onclick="document.getElementById('complaintDetailModal').remove()" style="width:100%;margin-top:10px;padding:10px;background:#f3f4f6;border:none;border-radius:8px;cursor:pointer;font-size:0.8rem;">Close</button>
@@ -1193,16 +1413,29 @@
             document.body.appendChild(modal);
         }
 
+        // Indian mobile numbers: exactly 10 digits, starting with 6-9 (the
+        // range actually assigned to mobile connections in India).
+        function isValidIndianMobile(mobile) {
+            return /^[6-9]\d{9}$/.test(mobile);
+        }
+
         function addNewVolunteer() {
             const name = document.getElementById('newVolName').value.trim();
+            const mobile = document.getElementById('newVolMobile').value.trim();
+            const memberId = document.getElementById('newVolMemberId').value.trim();
             const area = document.getElementById('newVolArea').value;
             const ward = document.getElementById('newVolWard').value.trim() || 'Ward -';
             const role = document.getElementById('newVolRole').value;
             if (!name) { alert('Volunteer name required!'); return; }
+            if (!mobile) { alert('Mobile number required!'); return; }
+            if (!isValidIndianMobile(mobile)) { alert('❌ Enter a valid 10-digit Indian mobile number (must start with 6-9)!'); return; }
+            if (!area) { alert('Please select an area!'); return; }
             const initials = name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
-            const newVol = { id: volunteersData.length + 1, name: name, initials: initials, area: area, ward: ward, role: role, resolved: [], resolvedTitles: [] };
+            const newVol = { id: volunteersData.length + 1, name: name, initials: initials, mobile: mobile, memberId: memberId || '-', area: area, ward: ward, role: role, resolved: [], resolvedTitles: [] };
             volunteersData.push(newVol);
             document.getElementById('newVolName').value = '';
+            document.getElementById('newVolMobile').value = '';
+            document.getElementById('newVolMemberId').value = '';
             document.getElementById('newVolWard').value = '';
             renderVolunteers();
             saveVolunteersToFirebase();
@@ -1213,15 +1446,15 @@
         async function saveVolunteersToFirebase() {
             try {
                 if (typeof db !== 'undefined') {
-                    const saveData = volunteersData.map(v => ({ id: v.id, name: v.name, initials: v.initials, area: v.area, ward: v.ward, role: v.role }));
+                    const saveData = volunteersData.map(v => ({ id: v.id, name: v.name, initials: v.initials, mobile: v.mobile || '-', memberId: v.memberId || '-', area: v.area, ward: v.ward, role: v.role }));
                     await db.collection('vtm_ppn_volunteers').doc('volunteer_list').set({ list: saveData, updatedAt: new Date().toISOString() });
                     console.log('✅ Volunteers saved to Firebase:', saveData.length);
                 } else {
-                    localStorage.setItem('vtm_ppn_volunteers', JSON.stringify(volunteersData.map(v => ({ id: v.id, name: v.name, initials: v.initials, area: v.area, ward: v.ward, role: v.role }))));
+                    localStorage.setItem('vtm_ppn_volunteers', JSON.stringify(volunteersData.map(v => ({ id: v.id, name: v.name, initials: v.initials, mobile: v.mobile || '-', memberId: v.memberId || '-', area: v.area, ward: v.ward, role: v.role }))));
                 }
             } catch (e) {
                 console.log('Save volunteers error (using localStorage fallback):', e);
-                localStorage.setItem('vtm_ppn_volunteers', JSON.stringify(volunteersData.map(v => ({ id: v.id, name: v.name, initials: v.initials, area: v.area, ward: v.ward, role: v.role }))));
+                localStorage.setItem('vtm_ppn_volunteers', JSON.stringify(volunteersData.map(v => ({ id: v.id, name: v.name, initials: v.initials, mobile: v.mobile || '-', memberId: v.memberId || '-', area: v.area, ward: v.ward, role: v.role }))));
             }
         }
 

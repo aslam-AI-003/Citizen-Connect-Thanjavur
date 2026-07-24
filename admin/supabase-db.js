@@ -301,23 +301,32 @@ const CitizenConnect_DB = {
     // ===== CITIZENS =====
 
     // Register/update citizen
+    // Not using .upsert(): PostgREST's ON CONFLICT DO UPDATE path internally
+    // requires read access to detect and report the conflict, even with
+    // return=minimal — and the citizens table intentionally has no anon
+    // SELECT access (prevents bulk phone-number harvesting). Insert first;
+    // if the row already exists (unique mobile violation), fall back to a
+    // plain UPDATE ... WHERE, which needs no read access at all.
     async upsertCitizen(name, mobile, ward, area) {
+        if (!supabaseClient) return null;
+        const fields = {
+            name: name,
+            mobile: mobile,
+            ward: ward || '',
+            area: area || '',
+            last_login: new Date().toISOString()
+        };
         try {
-            if (!supabaseClient) return null;
-            const { data, error } = await supabaseClient
-                .from('citizens')
-                .upsert({
-                    name: name,
-                    mobile: mobile,
-                    ward: ward || '',
-                    area: area || '',
-                    last_login: new Date().toISOString()
-                }, { onConflict: 'mobile' })
-                .select()
-                .single();
+            const { error } = await supabaseClient.from('citizens').insert(fields);
+            if (!error) return fields;
+            if (error.code !== '23505') throw error; // not a duplicate-mobile conflict — real error
 
-            if (error) throw error;
-            return data;
+            const { error: updateError } = await supabaseClient
+                .from('citizens')
+                .update(fields)
+                .eq('mobile', mobile);
+            if (updateError) throw updateError;
+            return fields;
         } catch (error) {
             console.error('❌ [Supabase] Citizen upsert error:', error);
             return null;
@@ -345,23 +354,28 @@ const CitizenConnect_DB = {
     // ===== OTP SYSTEM =====
 
     // Generate and store OTP
+    // Same insert-then-update fallback as upsertCitizen(), for the same
+    // reason: .upsert() needs read access this table intentionally doesn't
+    // grant to the anon key.
     async generateOTP(mobile, purpose = 'login') {
         try {
             if (!supabaseClient) return null;
-            
+
             // Generate 4-digit OTP
             const otpCode = String(Math.floor(1000 + Math.random() * 9000));
             const expiresAt = new Date(Date.now() + 5 * 60 * 1000).toISOString(); // 5 min expiry
 
             // Store in citizens table
-            await supabaseClient
-                .from('citizens')
-                .upsert({
-                    mobile: mobile,
-                    name: 'Citizen',
-                    otp_code: otpCode,
-                    otp_expires_at: expiresAt
-                }, { onConflict: 'mobile' });
+            const otpFields = { mobile: mobile, name: 'Citizen', otp_code: otpCode, otp_expires_at: expiresAt };
+            const { error: insertError } = await supabaseClient.from('citizens').insert(otpFields);
+            if (insertError) {
+                if (insertError.code !== '23505') throw insertError;
+                const { error: updateError } = await supabaseClient
+                    .from('citizens')
+                    .update({ otp_code: otpCode, otp_expires_at: expiresAt })
+                    .eq('mobile', mobile);
+                if (updateError) throw updateError;
+            }
 
             // Log OTP
             await supabaseClient
@@ -425,6 +439,20 @@ const CitizenConnect_DB = {
     },
 
     // ===== STAFF =====
+    // NOTE: password_hash stores a SHA-256(salt:password) hex digest, never the raw password.
+    // This is a client-side stopgap, not a substitute for server-side bcrypt/argon2 behind real auth.
+
+    async _hashPassword(password, salt) {
+        const enc = new TextEncoder().encode(salt + ':' + password);
+        const digest = await crypto.subtle.digest('SHA-256', enc);
+        return Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, '0')).join('');
+    },
+
+    _randomSalt(bytes = 16) {
+        const arr = new Uint8Array(bytes);
+        crypto.getRandomValues(arr);
+        return Array.from(arr).map(b => b.toString(16).padStart(2, '0')).join('');
+    },
 
     // Staff login
     async staffLogin(username, password) {
@@ -434,11 +462,13 @@ const CitizenConnect_DB = {
                 .from('staff')
                 .select('*')
                 .eq('username', username)
-                .eq('password_hash', password)
                 .eq('is_active', true)
                 .single();
 
-            if (error || !data) return null;
+            if (error || !data || !data.password_salt || !data.password_hash) return null;
+
+            const computed = await this._hashPassword(password, data.password_salt);
+            if (computed !== data.password_hash) return null;
 
             // Update last login
             await supabaseClient
@@ -447,7 +477,8 @@ const CitizenConnect_DB = {
                 .eq('id', data.id);
 
             console.log('✅ [Supabase] Staff login:', username);
-            return data;
+            const { password_hash, password_salt, ...safeData } = data;
+            return safeData;
         } catch (error) {
             console.error('❌ [Supabase] Staff login error:', error);
             return null;
@@ -468,11 +499,14 @@ const CitizenConnect_DB = {
             if (existing) return { error: 'Username already exists' };
 
             const staffId = 'STAFF-' + String(Date.now()).slice(-6);
+            const password_salt = this._randomSalt();
+            const password_hash = await this._hashPassword(staffData.password, password_salt);
             const { data, error } = await supabaseClient
                 .from('staff')
                 .insert({
                     username: staffData.username,
-                    password_hash: staffData.password,
+                    password_hash,
+                    password_salt,
                     name: staffData.name,
                     mobile: staffData.mobile,
                     role: staffData.role,
@@ -484,7 +518,8 @@ const CitizenConnect_DB = {
 
             if (error) throw error;
             console.log('✅ [Supabase] Staff registered:', staffData.username);
-            return data;
+            const { password_hash: _h, password_salt: _s, ...safeData } = data;
+            return safeData;
         } catch (error) {
             console.error('❌ [Supabase] Staff register error:', error);
             return null;
@@ -574,6 +609,117 @@ const CitizenConnect_DB = {
             console.error('❌ [Supabase] Get updates error:', error);
             return [];
         }
+    },
+
+    // ===== NOTIFICATIONS =====
+    // Rows are created only by a database trigger on `complaints` inserts/
+    // updates (see supabase-notifications-setup.sql) — the anon key has no
+    // insert access here, so a client can read and mark-as-read but can
+    // never forge a fake notification.
+
+    async getNotifications(limit = 20) {
+        try {
+            if (!supabaseClient) return [];
+            const { data, error } = await supabaseClient
+                .from('notifications')
+                .select('*')
+                .order('created_at', { ascending: false })
+                .limit(limit);
+
+            if (error) throw error;
+            return data || [];
+        } catch (error) {
+            console.error('❌ [Supabase] Get notifications error:', error);
+            return [];
+        }
+    },
+
+    async getUnreadNotificationCount() {
+        try {
+            if (!supabaseClient) return 0;
+            const { count, error } = await supabaseClient
+                .from('notifications')
+                .select('id', { count: 'exact', head: true })
+                .eq('is_read', false);
+
+            if (error) throw error;
+            return count || 0;
+        } catch (error) {
+            console.error('❌ [Supabase] Get unread count error:', error);
+            return 0;
+        }
+    },
+
+    async markNotificationRead(id) {
+        try {
+            if (!supabaseClient) return false;
+            const { error } = await supabaseClient
+                .from('notifications')
+                .update({ is_read: true })
+                .eq('id', id);
+            if (error) throw error;
+            return true;
+        } catch (error) {
+            console.error('❌ [Supabase] Mark notification read error:', error);
+            return false;
+        }
+    },
+
+    async markAllNotificationsRead() {
+        try {
+            if (!supabaseClient) return false;
+            const { error } = await supabaseClient
+                .from('notifications')
+                .update({ is_read: true })
+                .eq('is_read', false);
+            if (error) throw error;
+            return true;
+        } catch (error) {
+            console.error('❌ [Supabase] Mark all notifications read error:', error);
+            return false;
+        }
+    },
+
+    // Client-side notification creation for complaints that live in Firebase
+    // (not Supabase) — see supabase-notifications-firebase-source.sql for why.
+    // Relies on a unique index on (complaint_id, type) to make duplicate
+    // inserts a harmless no-op instead of an error, since multiple staff may
+    // have the admin panel open and each detect the same event independently.
+    async createNotificationIfNew(type, title, message, complaintId) {
+        try {
+            if (!supabaseClient) return false;
+            const { error } = await supabaseClient
+                .from('notifications')
+                .insert({ type, title, message, complaint_id: complaintId, is_read: false });
+            if (error) {
+                if (error.code === '23505') return false; // duplicate — another tab/staff member already created it
+                throw error;
+            }
+            return true;
+        } catch (error) {
+            console.error('❌ [Supabase] Create notification error:', error);
+            return false;
+        }
+    },
+
+    // Real-time listener — fires whenever the trigger inserts a fresh
+    // notification (i.e. whenever a new complaint arrives, from any site).
+    // Removes any pre-existing channel of the same name first — calling this
+    // twice in one session (e.g. logout then log back in) would otherwise
+    // throw trying to add a second postgres_changes callback after subscribe().
+    onNewNotification(callback) {
+        if (!supabaseClient) return null;
+        const existing = supabaseClient.getChannels().find(ch => ch.topic === 'realtime:notifications-changes');
+        if (existing) supabaseClient.removeChannel(existing);
+        const channel = supabaseClient
+            .channel('notifications-changes')
+            .on('postgres_changes',
+                { event: 'INSERT', schema: 'public', table: 'notifications' },
+                (payload) => callback(payload.new)
+            )
+            .subscribe();
+        console.log('📡 [Supabase] Notifications real-time listener active');
+        return channel;
     },
 
     // ===== UTILITY =====
